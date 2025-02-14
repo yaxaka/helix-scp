@@ -1,0 +1,8 @@
+
+"scp"
+{
+	"base" 			"helix"
+	"title" 		"SCP-RP"
+	"author" 		"yaxaka"
+	"menusystem"	"1"
+}
