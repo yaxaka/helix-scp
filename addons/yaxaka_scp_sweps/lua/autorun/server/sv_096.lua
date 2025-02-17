@@ -36,7 +36,7 @@ hook.Add("Think", "SCP096_Parse", function()
 	for i, v in ipairs(player.GetAll()) do
     	local tr = util.TraceLine(util.GetPlayerTrace(v))
     		if IsValid(tr.Entity) then
-    			if (tr.Entity.SCP096) and not (v.scp096_1) and (v:Alive()) then
+    			if (tr.Entity.SCP096) && not (v.scp096_1) && (v:Alive()) && (scp096_ply ~= v) then
     				v:ChatPrint("Я чувствую, что что-то не так...")
     				v.scp096_1 = true
     				scp096_1_count = scp096_1_count + 1
@@ -55,6 +55,7 @@ end)
 
 function scp096_attack(victim, scp)
 	local d = DamageInfo()
+	local victimpos = victim:GetPos()
 	d:SetDamage(victim:Health())
 	d:SetAttacker(scp)
 	d:SetDamageType(DMG_GENERIC) 
@@ -62,16 +63,16 @@ function scp096_attack(victim, scp)
 	victim:TakeDamageInfo(d)
 
 
+
 	if CurTime() < eventdelay then return end
-	local trace = scp:GetEyeTrace()
 
-	local Pos1 = trace.HitPos + trace.HitNormal
-	local Pos2 = trace.HitPos - trace.HitNormal
+	local bloodpool = ents.Create("prop_dynamic")
+	bloodpool:SetModel("models/bloodp/bloodp.mdl")
+	bloodpool:SetPos(victimpos)
+	bloodpool:Spawn()
+	bloodpool:SetColor(Color(255, 0, 0, 0))
 
-	for i=1,10 do
-		util.Decal("Blood", Pos1, Pos2)
-	end
-
+	scp096_spawngibs(victimpos)
 
 	ix.chat.Send(scp, "localevent", scp096_text_far, nil, nil, {range = 3000})
 	ix.chat.Send(scp, "localevent", scp096_text_close, nil, nil, {range = 1000})
@@ -82,20 +83,16 @@ end
 
 
 function scp096_triggered_func(scp)
-	print("trigger1")
 	if timer.Exists("SCP_096_TRIGGERED") then return end
-	print("trigger2")
 	if scp096_triggered then return end
-	print("trigger3")
 	scp096_triggered = true
-	local maxspeed = 400
-	local maxrun = 400
 	scp:Freeze(true)
 	scp:EmitSound("096_triggering.wav")
 	timer.Create("SCP_096_TRIGGERED", 30, 1, function()
+		scp:StartLoopingSound("096_scream_01.wav")
 		scp:Freeze(false)
-		scp:SetMaxSpeed(maxspeed)
-		scp:SetRunSpeed(maxrun)
+		scp:SetWalkSpeed(400)
+		scp:SetRunSpeed(650)
 	end)
 end
 
@@ -104,6 +101,35 @@ function scp_096_chillout(scp)
 	print("chill")
 	scp:SetMaxSpeed(100)
 	scp:SetRunSpeed(100)
+end
+
+function scp096_spawngibs(victimpos)
+	local parts = {"models/Gibs/HGIBS_scapula.mdl", "models/Gibs/HGIBS_rib.mdl", "models/Gibs/HGIBS_spine.mdl"}
+	local bodies = {"models/Gibs/Fast_Zombie_Legs.mdl", "models/Gibs/Fast_Zombie_Torso.mdl"}
+
+
+	for i=1,math.random(1, 4) do
+		local gib = ents.Create("prop_physics")
+		gib:SetModel(parts[math.random(1, #parts)])
+		gib:SetPos(victimpos)
+		gib:Spawn()
+		gib:SetColor(Color(255, 0, 0, 255))
+	end
+
+	if math.random(1, 100) > 50 then
+		local gib = ents.Create("prop_ragdoll")
+		gib:SetModel(bodies[1])
+		gib:SetPos(victimpos)
+		gib:Spawn()
+		gib:SetColor(Color(255, 0, 0, 255))
+		if math.random(1, 100) >= 90 then
+			local gib = ents.Create("prop_ragdoll")
+			gib:SetModel(bodies[2])
+			gib:SetPos(victimpos)
+			gib:Spawn()
+			gib:SetColor(Color(255, 0, 0, 255))
+		end
+	end
 end
 
 
@@ -125,7 +151,7 @@ hook.Add("PlayerDeath", "GlobalDeathMessage", function(victim)
 		scp096_1_count = scp096_1_count - 1
 	end
 
-	if scp096_1_count <= 0 then
+	if (scp096_ply:IsPlayer()) && scp096_1_count <= 0 then
 		scp096_1_count = 0
 		scp096_triggered = false
 		scp_096_chillout(scp096_ply)

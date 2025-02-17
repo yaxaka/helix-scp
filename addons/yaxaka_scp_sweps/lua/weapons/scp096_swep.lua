@@ -70,12 +70,8 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:SecondaryAttack()
-	local ent = self:GetOwner()
-	local target = ent:GetEyeTrace().Entity
+--
 
-	if target:IsPlayer() then
-		target.scp096_1 = false
-	end
 end
 
 end
