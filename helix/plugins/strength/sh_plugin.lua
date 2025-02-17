@@ -6,7 +6,7 @@ if (SERVER) then
 	function PLUGIN:GetPlayerPunchDamage(client, damage, context)
 		if (client:GetCharacter()) then
 			-- Add to the total fist damage.
-			context.damage = context.damage + (client:GetCharacter():GetAttribute("str", 0) * ix.config.Get("strengthMultiplier"))
+			context.damage = context.damage + (1 * ix.config.Get("strengthMultiplier"))
 		end
 	end
 

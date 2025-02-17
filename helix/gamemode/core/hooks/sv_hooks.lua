@@ -105,6 +105,7 @@ function GM:PlayerUse(client, entity)
 end
 
 function GM:KeyPress(client, key)
+	if (client.SCP) then return end
 	if (key == IN_RELOAD) then
 		timer.Create("ixToggleRaise"..client:SteamID(), ix.config.Get("weaponRaiseTime"), 1, function()
 			if (IsValid(client)) then

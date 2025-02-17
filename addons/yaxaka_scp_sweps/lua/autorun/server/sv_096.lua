@@ -1,12 +1,13 @@
 local scp096_text_far = "Эхом доноситься как ломаються кости, рвёться плоть, сухожилия."
 local scp096_text_close = "Кровь разбрызгиваеться во все стороны, объект выворачивает тело наизнанку и рвёт его, ошмётки крови распластываються по земле, заливая её кровью. Остатки падают на землю."
-
+local scp096_killsounds = {"gore_01.wav", "gore_02.wav", "gore_03.wav", "gore_04.wav", "gore_05.wav", "gore_06.wav", "gore_07.wav", "gore_08.wav"}
 local eventdelay = 0
 
 scp096_activated = false
 scp096_ply = nil
 scp096_triggered = false
 scp096_1_count = 0
+scp096_first_blood = false
 
 util.AddNetworkString("SCP096_1_Ent")
 
@@ -72,11 +73,18 @@ function scp096_attack(victim, scp)
 	bloodpool:Spawn()
 	bloodpool:SetColor(Color(255, 0, 0, 0))
 
+	scp:EmitSound(scp096_killsounds[math.random(1, #scp096_killsounds)])
+
 	scp096_spawngibs(victimpos)
+	scp096_first_blood = true
 
 	ix.chat.Send(scp, "localevent", scp096_text_far, nil, nil, {range = 3000})
 	ix.chat.Send(scp, "localevent", scp096_text_close, nil, nil, {range = 1000})
 
+	timer.Create("BloodFlow_" .. victim:EntIndex(), 1.5, 1, function()
+		local f = tostring("gore_flow_0" .. math.random(1, 2) .. ".wav")
+		sound.Play(f, victimpos, 100)
+	end)
 
 	eventdelay = CurTime() + 5
 end
@@ -101,6 +109,7 @@ function scp_096_chillout(scp)
 	print("chill")
 	scp:SetMaxSpeed(100)
 	scp:SetRunSpeed(100)
+	scp096_first_blood = false
 end
 
 function scp096_spawngibs(victimpos)
@@ -161,3 +170,26 @@ hook.Add("PlayerDeath", "GlobalDeathMessage", function(victim)
 		net.Send(scp)
 	end
 end)
+
+hook.Add("PlayerFootstep", "CustomFootstep", function(ply, pos, foot, sound, volume, rf)
+	if (ply == scp096_ply) && (scp096_first_blood) then
+		if foot == 0 then
+			ply:EmitSound("blood_step_02_left.wav")
+		end
+		if foot == 1 then
+			ply:EmitSound("blood_step_02_right.wav")
+		end
+		return false
+	end
+end)
+
+local COMMAND = {}
+COMMAND.description = "@cmdRestoreSCP096"
+COMMAND.arguments = {ix.type.character}
+COMMAND.superAdminOnly = true
+
+function COMMAND:OnRun(client, client_scp)
+	ix.chat.Send(client, "localevent", client_scp)
+end
+
+ix.command.Add("RestoreSCP096", COMMAND)
