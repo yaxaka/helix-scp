@@ -17,8 +17,11 @@ if (SERVER) then
         client:StripWeapons()
         client:Give("scp096_swep")
         client.SCP = true
+        client.SCP096 = true
         scp096_ply = client
+        scp096_activated = true
         client:ToggleWepRaised()
+        scp096_reset_targets()
     end
     function CLASS:OnSet(client)
         client:SetWalkSpeed(100)
@@ -26,8 +29,18 @@ if (SERVER) then
         client:SetRunSpeed(100)
         client:StripWeapons()
         client:Give("scp096_swep")
+        client.SCP096 = true
         client.SCP = true
         scp096_ply = client
+        scp096_activated = true
         client:ToggleWepRaised()
+        scp096_reset_targets()
+    end
+end
+
+
+function scp096_reset_targets()
+    for i, v in ipairs( player.GetAll() ) do
+        v.scp096_1 = false
     end
 end

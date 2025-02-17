@@ -8,6 +8,7 @@ scp096_ply = nil
 scp096_triggered = false
 scp096_1_count = 0
 scp096_first_blood = false
+scp096_scream_sound = nil
 
 util.AddNetworkString("SCP096_1_Ent")
 
@@ -37,13 +38,13 @@ hook.Add("Think", "SCP096_Parse", function()
 	for i, v in ipairs(player.GetAll()) do
     	local tr = util.TraceLine(util.GetPlayerTrace(v))
     		if IsValid(tr.Entity) then
-    			if (tr.Entity.SCP096) && not (v.scp096_1) && (v:Alive()) && (scp096_ply ~= v) then
+    			if (tr.Entity.SCP096) && not (v.scp096_1) && (v:Alive()) && (scp096_ply ~= v) && (scp096_ply:IsPlayer()) then
     				v:ChatPrint("Я чувствую, что что-то не так...")
     				v.scp096_1 = true
     				scp096_1_count = scp096_1_count + 1
     				scp096_triggered_func(scp096_ply)
     				net.Start("SCP096_1_Ent")
-    				net.WriteInt(1, 2)
+    				net.WriteInt(1, 3)
     				net.WriteEntity(v)
     				net.Send(scp096_ply)
     			end
@@ -93,11 +94,12 @@ end
 function scp096_triggered_func(scp)
 	if timer.Exists("SCP_096_TRIGGERED") then return end
 	if scp096_triggered then return end
+	scp096_scream_sound = CreateSound(scp, "096_scream_01.wav")
 	scp096_triggered = true
 	scp:Freeze(true)
 	scp:EmitSound("096_triggering.wav")
 	timer.Create("SCP_096_TRIGGERED", 30, 1, function()
-		scp:StartLoopingSound("096_scream_01.wav")
+		scp096_scream_sound:PlayEx(1, 100)
 		scp:Freeze(false)
 		scp:SetWalkSpeed(400)
 		scp:SetRunSpeed(650)
@@ -106,9 +108,10 @@ end
 
 
 function scp_096_chillout(scp)
-	print("chill")
-	scp:SetMaxSpeed(100)
-	scp:SetRunSpeed(100)
+	scp096_scream_sound:Stop()
+    scp:SetWalkSpeed(100)
+    scp:SetSlowWalkSpeed(100)
+    scp:SetRunSpeed(100)
 	scp096_first_blood = false
 end
 
@@ -149,9 +152,6 @@ hook.Add("OnNPCKilled", "Test", function(npc, attacker, inflictor)
 	local mdl = npc:GetModel()
 	local uid = "SCP096_NPC_" .. npc:EntIndex()
 	npc:Remove()
-	--timer.Create(uid, 0.01, 1, function()
-	--	ylib_CreateRagdoll(pos, ang, mdl)
-	--end)
 end)
 
 hook.Add("PlayerDeath", "GlobalDeathMessage", function(victim)
@@ -165,9 +165,9 @@ hook.Add("PlayerDeath", "GlobalDeathMessage", function(victim)
 		scp096_triggered = false
 		scp_096_chillout(scp096_ply)
 		net.Start("SCP096_1_Ent")
-		net.WriteInt(2, 2)
+		net.WriteInt(2, 3)
 		net.WriteEntity(victim)
-		net.Send(scp)
+		net.Send(scp096_ply)
 	end
 end)
 
@@ -182,14 +182,3 @@ hook.Add("PlayerFootstep", "CustomFootstep", function(ply, pos, foot, sound, vol
 		return false
 	end
 end)
-
-local COMMAND = {}
-COMMAND.description = "@cmdRestoreSCP096"
-COMMAND.arguments = {ix.type.character}
-COMMAND.superAdminOnly = true
-
-function COMMAND:OnRun(client, client_scp)
-	ix.chat.Send(client, "localevent", client_scp)
-end
-
-ix.command.Add("RestoreSCP096", COMMAND)

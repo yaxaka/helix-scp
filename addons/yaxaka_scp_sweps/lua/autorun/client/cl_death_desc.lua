@@ -1,5 +1,3 @@
-print("t")
-
 scp096_targetlist = {}
 
 concommand.Add("scp096_test", function()
@@ -14,14 +12,15 @@ concommand.Add("scp096_table", function()
 end)
 
 net.Receive("SCP096_1_Ent", function()
-	local type = net.ReadInt(2)
+	local type = net.ReadInt(3)
 	local ent = net.ReadEntity()
 	local nick = ent:GetName()
 	if (type == 1) then
 		surface.PlaySound("096_spotted.wav")
 		table.insert(scp096_targetlist, nick)
 		chat.AddText(nick .. " ПОСМОТРЕЛ НА ВАС!")
-	elseif (type == 2) then
+	end
+	if (type == 2) then
 		table.RemoveByValue(scp096_targetlist, nick)
 	end
 end)

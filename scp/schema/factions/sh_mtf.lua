@@ -14,6 +14,9 @@ function FACTION:OnSpawn(client)
 	client:SetBodygroup(11, 1) -- belt
 	client:SetBodygroup(12, 0) -- belt
 	client:SetBodygroup(6, 1) -- gloves
+	if client == scp096_ply then
+		scp096_ply = nil
+	end
 end
 
 ix.anim.SetModelClass("models/lucie/tro/tacticrespoff.mdl", "player")
