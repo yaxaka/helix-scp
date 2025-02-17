@@ -36,7 +36,7 @@ local function CalcStaminaChange(client)
 
 	if (client:KeyDown(IN_SPEED) and client:GetVelocity():LengthSqr() >= (walkSpeed * walkSpeed)) then
 		-- characters could have attribute values greater than max if the config was changed
-		offset = -ix.config.Get("staminaDrain", 1) + math.min(character:GetAttribute("end", 0), maxAttributes) / 100
+		offset = -ix.config.Get("staminaDrain", 1) + math.min(0, maxAttributes) / 100
 	else
 		offset = client:Crouching() and ix.config.Get("staminaCrouchRegeneration", 2) or ix.config.Get("staminaRegeneration", 1.75)
 	end

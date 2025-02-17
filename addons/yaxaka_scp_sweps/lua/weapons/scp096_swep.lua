@@ -30,12 +30,15 @@ SWEP.DrawCrosshair		= true
 SWEP.ViewModel			= "models/weapons/c_arms.mdl"
 SWEP.WorldModel			= "models/weapons/c_arms.mdl"
 
-if SERVER then
+
 
 
 function SWEP:Initialize()
 	self:SetHoldType("none")
 end
+
+
+if SERVER then
 
 function SWEP:CanPrimaryAttack()
 	return false
@@ -66,5 +69,13 @@ function SWEP:PrimaryAttack()
 
 end
 
+function SWEP:SecondaryAttack()
+	local ent = self:GetOwner()
+	local target = ent:GetEyeTrace().Entity
+
+	if target:IsPlayer() then
+		target.scp096_1 = false
+	end
+end
 
 end
