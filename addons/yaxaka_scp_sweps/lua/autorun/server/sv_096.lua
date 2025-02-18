@@ -39,14 +39,15 @@ hook.Add("Think", "SCP096_Parse", function()
     	local tr = util.TraceLine(util.GetPlayerTrace(v))
     		if IsValid(tr.Entity) then
     			if (tr.Entity.SCP096) && not (v.scp096_1) && (v:Alive()) && (scp096_ply ~= v) && (scp096_ply:IsPlayer()) then
-    				v:ChatPrint("Я чувствую, что что-то не так...")
-    				v.scp096_1 = true
-    				scp096_1_count = scp096_1_count + 1
-    				scp096_triggered_func(scp096_ply)
-    				net.Start("SCP096_1_Ent")
-    				net.WriteInt(1, 3)
-    				net.WriteEntity(v)
-    				net.Send(scp096_ply)
+    				if (tr.HitGroup == 1) then
+    					v.scp096_1 = true
+    					scp096_1_count = scp096_1_count + 1
+    					scp096_triggered_func(scp096_ply)
+    					net.Start("SCP096_1_Ent")
+    					net.WriteInt(1, 3)
+    					net.WriteEntity(v)
+    					net.Send(scp096_ply)
+    				end
     			end
     		end
 	end
