@@ -22,6 +22,7 @@ if (SERVER) then
         scp096_activated = true
         client:ToggleWepRaised()
         scp096_reset_targets()
+        client:SetModel("models/washton/scp096/scp096unity.mdl")
     end
     function CLASS:OnSet(client)
         client:SetWalkSpeed(100)
@@ -35,6 +36,7 @@ if (SERVER) then
         scp096_activated = true
         client:ToggleWepRaised()
         scp096_reset_targets()
+        client:SetModel("models/washton/scp096/scp096unity.mdl")
     end
 end
 

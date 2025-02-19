@@ -8,3 +8,4 @@ FACTION.isGloballyRecognized = false
 FACTION_SCP = FACTION.index
 
 
+ix.anim.SetModelClass("models/washton/scp096/scp096unity.mdl", "scp096")

@@ -334,6 +334,7 @@ ix.anim.player = {
 		[ACT_LAND] = {ACT_RESET, ACT_RESET}
 	}
 }
+
 ix.anim.zombie = {
 	[ACT_MP_STAND_IDLE] = ACT_HL2MP_IDLE_ZOMBIE,
 	[ACT_MP_CROUCH_IDLE] = ACT_HL2MP_IDLE_CROUCH_ZOMBIE,
@@ -349,6 +350,23 @@ ix.anim.fastZombie = {
 	[ACT_MP_WALK] = ACT_HL2MP_WALK_ZOMBIE_06,
 	[ACT_MP_RUN] = ACT_HL2MP_RUN_ZOMBIE_FAST,
 	[ACT_LAND] = {ACT_RESET, ACT_RESET}
+}
+
+ix.anim.scp096 = {
+	normal = {
+		[ACT_MP_STAND_IDLE] = IDLE_LOOP,
+		[ACT_MP_CROUCH_IDLE] = IDLE_LOOP,
+		[ACT_MP_WALK] = WALK,
+		[ACT_MP_RUN] = RUN,
+		[ACT_LAND] = {ACT_RESET, ACT_RESET}
+	},
+	passive = {
+		[ACT_MP_STAND_IDLE] = IDLE_LOOP,
+		[ACT_MP_WALK] = WALK,
+		[ACT_MP_CROUCHWALK] = WALK_CROUCH,
+		[ACT_MP_RUN] = RUN,
+		[ACT_LAND] = {ACT_RESET, ACT_RESET}
+	}
 }
 
 local translations = {}
@@ -438,8 +456,16 @@ if (SERVER) then
 
 			self.ixCouldShoot = self:GetNetVar("canShoot", false)
 			self.ixSeqCallback = callback
-			self:SetCycle(0)
-			self:SetPlaybackRate(1)
+			if (self ~= scp096_ply) then
+				self:SetCycle(0)
+				print("trigger")
+				self:SetPlaybackRate(0.1)
+			else
+				print("right trigger")
+				self:SetCycle(0)
+				self:SetPlaybackRate(0.1)
+			end
+
 			self:SetNetVar("forcedSequence", sequence)
 			self:SetNetVar("canShoot", false)
 

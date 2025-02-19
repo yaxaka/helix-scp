@@ -337,6 +337,7 @@ do
 		local clientInfo = client:GetTable()
 		local forcedSequence = client:GetNetVar("forcedSequence")
 
+
 		if (forcedSequence) then
 			if (client:GetSequence() != forcedSequence) then
 				client:SetCycle(0)
@@ -344,6 +345,7 @@ do
 
 			return -1, forcedSequence
 		end
+		
 
 		client:SetPoseParameter("move_yaw", normalizeAngle(vectorAngle(velocity)[2] - client:EyeAngles()[2]))
 
@@ -372,7 +374,7 @@ do
 
 		clientInfo.m_bWasOnGround = client:OnGround()
 		clientInfo.m_bWasNoclipping = (client:GetMoveType() == MOVETYPE_NOCLIP and !client:InVehicle())
-
+		
 		return clientInfo.CalcIdeal, sequenceOverride or clientInfo.CalcSeqOverride or -1
 	end
 end

@@ -11,6 +11,7 @@ scp096_first_blood = false
 scp096_scream_sound = nil
 
 util.AddNetworkString("SCP096_1_Ent")
+util.AddNetworkString("SCP096_SelfModel")
 
 hook.Add("PlayerSwitchWeapon", "Activate096", function(ply, old, new)
 
@@ -34,12 +35,13 @@ end)
 
 
 hook.Add("Think", "SCP096_Parse", function()
-	if not scp096_activated then return end
+	if not scp096_activated or scp096_ply == nil then return end
 	for i, v in ipairs(player.GetAll()) do
-    	local tr = util.TraceLine(util.GetPlayerTrace(v))
+    	local tr = v:GetEyeTrace()
     		if IsValid(tr.Entity) then
     			if (tr.Entity.SCP096) && not (v.scp096_1) && (v:Alive()) && (scp096_ply ~= v) && (scp096_ply:IsPlayer()) then
-    				if (tr.HitGroup == 1) then
+    				v:ChatPrint(tr.HitBox)
+    				if (tr.HitBox == 18) then
     					v.scp096_1 = true
     					scp096_1_count = scp096_1_count + 1
     					scp096_triggered_func(scp096_ply)
@@ -78,6 +80,7 @@ function scp096_attack(victim, scp)
 	scp:EmitSound(scp096_killsounds[math.random(1, #scp096_killsounds)])
 
 	scp096_spawngibs(victimpos)
+	scp:SetSkin(2)
 	scp096_first_blood = true
 
 	ix.chat.Send(scp, "localevent", scp096_text_far, nil, nil, {range = 3000})
@@ -99,12 +102,45 @@ function scp096_triggered_func(scp)
 	scp096_triggered = true
 	scp:Freeze(true)
 	scp:EmitSound("096_triggering.wav")
-	timer.Create("SCP_096_TRIGGERED", 30, 1, function()
+	scp096_triggered_anim(scp)
+	timer.Create("SCP_096_TRIGGERED", 27.7, 1, function()
 		scp096_scream_sound:PlayEx(1, 100)
 		scp:Freeze(false)
 		scp:SetWalkSpeed(400)
 		scp:SetRunSpeed(650)
+		scp:SetNoDraw(false)
 	end)
+end
+
+function scp096_triggered_anim(scp)
+	scp:SetNoDraw(true)
+	local scpskin = scp:GetSkin()
+	local scpanim = ents.Create("base_anim")
+	scpanim:SetModel("models/washton/scp096/scp096unity.mdl")
+	scpanim:SetPos(scp:GetPos())
+	scpanim:Spawn()
+	scpanim:SetSkin(scpskin)
+	scpanim:SetAngles(scp:GetAngles())
+	scpanim:PhysicsInit( SOLID_VPHYSICS )
+	scpanim.AutomaticFrameAdvance = true
+	scp096_fake(scpanim)
+	scpanim:ResetSequence("enrage")
+	scpanim:SetPlaybackRate(0.1)
+	print(scpanim)
+	net.Start("SCP096_SelfModel")
+	net.Send(scp)
+	timer.Create("SCP_096_REMOVEFAKE", 27.7, 1, function()
+		scpanim:Remove()
+	end)
+end
+
+function scp096_fake(fake)
+	function fake:Think()
+		if ( SERVER ) then -- Only set this stuff on the server
+			self:NextThink( CurTime() ) -- Set the next think for the serverside hook to be the next frame/tick
+			return true -- Return true to let the game know we want to apply the self:NextThink() call
+		end
+	end
 end
 
 
@@ -155,7 +191,8 @@ hook.Add("OnNPCKilled", "Test", function(npc, attacker, inflictor)
 	npc:Remove()
 end)
 
-hook.Add("PlayerDeath", "GlobalDeathMessage", function(victim)
+hook.Add("PlayerDeath", "SCP096_AfterKill", function(victim)
+	if not scp096_activated then return end
 	if victim.scp096_1 then
 		victim.scp096_1 = false
 		scp096_1_count = scp096_1_count - 1
@@ -181,5 +218,13 @@ hook.Add("PlayerFootstep", "CustomFootstep", function(ply, pos, foot, sound, vol
 			ply:EmitSound("blood_step_02_right.wav")
 		end
 		return false
+	end
+end)
+
+hook.Add("SetupMove", "SCP096_Moving", function(ply, mv, cmd)
+	if (ply == scp096_ply) then
+		if (mv:KeyPressed(IN_FORWARD)) then
+			ply:ResetSequence("walk")
+		end
 	end
 end)
