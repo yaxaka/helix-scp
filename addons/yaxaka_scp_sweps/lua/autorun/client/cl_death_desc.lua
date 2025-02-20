@@ -16,13 +16,15 @@ net.Receive("SCP173_Scream", function()
 end)
 
 net.Receive("SCP096_SelfModel", function()
-	local sphere = ents.FindInSphere(LocalPlayer():GetPos(), 1)
-	for k,v in pairs(sphere) do
-		print(v:GetClass())
-		if (v:GetClass() == base_anim) then
-			v:SetNoDraw(true)
+	timer.Create("RemoveSelf096", 1, 1, function()
+		local sphere = ents.FindInSphere(LocalPlayer():GetPos(), 1)
+		for k,v in pairs(sphere) do
+			print(v:GetClass())
+			if (v:GetClass() == "base_anim") then
+				v:SetNoDraw(true)
+			end
 		end
-	end
+	end)
 end)
 
 concommand.Add("scp096_table", function()

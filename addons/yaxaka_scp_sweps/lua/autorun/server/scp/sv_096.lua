@@ -3,8 +3,6 @@ local scp096_text_close = "Кровь разбрызгиваеться во вс
 local scp096_killsounds = {"gore_01.wav", "gore_02.wav", "gore_03.wav", "gore_04.wav", "gore_05.wav", "gore_06.wav", "gore_07.wav", "gore_08.wav"}
 local eventdelay = 0
 
-scp096_activated = false
-scp096_ply = nil
 scp096_triggered = false
 scp096_1_count = 0
 scp096_first_blood = false
@@ -13,42 +11,22 @@ scp096_scream_sound = nil
 util.AddNetworkString("SCP096_1_Ent")
 util.AddNetworkString("SCP096_SelfModel")
 
-hook.Add("PlayerSwitchWeapon", "Activate096", function(ply, old, new)
-
-	if not (IsValid(old) && IsValid(new)) then return end
-
-	local nname = new:GetClass()
-	local oldname = old:GetClass()
-
-	if (nname == "scp096_swep") then
-		scp096_ply = ply
-		scp096_activated = true
-		ply.SCP096 = true
-	end
-
-	if (oldname == "scp096_swep") then
-		scp096_ply = nil
-		scp096_activated = false
-		ply.SCP096 = false
-	end
-end)
-
 
 hook.Add("Think", "SCP096_Parse", function()
-	if not scp096_activated or scp096_ply == nil then return end
+	if scp_ply_vars.scp_096_ply == nil then return end
 	for i, v in ipairs(player.GetAll()) do
     	local tr = v:GetEyeTrace()
     		if IsValid(tr.Entity) then
-    			if (tr.Entity.SCP096) && not (v.scp096_1) && (v:Alive()) && (scp096_ply ~= v) && (scp096_ply:IsPlayer()) then
+    			if (tr.Entity == scp_ply_vars.scp_096_ply) && not (v.scp096_1) && (v:Alive()) && (scp_ply_vars.scp_096_ply ~= v) && (scp_ply_vars.scp_096_ply:IsPlayer()) then
     				v:ChatPrint(tr.HitBox)
     				if (tr.HitBox == 18) then
     					v.scp096_1 = true
     					scp096_1_count = scp096_1_count + 1
-    					scp096_triggered_func(scp096_ply)
+    					scp096_triggered_func(scp_ply_vars.scp_096_ply)
     					net.Start("SCP096_1_Ent")
     					net.WriteInt(1, 3)
     					net.WriteEntity(v)
-    					net.Send(scp096_ply)
+    					net.Send(scp_ply_vars.scp_096_ply)
     				end
     			end
     		end
@@ -103,7 +81,7 @@ function scp096_triggered_func(scp)
 	scp:Freeze(true)
 	scp:EmitSound("096_triggering.wav")
 	scp096_triggered_anim(scp)
-	timer.Create("SCP_096_TRIGGERED", 27.7, 1, function()
+	timer.Create("SCP_096_TRIGGERED", 29, 1, function()
 		scp096_scream_sound:PlayEx(1, 100)
 		scp:Freeze(false)
 		scp:SetWalkSpeed(400)
@@ -129,7 +107,7 @@ function scp096_triggered_anim(scp)
 	print(scpanim)
 	net.Start("SCP096_SelfModel")
 	net.Send(scp)
-	timer.Create("SCP_096_REMOVEFAKE", 27.7, 1, function()
+	timer.Create("SCP_096_REMOVEFAKE", 29, 1, function()
 		scpanim:Remove()
 	end)
 end
@@ -192,25 +170,25 @@ hook.Add("OnNPCKilled", "Test", function(npc, attacker, inflictor)
 end)
 
 hook.Add("PlayerDeath", "SCP096_AfterKill", function(victim)
-	if not scp096_activated then return end
+	if scp_ply_vars.scp_096_ply == nil then return end
 	if victim.scp096_1 then
 		victim.scp096_1 = false
 		scp096_1_count = scp096_1_count - 1
 	end
 
-	if (scp096_ply:IsPlayer()) && scp096_1_count <= 0 then
+	if (scp_ply_vars.scp_096_ply:IsPlayer()) && scp096_1_count <= 0 then
 		scp096_1_count = 0
 		scp096_triggered = false
-		scp_096_chillout(scp096_ply)
+		scp_096_chillout(scp_ply_vars.scp_096_ply)
 		net.Start("SCP096_1_Ent")
 		net.WriteInt(2, 3)
 		net.WriteEntity(victim)
-		net.Send(scp096_ply)
+		net.Send(scp_ply_vars.scp_096_ply)
 	end
 end)
 
 hook.Add("PlayerFootstep", "CustomFootstep", function(ply, pos, foot, sound, volume, rf)
-	if (ply == scp096_ply) && (scp096_first_blood) then
+	if (ply == scp_ply_vars.scp_096_ply) && (scp096_first_blood) then
 		if foot == 0 then
 			ply:EmitSound("blood_step_02_left.wav")
 		end
@@ -222,7 +200,7 @@ hook.Add("PlayerFootstep", "CustomFootstep", function(ply, pos, foot, sound, vol
 end)
 
 hook.Add("SetupMove", "SCP096_Moving", function(ply, mv, cmd)
-	if (ply == scp096_ply) then
+	if (ply == scp_ply_vars.scp_096_ply) then
 		if (mv:KeyPressed(IN_FORWARD)) then
 			ply:ResetSequence("walk")
 		end

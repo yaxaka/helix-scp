@@ -11,32 +11,10 @@ end
 
 if (SERVER) then
     function CLASS:OnSpawn(client)
-        client:SetWalkSpeed(100)
-        client:SetSlowWalkSpeed(100)
-        client:SetRunSpeed(100)
-        client:StripWeapons()
-        client:Give("scp096_swep")
-        client.SCP = true
-        client.SCP096 = true
-        scp096_ply = client
-        scp096_activated = true
-        client:ToggleWepRaised()
-        scp096_reset_targets()
-        client:SetModel("models/washton/scp096/scp096unity.mdl")
+        ResetClassParameters(client, self, self.faction)
     end
     function CLASS:OnSet(client)
-        client:SetWalkSpeed(100)
-        client:SetSlowWalkSpeed(100)
-        client:SetRunSpeed(100)
-        client:StripWeapons()
-        client:Give("scp096_swep")
-        client.SCP096 = true
-        client.SCP = true
-        scp096_ply = client
-        scp096_activated = true
-        client:ToggleWepRaised()
-        scp096_reset_targets()
-        client:SetModel("models/washton/scp096/scp096unity.mdl")
+        ResetClassParameters(client, self, self.faction)
     end
 end
 
