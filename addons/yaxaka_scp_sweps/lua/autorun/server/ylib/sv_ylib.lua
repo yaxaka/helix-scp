@@ -7,6 +7,7 @@ function ylib_CreateRagdoll(Vector, Ang, Model)
 end
 
 scp_ply_vars = {}
+scp_index_vars = {}
 
 function LoadSCPTables_Helix()
 	for k,v in pairs(ix.class.list) do
@@ -16,6 +17,16 @@ function LoadSCPTables_Helix()
 			local new_word = string.Replace(name, "-", "_")
 			local new_word2 = string.lower(new_word .. "_ply")
 			scp_ply_vars[new_word2] = nil
+		end
+
+	end
+end
+
+function HelixSCP()
+	for k,v in pairs(ix.class.list) do
+		local id = v.faction
+		if id == 6 then
+			scp_index_vars[v.index] = v.index
 		end
 
 	end

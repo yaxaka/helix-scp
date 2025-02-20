@@ -9,6 +9,8 @@ concommand.Add("scp096_test", function()
    	end
 end)
 
+
+
 net.Receive("SCP173_Scream", function()
 	if scp_173_scount > 0 then return end
 	scp_173_scount = 1

@@ -26,5 +26,4 @@ function spawn_scp173_model(client)
     scp_173_prop = scp173
     client:SetNoDraw(true)
     client:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
-    print(scp173)
 end
