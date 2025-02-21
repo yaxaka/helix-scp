@@ -198,10 +198,3 @@ hook.Add("PlayerFootstep", "CustomFootstep", function(ply, pos, foot, sound, vol
 	end
 end)
 
-hook.Add("SetupMove", "SCP096_Moving", function(ply, mv, cmd)
-	if (ply == scp_ply_vars.scp_096_ply) then
-		if (mv:KeyPressed(IN_FORWARD)) then
-			ply:ResetSequence("walk")
-		end
-	end
-end)

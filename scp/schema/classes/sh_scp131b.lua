@@ -13,3 +13,7 @@ if (SERVER) then
         ResetClassParameters(client, self, self.faction)
     end
 end
+
+function CLASS:CanSwitchTo(client)
+    return client:HasClassWhitelist(self.index)
+end

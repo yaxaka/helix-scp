@@ -36,7 +36,10 @@ function ResetClassParameters(ply, class, faction)
 
 		if class_name == "SCP-131-A" then
 			scp_ply_vars.scp_131_a_ply = ply
-			ply:SetModel("models/nateswheel/nateswheel.mdl")
+			ply:SetModel("models/scprp/scp131a2.mdl")
+			ply:Give("scp131_swep")
+			ply.SCP = true
+			ply:ToggleWepRaised()
 			ply:SetWalkSpeed(200)
 			ply:SetSlowWalkSpeed(150)
 			ply:SetRunSpeed(500)
@@ -45,7 +48,10 @@ function ResetClassParameters(ply, class, faction)
 
 		if class_name == "SCP-131-B" then
 			scp_ply_vars.scp_131_b_ply = ply
-			ply:SetModel("models/nateswheel/nateswheel.mdl")
+			ply:SetModel("models/scprp/scp131b2.mdl")
+			ply:Give("scp131_swep")
+			ply.SCP = true
+			ply:ToggleWepRaised()
 			ply:SetWalkSpeed(200)
 			ply:SetSlowWalkSpeed(150)
 			ply:SetRunSpeed(500)
@@ -55,9 +61,7 @@ function ResetClassParameters(ply, class, faction)
 	end
 
 	if team_name ~= "SCP" then
-		ResetSCPVar(ply)
 		ply.SCP = false
-		ply.SCP096 = false
 		--ply:SetModel(faction.models[1])
 		ply:Spawn()
 	end
