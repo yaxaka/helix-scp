@@ -13,8 +13,8 @@ local button_lastpos = 0
 local button_lastposcenter = 0
 local headerpos = 0
 local headerfont = "DermaLarge"
-local name_font = "CloseCaption_Bold"
-local desc_font = "CloseCaption_Normal"
+local name_font = "Trebuchet24"
+local desc_font = "Trebuchet18"
 local category_font = "DermaLarge"
 local achivs = nil
 local achivsb = nil
@@ -102,8 +102,11 @@ end
 local table_unlocked = {}
 
 function am_unlocked(class, achiv)
+    PrintTable(table_unlocked)
     local h_id = am_table[class][achiv].id
+    print(h_id)
     local id = tostring(table_unlocked[class])
+    print(id)
     local test1 = string.find(id, h_id)
     if test1 ~= nil then
         return true
@@ -124,10 +127,16 @@ end
 
 net.Receive("am_send", function()
 local ach_tbl = net.ReadTable()
+PrintTable(ach_tbl)
 for cf,ach_category in pairs(ach_tbl) do
     table_unlocked[ach_category.AM_Name] = ach_category.AM_Flags
 end
+
 am_mainmenu()
+
+
+end)
+
 
 function am_mainmenu()
 
@@ -219,7 +228,7 @@ function am_mainmenu()
                 if (achiv_check) then
                     img:SetImage(v["img"])
                 else
-                    img:SetImage("materials/gui/postprocess/colourmod.png")
+                    img:SetImage("locked.png")
                 end
                 img:Dock(TOP)
                 img:DockMargin( 25, 0, 328, 0 )
@@ -236,21 +245,23 @@ function am_mainmenu()
                 local name = DScrollPanel:Add("DLabel")
                 name:SetFont(name_font)
                 name:SetColor(color_header)
-                name:SetSize(tw, th)
+                name:SetSize(tw, th+15)
                 name:SetText(v["name"])
                 name:Dock( TOP )
-                name:DockMargin( headerp+128, -100, 0, 0 )
+                name:DockMargin( headerp+128, -105, 0, 0 )
                 w, h = name:GetSize()
+                name:SetWrap(true)
 
                 local tw, th = YUIL_GetSize(v["desc"], desc_font)
                 local name2 = DScrollPanel:Add("DLabel")
                 name2:SetFont(desc_font)
                 name2:SetColor(color_header)
-                name2:SetSize(tw, th)
+                name2:SetSize(tw, th+15)
                 name2:SetText(v["desc"])
                 name2:Dock( TOP )
-                name2:DockMargin( headerp+128, 0, 0, 52 )
+                name2:DockMargin( headerp+128, 0, 0, 45 )
                 w, h = name2:GetSize()
+                name2:SetWrap(true)
             end
         end
     end
@@ -266,6 +277,3 @@ function am_mainmenu()
     end
 
 end
-
-
-end)
