@@ -30,6 +30,8 @@ ytool_scrolltable = {}
 ytool_textentry = {}
 
 
+
+
 function YUI_GetSize(text, font)
     surface.SetFont(font)
     local w, h = surface.GetTextSize(text)
@@ -80,7 +82,7 @@ function YUI_Button(nname, x, y, parent, text, font, func, w, h)
             parent:Close()
         end
         if func == "SaveNew" then
-            if (yzc_name == nil) or (yzc_delay == nil) or (yzc_volume == nil) or (yzc_musicurl == nil) then else
+            if (yzc_name == nil) or (yzc_delay == nil) or (yzc_volume == nil) or (yzc_musicurl == nil) or (ytool_corner_tbl == nil) then else
                 net.Start("ZCT_Save")
                 net.WriteTable(ytool_corner_tbl)
                 net.WriteString(yzc_name)
@@ -95,6 +97,7 @@ function YUI_Button(nname, x, y, parent, text, font, func, w, h)
             net.Start("ZCT_Delete")
             net.WriteString(yzc_name)
             net.SendToServer()
+            parent:Close()
         end              
     end
     name.OnDepressed = function(s)
@@ -322,6 +325,7 @@ concommand.Add("ytool", function()
     net.SendToServer()
 
 	button_lastpos = 0
+    
 	local sizew, sizeh = 800, 600
 	local DermaPanel = vgui.Create("DFrame", nil, "MAIN_DFrame") 
 	DermaPanel:SetSize(0, 0) 
@@ -369,7 +373,7 @@ YUI_CreateTextC("TAB1_Zone_C1", DermaPanel, "DermaDefault", tostring(ytool_corne
 YUI_CreateTextC("TAB1_Zone_C2", DermaPanel, "DermaDefault", tostring(ytool_corner_tbl["TAB1_Zone_Corner2"]), 266, 197)
 
 YUI_TextEntryTAB1("TAB1_Zone_Entry1", 159, 229, DermaPanel, "Enter name here", 291, 23, "EnterName")
-YUI_TextEntryTAB1("TAB1_Zone_Entry2", 159, 263, DermaPanel, "Music url here", 291, 23, "EnterMusicUrl")
+YUI_TextEntryTAB1("TAB1_Zone_Entry2", 159, 263, DermaPanel, "Music url/path here", 291, 23, "EnterMusicUrl")
 YUI_TextEntryTAB1("TAB1_Zone_Entry3", 159, 295, DermaPanel, "Volume, 1 - 100%", 291, 23, "EnterVolume")
 YUI_TextEntryTAB1("TAB1_Zone_Entry4", 159, 327, DermaPanel, "Delay for start in seconds", 291, 23, "EnterDelay")
 
@@ -407,18 +411,15 @@ if (ytool_zones ~= nil) and (ytool_zones ~= false) then
                 surface.DrawRect(0, 0, w, h)
             end
             if self.Selected then
-                yzc_name = v.Name
-                yzc_musicurl = v.MusicUrl
-                yzc_volume = v.Volume
-                yzc_delay = v.Delay
                 surface.SetDrawColor(255, 0, 0)
                 surface.DrawOutlinedRect( 0, 0, w, h, 2 )
             end
         end
+        yzc_zone_selected = nil
         Zone_Name.OnDepressed = function(self)
             if self.Selected then
                 self.Selected = false
-                yzc_zone_selected = nil
+                yzc_zone_selected = self
                 ytool_scrolltable[1]:SetText("Unselected")
                 ytool_scrolltable[2]:SetText("Unselected")
                 ytool_textentry[1]:SetValue("")
@@ -438,9 +439,14 @@ if (ytool_zones ~= nil) and (ytool_zones ~= false) then
                 ytool_scrolltable[2]:SetText(Corner2)
 
                 ytool_textentry[1]:SetValue(v.Name)
-                ytool_textentry[2]:SetValue(v.MusicUrl)
+                ytool_textentry[2]:SetValue(v.MusicUrl) 
                 ytool_textentry[3]:SetValue(v.Volume)
                 ytool_textentry[4]:SetValue(v.Delay)
+                yzc_name = v.Name
+                yzc_musicurl = v.MusicUrl
+                yzc_volume = v.Volume
+                yzc_delay = v.Delay
+
 
                 local tw1, th1 = YUI_GetSize(Corner1, "HudHintTextLarge")
                 local tw2, th2 = YUI_GetSize(Corner1, "HudHintTextLarge")
