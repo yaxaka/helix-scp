@@ -56,6 +56,8 @@ surface.CreateFont( "PlayerTagFont", {
 
 
 hook.Add( "HUDPaint", "Wallhack", function()
+	local mdl = LocalPlayer():GetModel()
+	if (mdl ~= "models/washton/scp096/scp096unity.mdl") then return end
 	for k,v in pairs (player.GetAll()) do
  		for a,b in pairs(scp096_targetlist) do
  			if b == v:GetName() then

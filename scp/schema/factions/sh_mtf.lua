@@ -19,4 +19,13 @@ function FACTION:OnSpawn(client)
 	end
 end
 
+if (SERVER) then
+    function FACTION:OnSpawn(client)
+        ResetClassParameters(client, self, self.faction)
+    end
+    function FACTION:OnSet(client)
+        ResetClassParameters(client, self, self.faction)
+    end
+end
+
 ix.anim.SetModelClass("models/lucie/tro/tacticrespoff.mdl", "player")

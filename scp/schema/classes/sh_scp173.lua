@@ -20,7 +20,7 @@ end
 
 function spawn_scp173_model(client)
     local scp173 = ents.Create("prop_dynamic")
-    scp173:SetModel("models/props_wasteland/gaspump001a.mdl")
+    scp173:SetModel("models/scp/173.mdl")
     scp173:SetPos(client:GetPos())
     scp173:Spawn()
     scp_173_prop = scp173

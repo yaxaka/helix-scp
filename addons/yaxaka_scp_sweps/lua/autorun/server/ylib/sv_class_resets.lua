@@ -37,6 +37,7 @@ function ResetClassParameters(ply, class, faction)
 		if class_name == "SCP-131-A" then
 			scp_ply_vars.scp_131_a_ply = ply
 			ply:SetModel("models/scprp/scp131a2.mdl")
+			ply:StripWeapons()
 			ply:Give("scp131_swep")
 			ply.SCP = true
 			ply:ToggleWepRaised()
@@ -58,12 +59,19 @@ function ResetClassParameters(ply, class, faction)
 			ply:SetFriction(0.05)
 		end
 
+		if class_name == "SCP-035" then
+			scp_ply_vars.scp_035_ply = ply
+			ply:StripWeapons()
+			ply:Give("scp035_swep")
+			ply.SCP = true
+			ply:ToggleWepRaised()
+		end
 	end
 
 	if team_name ~= "SCP" then
 		ply.SCP = false
+		
 		--ply:SetModel(faction.models[1])
-		ply:Spawn()
 	end
 
 end

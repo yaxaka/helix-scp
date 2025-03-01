@@ -55,8 +55,6 @@ local function CalcStaminaChange(client)
 			if (value == 0 and !client:GetNetVar("brth", false)) then
 				client:SetNetVar("brth", true)
 
-				character:UpdateAttrib("end", 0.1)
-				character:UpdateAttrib("stm", 0.01)
 
 				hook.Run("PlayerStaminaLost", client)
 			elseif (value >= 50 and client:GetNetVar("brth", false)) then
