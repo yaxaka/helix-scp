@@ -1,9 +1,10 @@
 function ResetClassParameters(ply, class, faction)
 	local team_name = team.GetName(faction)
 	local class_name = class.name
+	ResetSCPVar(ply)
 
 	if team_name == "SCP" then
-		ResetSCPVar(ply)
+		
 
 		if class_name == "SCP-096" then
 			ply:SetWalkSpeed(50)
@@ -87,7 +88,7 @@ function ResetSCPVar(ply)
 
 			ply.SCP = false
 			scp_ply_vars[i] = nil
-			ply:Spawn()
+			--ply:Spawn()
 		end
 	end
 end

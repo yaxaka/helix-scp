@@ -698,7 +698,6 @@ local shiz_table = {
   "npc/ichthyosaur/attack_growl3.wav",
   "npc/ichthyosaur/snap.wav",
   "npc/ichthyosaur/snap_miss.wav",
-  "npc/ichthyosaur/water_breath.wav",
   "npc/ichthyosaur/water_growl5.wav",
   "npc/manhack/bat_away.wav",
   "npc/manhack/gib.wav",
@@ -727,9 +726,26 @@ net.Receive("SCP035_Psy1", function()
   local a = shiz_table[math.random(1, #shiz_table)]
   local lply = LocalPlayer()
   local lpos = lply:GetPos()
-  local xrand = lpos + Vector(math.random(50, 900), math.random(50, 900), math.random(1, 100))
-	print(a)
-  sound.Play(a, xrand)
+
+  if math.random(1, 2) == 1 then
+    lpos = lpos + Vector(math.random(250, 400), 0, 0)
+  else
+    lpos = lpos - Vector(math.random(250, 400), 0, 0)
+  end
+
+  if math.random(1, 2) == 1 then
+    lpos = lpos + Vector(0, math.random(250, 400), 0)
+  else
+    lpos = lpos - Vector(0, math.random(250, 400), 0)
+  end
+
+  if math.random(1, 2) == 1 then
+    lpos = lpos + Vector(0, 0, math.random(250, 400))
+  else
+    lpos = lpos - Vector(0, 0, math.random(250, 400))
+  end
+  print(a)
+  sound.Play(a, lpos)
 end)
 
 

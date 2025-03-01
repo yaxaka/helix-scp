@@ -17,12 +17,12 @@ function scp035_psyradius(ply)
 			if (scp035_victimlvl[v] == nil) then
 				scp035_victimlvl[v] = 1
 				scp035_launchpsy(v)
-			elseif (scp035_victimlvl[v] <= 2) then
+			elseif (scp035_victimlvl[v] <= 200) then
 				scp035_victimlvl[v] = scp035_victimlvl[v] + 1
 				scp035_launchpsy(v)
-			elseif (scp035_victimlvl[v] >= 3) then
-				scp035_victimtable[v] = v:Nick()
-				scp035_sendvictims(v)
+			--elseif (scp035_victimlvl[v] >= 3) then
+				--scp035_victimtable[v] = v:Nick()
+				--scp035_sendvictims(v)
 			end
 		end
 	end
