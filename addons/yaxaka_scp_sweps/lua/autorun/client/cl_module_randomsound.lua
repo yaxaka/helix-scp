@@ -1,3 +1,5 @@
+AddCSLuaFile()
+
 function yss_module_randomsound(type)
   if type == 1 then
     return tostring("insane/random_insane" .. math.random(1, 18) .. ".wav")

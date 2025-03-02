@@ -4,3 +4,5 @@ hook.Add("CreateClientsideRagdoll", "test", function(entity, ragdoll)
 	ragdoll:Remove()
 	return false
 end)
+
+

@@ -1,3 +1,4 @@
+AddCSLuaFile()
 local once = 0
 
 hook.Add("PlayerPostThink", "SetupDataModuleYSS", function()
@@ -8,7 +9,7 @@ hook.Add("PlayerPostThink", "SetupDataModuleYSS", function()
 		lply.draw_masks = false
 		lply.under_035 = false
 		lply.InsaneColor = false
-		
+
 	end
 
 end)

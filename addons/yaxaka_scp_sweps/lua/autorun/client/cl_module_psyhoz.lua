@@ -1,3 +1,4 @@
+AddCSLuaFile()
 local function minmax(n1, n2)
   return math.random(n1, n2)
 end

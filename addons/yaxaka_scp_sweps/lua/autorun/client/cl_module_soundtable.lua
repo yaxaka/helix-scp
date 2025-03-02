@@ -1,3 +1,4 @@
+AddCSLuaFile()
 shiz_table = {
   "buttons/blip1.wav",
   "buttons/button1.wav",

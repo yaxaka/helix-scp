@@ -1,3 +1,5 @@
+util.AddNetworkString("ResetSCP_Client")
+
 function ResetClassParameters(ply, class, faction)
 	local team_name = team.GetName(faction)
 	local class_name = class.name
@@ -78,6 +80,8 @@ function ResetClassParameters(ply, class, faction)
 end
 
 function ResetSCPVar(ply)
+	net.Start("ResetSCP_Client")
+	net.Send(ply)
 	for i,v in pairs(scp_ply_vars) do
 		if scp_ply_vars[i] == ply then
 

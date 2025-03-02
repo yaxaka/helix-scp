@@ -1,3 +1,4 @@
+AddCSLuaFile()
 under_035_stage1 = {
     ["$pp_colour_brightness"] = -0.1,
     ["$pp_colour_contrast"] = 1,

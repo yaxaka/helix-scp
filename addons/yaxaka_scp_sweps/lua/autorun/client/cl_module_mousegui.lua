@@ -1,3 +1,4 @@
+AddCSLuaFile()
 scpgui_mouse_enabled = false
 
 net.Receive("guiMouse", function()

@@ -1,3 +1,5 @@
+AddCSLuaFile()
+
 hook.Add("RenderScreenspaceEffects", "035Change", function()
     local lply = LocalPlayer()
     if IsValid(lply) then

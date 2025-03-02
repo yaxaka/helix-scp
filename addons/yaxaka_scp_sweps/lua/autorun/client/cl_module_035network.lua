@@ -1,3 +1,4 @@
+AddCSLuaFile()
 net.Receive("SCP035_Psy1", function()
   local psyhoz = net.ReadInt(5)
   yss_module_psyhoz(psyhoz)

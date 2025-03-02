@@ -1,3 +1,4 @@
+AddCSLuaFile()
 local color_button = Color(168, 0, 0)
 local color_button_outline = Color(0, 0, 0)
 local color_back = Color(0, 12, 61)
