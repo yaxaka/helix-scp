@@ -140,7 +140,7 @@ else
 	util.AddNetworkString("ixRecognizeDone")
 
 	function PLUGIN:ShowSpare1(client)
-		if (client:GetCharacter()) then
+		if (client:GetCharacter()) && not (client.SCP) then
 			net.Start("ixRecognizeMenu")
 			net.Send(client)
 		end
