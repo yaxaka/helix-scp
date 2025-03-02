@@ -722,51 +722,272 @@ local shiz_table = {
   "npc/metropolice/gear6.wav"
 }
 
-net.Receive("SCP035_Psy1", function()
-  local a = shiz_table[math.random(1, #shiz_table)]
+local insane_randomtable = {}
+
+local function pickrandom_sound(type)
+  if type == 1 then
+    return tostring("insane/random_insane" .. math.random(1, 18) .. ".wav")
+  end
+
+  if type == 2 then
+    return tostring("insane/ben" .. math.random(1, 8) .. ".wav")
+  end
+
+  if type == 3 then
+    return tostring("insane/random_ktoto" .. math.random(1, 8) .. ".wav")
+  end
+
+  if type == "trick" then
+    return tostring("insane/trick" .. math.random(1, 1) .. ".wav")
+  end
+
+  if type == 4 then
+    return tostring("insane/male_terrified" .. math.random(1, 5) .. ".wav")
+  end
+
+  if type == 5 then
+    return tostring("insane/far_insane1" .. math.random(1, 2) .. ".wav")
+  end  
+
+  if type == 6 then
+    return tostring(shiz_table[math.random(1, #shiz_table)])
+  end
+end
+
+local function insane_randompos()
   local lply = LocalPlayer()
   local lpos = lply:GetPos()
 
   if math.random(1, 2) == 1 then
-    lpos = lpos + Vector(math.random(250, 400), 0, 0)
+    lpos = lpos + Vector(math.random(400, 600), 0, 0)
   else
-    lpos = lpos - Vector(math.random(250, 400), 0, 0)
+    lpos = lpos - Vector(math.random(400, 600), 0, 0)
   end
 
   if math.random(1, 2) == 1 then
-    lpos = lpos + Vector(0, math.random(250, 400), 0)
+    lpos = lpos + Vector(0, math.random(400, 600), 0)
   else
-    lpos = lpos - Vector(0, math.random(250, 400), 0)
+    lpos = lpos - Vector(0, math.random(400, 600), 0)
   end
 
   if math.random(1, 2) == 1 then
-    lpos = lpos + Vector(0, 0, math.random(250, 400))
+    lpos = lpos + Vector(0, 0, math.random(350, 600))
   else
-    lpos = lpos - Vector(0, 0, math.random(250, 400))
+    lpos = lpos - Vector(0, 0, math.random(350, 600))
   end
-  print(a)
-  sound.Play(a, lpos)
+
+  return lpos
+
+end
+
+local function playsound(type)
+  local a = insane_randompos()
+  local sound = pickrandom_sound(type)
+  sound.Play(sound, a)
+end
+
+local psyhoz = 0
+
+net.Receive("SCP035_Psy1", function()
+  local a = shiz_table[math.random(1, #shiz_table)]
+  
+
+  if psyhoz == 0 then
+    psyhoz_stage1()
+    psyhoz = psyhoz + 1
+  end
+
 end)
 
+concommand.Add("psyhoztest", function()
+  psyhoz_stage1()
+end)
+
+
+function psyhoz_stage1()
+  local lply = LocalPlayer()
+  timer.Create("Psyhoz_Stage1", 1, 1, function()
+
+    timer.Create("Psyhoz_Stage1_S", math.random(40, 80), 1, function()
+      playsound(6)
+    end)
+
+  end)
+end
+-- 1 random_insane 2 ben 3 ktoto 4 male_terrif 5 far insane 6 gmod
+
+function psyhoz_stage2()
+  local lply = LocalPlayer()
+  timer.Create("Psyhoz_Stage2", math.random(5, 15), 1, function()
+    playsound("trick")
+    lply.InsaneColorStage = 2
+
+    timer.Create("Psyhoz_Stage2_S", math.random(10, 60), math.random(1, 2), function()
+      playsound(6)
+    end)
+
+    timer.Create("Psyhoz_Stage2_S2", math.random(50, 90), math.random(1, 2), function()
+      playsound(3)
+    end)
+
+  end)
+end
+-- 1 random_insane 2 ben 3 ktoto 4 male_terrif 5 far insane 6 gmod
+
+function psyhoz_stage3()
+  local lply = LocalPlayer()
+  timer.Create("Psyhoz_Stage3", math.random(5, 15), 1, function()
+    lply.InsaneColorStage = 3
+
+    timer.Create("Psyhoz_Stage3_S", math.random(70, 140), math.random(1, 3), function()
+      playsound(1)
+    end)
+
+    timer.Create("Psyhoz_Stage3_S2", math.random(60, 220), math.random(1, 3), function()
+      playsound(4)
+    end)
+
+    timer.Create("Psyhoz_Stage3_S3", math.random(10, 120), math.random(1, 3), function()
+      playsound(6)
+    end)
+
+  end)
+end
+-- 1 random_insane 2 ben 3 ktoto 4 male_terrif 5 far insane 6 gmod
+
+function psyhoz_stage4()
+  local lply = LocalPlayer()
+  timer.Create("Psyhoz_Stage4", math.random(5, 15), 1, function()
+    lply.InsaneColorStage = 4
+
+    timer.Create("Psyhoz_Stage4_S", math.random(50, 190), math.random(1, 3), function()
+      playsound(2)
+    end)
+
+    timer.Create("Psyhoz_Stage4_S2", math.random(70, 190), math.random(2, 5), function()
+      playsound(3)
+    end)
+
+    timer.Create("Psyhoz_Stage4_S3", math.random(40, 190), math.random(2, 5), function()
+      playsound(6)
+    end)
+
+  end)
+end
+-- 1 random_insane 2 ben 3 ktoto 4 male_terrif 5 far insane 6 gmod
+
+function psyhoz_stage5()
+  local lply = LocalPlayer()
+  timer.Create("Psyhoz_Stage5", math.random(5, 15), 1, function()
+    lply.InsaneColorStage = 5
+    playsound(5)
+
+    timer.Create("Psyhoz_Stage5_S", math.random(60, 200), math.random(4, 10), function()
+      playsound(1)
+    end)
+
+    timer.Create("Psyhoz_Stage5_S2", math.random(60, 200), math.random(4, 10), function()
+      playsound(3)
+    end)
+
+    timer.Create("Psyhoz_Stage5_S3", math.random(60, 200), math.random(4, 10), function()
+      playsound(4)
+    end)
+
+    timer.Create("Psyhoz_Stage5_S4", math.random(60, 200), math.random(4, 10), function()
+      playsound(6)
+    end)
+
+  end)
+end
+
+function psyhoz_stage6()
+  local lply = LocalPlayer()
+  timer.Create("Psyhoz_Stage6", math.random(5, 15), 1, function()
+    lply.InsaneColorStage = 6
+    playsound(5)
+
+    timer.Create("Psyhoz_Stage6_S", math.random(60, 300), math.random(10, 40), function()
+      playsound(1)
+    end)
+
+    timer.Create("Psyhoz_Stage6_S2", math.random(60, 300), math.random(10, 40), function()
+      playsound(3)
+    end)
+
+    timer.Create("Psyhoz_Stage6_S3", math.random(60, 300), math.random(10, 40), function()
+      playsound(4)
+    end)
+
+    timer.Create("Psyhoz_Stage6_S4", math.random(60, 300), math.random(10, 40), function()
+      playsound(6)
+    end)
+
+  end)
+end
+-- 1 random_insane 2 ben 3 ktoto 4 male_terrif 5 far insane 6 gmod
+local draw_masks = false
 
 net.Receive("SCP035_Psy2", function()
   local task = net.ReadString()
-  print(task)
+
+  timer.Create("SoundMessage", 1, 1, function()
+
+    surface.PlaySound("insane/new_message.wav")
+
+    timer.Create("NewMessage035", 2, 1, function()
+      draw_masks = true
+      --surface.PlaySound("insanity_ambient2.wav")
+    end)
+
+  end)
+
+end)
+
+concommand.Add("testalotmask", function()
+  draw_masks = true
+  message_ui()
+end)
+
+function message_ui()
+
+local wave2 = Material( "scp_rot/center035.png", "noclamp smooth" )
+local approach = 1
+local approachtarget = 256
+local lastthink = 0
+local rate = 1
+
+
+hook.Add( "Think", "HUDPaint035Task1", function()
+  if not draw_masks then return end
+
+  approach = math.Approach(approach, approachtarget, 0.05)
+
+  --render.SetMaterial( wave2 )
+  --render.DrawScreenQuadEx( ScrW()/2-32, ScrH()/2-32, 64, 64 )
+end)
+
+hook.Add("HUDPaint", "HUDPaint035Task2", function()
+  if not draw_masks then return end
+
+  render.SetMaterial( wave2 )
+  render.DrawScreenQuadEx( ScrW()/2-approach/2, ScrH()/2-approach/2, approach, approach )
+  render.DrawScreenQuadEx( math.random(1, ScrW()), math.random(1, ScrH()), 32, 32 )
+  render.DrawScreenQuadEx( math.random(1, ScrW()), math.random(1, ScrH()), 32, 32 )
+  render.DrawScreenQuadEx( math.random(1, ScrW()), math.random(1, ScrH()), 32, 32 )
+  render.DrawScreenQuadEx( math.random(1, ScrW()), math.random(1, ScrH()), 32, 32 )
+  render.DrawScreenQuadEx( math.random(1, ScrW()), math.random(1, ScrH()), 32, 32 )
+  render.DrawScreenQuadEx( math.random(1, ScrW()), math.random(1, ScrH()), 32, 32 )
+  render.DrawScreenQuadEx( math.random(1, ScrW()), math.random(1, ScrH()), 32, 32 )
+  render.DrawScreenQuadEx( math.random(1, ScrW()), math.random(1, ScrH()), 32, 32 )
+  render.DrawScreenQuadEx( math.random(1, ScrW()), math.random(1, ScrH()), 32, 32 )
+  render.DrawScreenQuadEx( math.random(1, ScrW()), math.random(1, ScrH()), 32, 32 )
+
+  if approach == 128 then
+    draw_masks = false
+  end
+
 end)
 
 
-local tab = {
-	["$pp_colour_addr"] = 0,
-	["$pp_colour_addg"] = 0,
-	["$pp_colour_addb"] = 0,
-	["$pp_colour_brightness"] = 0,
-	["$pp_colour_contrast"] = 1,
-	["$pp_colour_colour"] = 1,
-	["$pp_colour_mulr"] = 0,
-	["$pp_colour_mulg"] = 0,
-	["$pp_colour_mulb"] = 0
-}
-hook.Add("RenderScreenspaceEffects", "PostProcessingExample", function()
-	DrawColorModify( tab ) --Draws Color Modify effect
-	--DrawSobel( 0.5 ) --Draws Sobel effect
-end )
+end

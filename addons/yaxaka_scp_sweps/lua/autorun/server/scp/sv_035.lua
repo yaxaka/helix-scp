@@ -12,17 +12,17 @@ scp035_victimlvl = {}
 
 function scp035_psyradius(ply)
 	if CurTime() < delay then return end
-	for k,v in pairs(ents.FindInSphere(ply:GetPos(), 100)) do
+	for k,v in pairs(ents.FindInSphere(ply:GetPos(), 200)) do
 		if (v:IsPlayer()) && (v ~= ply) && not (scp035_victimtable[v]) then
 			if (scp035_victimlvl[v] == nil) then
 				scp035_victimlvl[v] = 1
 				scp035_launchpsy(v)
-			elseif (scp035_victimlvl[v] <= 200) then
+			elseif (scp035_victimlvl[v] <= 2) then
 				scp035_victimlvl[v] = scp035_victimlvl[v] + 1
 				scp035_launchpsy(v)
-			--elseif (scp035_victimlvl[v] >= 3) then
-				--scp035_victimtable[v] = v:Nick()
-				--scp035_sendvictims(v)
+			elseif (scp035_victimlvl[v] >= 5) then
+				scp035_victimtable[v] = v:Nick()
+				scp035_sendvictims(v)
 			end
 		end
 	end
