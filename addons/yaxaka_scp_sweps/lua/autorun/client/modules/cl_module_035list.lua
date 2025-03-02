@@ -1,18 +1,11 @@
 local color_button = Color(168, 0, 0)
-local eye_color_button = color_button
 local color_button_outline = Color(0, 0, 0)
 local color_back = Color(0, 12, 61)
 local color_hover = Color(138, 60, 60)
-local color_text = Color(255, 255, 255, 255)
 local color_header = Color(255, 255, 255, 255)
-
 local color_back_top = Color(36, 36, 36)
 local color_back_top_line = Color(135, 128, 125)
-
-local color_back_bottom = Color(255, 255, 255, 255)
 local color_back_top_line = Color(135, 128, 125)
-local color_droplist = Color(0, 19, 96)
-local color_textentry = Color(0, 37, 184)
 local color_button_pressed = Color(102, 45, 45)
 local target_ply = nil
 local target = nil
@@ -75,20 +68,20 @@ local function YUI_Button(nname, x, y, parent, text, font, func, w, h)
         end       
     end
     name.OnDepressed = function(s)
-    	s.Pressed = true
-	end
-	name.OnReleased = function(s)
-		s.Pressed = false
-	end
+        s.Pressed = true
+    end
+    name.OnReleased = function(s)
+        s.Pressed = false
+    end
 
     name.Paint = function(self, w, h)
         if self:IsHovered() then
-        	draw.RoundedBox( 13, 0, 0, w, h, color_hover)
+            draw.RoundedBox( 13, 0, 0, w, h, color_hover)
         else
             draw.RoundedBox( 13, 0, 0, w, h, color_button)
         end
         if self.Pressed then
-        	draw.RoundedBox( 13, 0, 0, w, h, color_button_pressed)
+            draw.RoundedBox( 13, 0, 0, w, h, color_button_pressed)
         end
         surface.SetDrawColor(color_button_outline)
         surface.DrawOutlinedRect( 0, 0, w, h, 1)
@@ -111,7 +104,7 @@ local function YUI_ButtonClose(nname, x, y, parent, text, font, func, w, h)
 
     name.Paint = function(self, w, h)
         if self:IsHovered() then
-        	draw.RoundedBox( 13, 0, 0, w, h, color_hover)
+            draw.RoundedBox( 13, 0, 0, w, h, color_hover)
         else
             draw.RoundedBox( 13, 0, 0, w, h, Color(255, 0, 0))
         end
@@ -144,7 +137,7 @@ end
 
 
 local function YUI_DefaultPaint(headerp, self, w, h, sizew, sizeh)
-	local pd = 100
+    local pd = 100
     surface.SetDrawColor(color_back)
     --surface.DrawRect(0, 0, w, h)
     draw.RoundedBox( 10, 0, 0, 390, 67.27, color_back_top)
@@ -157,73 +150,65 @@ local function YUI_DefaultPaint(headerp, self, w, h, sizew, sizeh)
     surface.DrawOutlinedRect(11.85, 67.27, 366.3, 137.73, 2)
 end
 
-
-net.Receive("SCP035Remove", function()
-    local ply = net.ReadEntity()
+function yss_module_remove035list(net_ply)
     table.RemoveByValue(scp035_list, ply)
     if (scp035_list[1] ~= nil) then
         main_panel:Close()
-        enable035_interface()
+        enable_list()
     elseif (scp035_list[1] == nil) then
         main_panel:Close()
     end
-end)
+end
 
-
-net.Receive("SCP035VictimTable", function()
-    local ply = net.ReadEntity()
-
-
+function yss_module_prelist(net_ply)
     if scp035_list[1] == nil then
-        table.insert(scp035_list, 1, ply)
+        table.insert(scp035_list, 1, net_ply)
     else
-        table.insert(scp035_list, ply)
+        table.insert(scp035_list, net_ply)
     end
 
     if main_panel == nil then
-        enable035_interface()
+        enable_list()
     else
         main_panel:Close()
-        enable035_interface()
+        enable_list()
     end
-
-end)
-
+end
 
 
-function enable035_interface()
-	local sizew, sizeh = 390, 205
-	local DermaPanel = vgui.Create("DFrame", nil, "035_DFrame") 
-	DermaPanel:SetSize(sizew, sizeh)
-	DermaPanel:SetPos(20, 17) 
-	DermaPanel:SetTitle("")
-	DermaPanel:ShowCloseButton(true)
+local function enable_list()
+    local sizew, sizeh = 390, 205
+    local DermaPanel = vgui.Create("DFrame", nil, "035_DFrame") 
+    DermaPanel:SetSize(sizew, sizeh)
+    DermaPanel:SetPos(20, 17) 
+    DermaPanel:SetTitle("")
+    DermaPanel:ShowCloseButton(false)
     DermaPanel:MakePopup()
     DermaPanel:SetMouseInputEnabled(false)
     DermaPanel:SetKeyBoardInputEnabled(false) 
-	DermaPanel:SetDraggable(false)
+    DermaPanel:SetDraggable(false)
     main_panel = DermaPanel
 
 
-	DermaPanel.Paint = function(self, w, h)
-		YUI_DefaultPaint(DermaPanel.headerpos, self, w, h, sizew, sizeh)
-	end
+    DermaPanel.Paint = function(self, w, h)
+        YUI_DefaultPaint(DermaPanel.headerpos, self, w, h, sizew, sizeh)
+    end
 
-	DermaPanel.Think = function(self)
+    DermaPanel.Think = function(self)
         if scpgui_mouse_enabled then
             DermaPanel:SetMouseInputEnabled(true)
         else
             DermaPanel:SetMouseInputEnabled(false)
         end
-	end	
-	
-	local toprot = vgui.Create("editablepanel", DermaPanel)
-	toprot:SetPos(10.77, 1.07)
-	toprot:SetSize(367.38, 66.2)
+    end 
+    
+    local toprot = vgui.Create("editablepanel", DermaPanel)
+    toprot:SetPos(10.77, 1.07)
+    toprot:SetSize(367.38, 66.2)
 
-	local img_bg = vgui.Create("DImage", toprot)
-	img_bg:SetSize(toprot:GetSize())		
-	img_bg:SetImage("scp_rot/rot.png")
+    local img_bg = vgui.Create("DImage", toprot)
+    img_bg:SetSize(toprot:GetSize())        
+    img_bg:SetImage("scp_rot/rot.png")
 
 
     local center_mask = vgui.Create("DImage", DermaPanel)
@@ -245,58 +230,56 @@ function enable035_interface()
     right_mask:SetImage("scp_rot/right035.png")
 
 
-	local bottomrot = vgui.Create("editablepanel", DermaPanel)
-	bottomrot:SetPos(12.93, 68.33)
-	bottomrot:SetSize(364.14, 135.6)
+    local bottomrot = vgui.Create("editablepanel", DermaPanel)
+    bottomrot:SetPos(12.93, 68.33)
+    bottomrot:SetSize(364.14, 135.6)
 
-	local img_bg2 = vgui.Create("DImage", bottomrot)
-	img_bg2:SetSize(bottomrot:GetSize())		
-	img_bg2:SetImage("scp_rot/rot.png")
-
-
-	local DScrollPanel = vgui.Create( "DScrollPanel", DermaPanel )
-	DScrollPanel:SetPos(22.62, 80.08)
-	DScrollPanel:SetSize(344, 114)
-
-	for k,v in pairs(scp035_list) do
-		local buttonback = vgui.Create("editablepanel", DScrollPanel)
+    local img_bg2 = vgui.Create("DImage", bottomrot)
+    img_bg2:SetSize(bottomrot:GetSize())        
+    img_bg2:SetImage("scp_rot/rot.png")
 
 
-		local Name = DScrollPanel:Add("DButton", buttonback)
-		local tw, th = YUI_GetSize(v:Nick(), "Trebuchet18")
+    local DScrollPanel = vgui.Create( "DScrollPanel", DermaPanel )
+    DScrollPanel:SetPos(22.62, 80.08)
+    DScrollPanel:SetSize(344, 114)
 
-		Name:SetText(v:Nick())
-		Name:SetSize(tw, th+3)
-		Name:SetFont("Trebuchet18")
-		Name:SetTextColor(color_white)
-		Name:Dock(TOP)
+    for k,v in pairs(scp035_list) do
+        local buttonback = vgui.Create("editablepanel", DScrollPanel)
+
+
+        local Name = DScrollPanel:Add("DButton", buttonback)
+        local tw, th = YUI_GetSize(v:Nick(), "Trebuchet18")
+
+        Name:SetText(v:Nick())
+        Name:SetSize(tw, th+3)
+        Name:SetFont("Trebuchet18")
+        Name:SetTextColor(color_white)
+        Name:Dock(TOP)
         Name:DockMargin(0, 0, 0, 10)
         Name.Pressed = false
         Name.Paint = function(self, w, h)
-        	if self:IsHovered() && not self.Pressed then
-        		draw.RoundedBox(10, 0, 0, w, h, color_hover)
-        	else
-        		draw.RoundedBox(10, 0, 0, w, h, color_button)
-        	end
-        	if self.Pressed then
-        		draw.RoundedBox(10, 0, 0, w, h, color_button_pressed)
-        	end
-    	end
+            if self:IsHovered() && not self.Pressed then
+                draw.RoundedBox(10, 0, 0, w, h, color_hover)
+            else
+                draw.RoundedBox(10, 0, 0, w, h, color_button)
+            end
+            if self.Pressed then
+                draw.RoundedBox(10, 0, 0, w, h, color_button_pressed)
+            end
+        end
 
-    	Name.OnDepressed = function(self)
-    		self.Pressed = true
+        Name.OnDepressed = function(self)
+            self.Pressed = true
             target_ply = v
-    	end
+        end
 
-    	Name.OnReleased = function(self)
-    		self.Pressed = false
+        Name.OnReleased = function(self)
+            self.Pressed = false
             target_ply = v
             sendmsg_035ui()
-    	end
-	end
-
+        end
+    end
 end
-
 
 local function YUI_DefaultPaint2(headerp, self, w, h, sizew, sizeh)
     local pd = 100
@@ -307,7 +290,7 @@ local function YUI_DefaultPaint2(headerp, self, w, h, sizew, sizeh)
 end
 
 
-function sendmsg_035ui()
+local function sendmsg_035ui()
     local sizew, sizeh = 600, 140
     local SendMsgFrame = vgui.Create("DFrame") 
     SendMsgFrame:SetSize(0, 0) 
@@ -346,29 +329,4 @@ function sendmsg_035ui()
     YUI_CreateHeader("HeaderSend", sizew, sizeh, SendMsgFrame, "DermaLarge", "Напишите задачу")
     YUI_TextEntry("TextEntryTask", 77, 63, SendMsgFrame, "", 444, 20, "SendTask")
     YUI_Button("ButtonSend", 200, 94, SendMsgFrame, "Отправить", "Trebuchet18", "SendTask", 200, 29)
-
 end
-
-
-
-
-
-
-
-
-
-
-
-
-hook.Add( "HUDPaint", "Wallhac2k", function()
-  if not (w_enabled) then return end
-  if (scp035_list == nil) then print("fail") return end
-  for k,v in pairs (player.GetAll()) do
-    for a,b in pairs(scp035_list) do
-      if b == v:GetName() then
-        local Position = (v:GetPos() + Vector( 0,0,80 )):ToScreen()
-        draw.DrawText("Захвачен: " .. v:Name(), "Trebuchet18", Position.x, Position.y, Color(255, 0, 0, 255), 1)
-      end
-    end
-  end 
-end)

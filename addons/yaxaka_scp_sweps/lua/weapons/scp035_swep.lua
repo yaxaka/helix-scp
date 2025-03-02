@@ -41,22 +41,26 @@ end
 
 
 function SWEP:PrimaryAttack()
-	local ent = self:GetOwner()
+	local owner = self:GetOwner()
 	if SERVER then
 		
 	end
 end
 
 function SWEP:SecondaryAttack()
-	local ent = self:GetOwner()
+	local owner = self:GetOwner()
 	if SERVER then
 		
 	end
 end
 
 function SWEP:Reload()
-	local ent = self:GetOwner()
+	local owner = self:GetOwner()
 	if SERVER then
-		scp035_psyradius(ent)
+		
 	end	
 end
+
+
+
+
