@@ -12,7 +12,7 @@ local target_ply = nil
 local target = nil
 local w_enabled = false
 local scp035_list = {nil}
-local main_panel = nil
+scp035_main_panel = nil
 
 
 local function YUI_GetSize(text, font)
@@ -155,7 +155,7 @@ function yss_module_remove035list(net_ply)
     table.RemoveByValue(scp035_list, ply)
     if (scp035_list[1] ~= nil) then
         main_panel:Close()
-        enable_list()
+        enable_list035()
     elseif (scp035_list[1] == nil) then
         main_panel:Close()
     end
@@ -169,15 +169,15 @@ function yss_module_prelist(net_ply)
     end
 
     if main_panel == nil then
-        enable_list()
+        enable_list035()
     else
         main_panel:Close()
-        enable_list()
+        enable_list035()
     end
 end
 
 
-local function enable_list()
+function enable_list035()
     local sizew, sizeh = 390, 205
     local DermaPanel = vgui.Create("DFrame", nil, "035_DFrame") 
     DermaPanel:SetSize(sizew, sizeh)
@@ -291,7 +291,7 @@ local function YUI_DefaultPaint2(headerp, self, w, h, sizew, sizeh)
 end
 
 
-local function sendmsg_035ui()
+function sendmsg_035ui()
     local sizew, sizeh = 600, 140
     local SendMsgFrame = vgui.Create("DFrame") 
     SendMsgFrame:SetSize(0, 0) 

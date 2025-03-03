@@ -35,3 +35,7 @@ net.Receive("SCP035VictimTable", function()
     local ply = net.ReadEntity()
     yss_module_prelist(ply)
 end)
+
+net.Receive("SCP035_PsyZombie", function()
+    yss_module_victim035_zombietrick()
+end)

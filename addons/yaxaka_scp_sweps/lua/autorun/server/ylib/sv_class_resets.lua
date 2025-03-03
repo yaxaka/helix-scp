@@ -53,6 +53,7 @@ function ResetClassParameters(ply, class, faction)
 		if class_name == "SCP-131-B" then
 			scp_ply_vars.scp_131_b_ply = ply
 			ply:SetModel("models/scprp/scp131b2.mdl")
+			ply:StripWeapons()
 			ply:Give("scp131_swep")
 			ply.SCP = true
 			ply:ToggleWepRaised()
@@ -64,6 +65,8 @@ function ResetClassParameters(ply, class, faction)
 
 		if class_name == "SCP-035" then
 			scp_ply_vars.scp_035_ply = ply
+			scp035_victimtable = {}
+			scp035_victimlvl = {}
 			ply:StripWeapons()
 			ply:Give("scp035_swep")
 			ply.SCP = true
@@ -89,6 +92,8 @@ function ResetSCPVar(ply)
 				scp_173_prop:Remove()
 				ply:SetNoDraw(false)
 			end
+
+
 
 			ply.SCP = false
 			scp_ply_vars[i] = nil

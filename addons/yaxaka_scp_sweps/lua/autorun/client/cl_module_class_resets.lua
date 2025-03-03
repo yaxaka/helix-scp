@@ -9,4 +9,8 @@ function yss_class_reset()
 	lply.under_035 = false
 	lply.InsaneColor = false
 	lply.scp035_additional = false
+	lply.scp035_radiusdraws = false
+	if (scp035_main_panel) then
+		scp035_main_panel:Close()
+	end
 end

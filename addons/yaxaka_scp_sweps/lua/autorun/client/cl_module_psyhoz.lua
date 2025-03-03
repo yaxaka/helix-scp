@@ -3,6 +3,27 @@ local function minmax(n1, n2)
   return math.random(n1, n2)
 end
 
+
+concommand.Add("enablepsyhoz1", function()
+    yss_module_psyhoz(1)
+end)
+concommand.Add("enablepsyhoz2", function()
+    yss_module_psyhoz(2)
+end)
+concommand.Add("enablepsyhoz3", function()
+    yss_module_psyhoz(3)
+end)
+concommand.Add("enablepsyhoz4", function()
+    yss_module_psyhoz(4)
+end)
+concommand.Add("enablepsyhoz5", function()
+    yss_module_psyhoz(5)
+end)
+concommand.Add("enablepsyhoz6", function()
+    yss_module_psyhoz(6)
+end)
+
+
 function yss_module_psyhoz(stage)
   local lply = LocalPlayer()
 
@@ -59,7 +80,7 @@ function yss_module_psyhoz(stage)
 
 
   if stage == 4 then
-    timer.Create("Psyhoz_Stage4", minmaxm(1, 1), 1, function()
+    timer.Create("Psyhoz_Stage4", minmax(1, 1), 1, function()
       lply.InsaneColorStage = 4
 
       timer.Create("Psyhoz_Stage4_S", minmax(1, 4), minmax(1, 2), function()
