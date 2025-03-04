@@ -1,6 +1,6 @@
 ITEM.name = "JMOD Armor"
 ITEM.description = "A Jmod Outfit Base."
-ITEM.category = "Armor"
+ITEM.category = "JArmor"
 ITEM.model = "models/Gibs/HGIBS.mdl"
 ITEM.width = 1
 ITEM.height = 1
@@ -20,34 +20,6 @@ if (CLIENT) then
 		end
 	end
 end
-
-
-
-
-ITEM.functions.drop = {
-	tip = "dropTip",
-	icon = "icon16/world.png",
-	OnRun = function(item)
-		local bSuccess, error = item:Transfer(nil, nil, nil, item.player)
-
-		if (!bSuccess and isstring(error)) then
-			item.player:NotifyLocalized(error)
-		else
-			item:Remove()
-		end
-
-		return false
-		end,
-		OnCanRun = function(item)
-			if (IsValid(item.entity)) && not (item.noDrop) && not (item:GetData("equip")) then
-				return true
-			else
-				return false
-			end
-		end
-}
-
-
 
 ITEM.functions.EquipOn = {
 	name = "Экипировать",
@@ -102,17 +74,20 @@ ITEM.functions.EquipOff = {
 
 
 
+ITEM:Hook("drop", function(item)
+	--item:SetCollisionGroup(1)
+	print("t")
+end)
 
 
-
-
+--[[
 function ITEM:CanTransfer(oldInventory, newInventory)
 	if (newInventory and self:GetData("equip")) then
 		return false
 	end
 
 	return true
-end
+end--]]
 
 
 
@@ -123,5 +98,5 @@ end
 
 function ITEM:OnUnequipped()
 	local client = self.player
-	hook.Run("JmodUnEquip", client, self.Jname)
+	hook.Run("JmodUnEquip", client, self.Jname, self)
 end
