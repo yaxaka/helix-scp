@@ -77,7 +77,6 @@ function ResetClassParameters(ply, class, faction)
 	if team_name ~= "SCP" then
 		ply.SCP = false
 		
-		--ply:SetModel(faction.models[1])
 	end
 
 end

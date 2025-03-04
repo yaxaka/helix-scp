@@ -1,5 +1,4 @@
-local EquipSounds = {"snds_jack_gmod/equip1.ogg", "snds_jack_gmod/equip2.ogg", "snds_jack_gmod/equip3.ogg", "snds_jack_gmod/equip4.ogg", "snds_jack_gmod/equip5.ogg"}
-
+﻿local EquipSounds = {"snds_jack_gmod/equip1.ogg", "snds_jack_gmod/equip2.ogg", "snds_jack_gmod/equip3.ogg", "snds_jack_gmod/equip4.ogg", "snds_jack_gmod/equip5.ogg"}
 
 local function IsDamageThisType(dmg, typ)
 	if type(typ) ~= "number" then return false end
@@ -445,7 +444,6 @@ function JMod.RemoveArmorByID(ply, ID, broken)
 		if broken then
 			ply:EmitSound("snds_jack_gmod/armorbreak.ogg", 60, math.random(80, 120))
 			ply:PrintMessage(HUD_PRINTTALK, Info.name .. " has been destroyed")
-			DeleteFromInvent(ply, JmodToHelix[Info.name])
 		else
 			if Specs.snds and Specs.snds.uneq then
 				ply:EmitSound(Specs.snds.uneq, 60, math.random(80, 120))
@@ -605,6 +603,7 @@ function JMod.EZ_Equip_Armor(ply, nameOrEnt)
 	}
 
 	ply.EZarmor.items[NewArmorID] = NewVirtualArmorItem
+	hook.Run("JmodCreationUID", ply, NewArmorID, NewArmorName)
 
 	if NewArmorSpecs.plymdl then
 		-- if this is a suit, we need to set the player's model and color accordingly
@@ -657,6 +656,7 @@ end
 
 net.Receive("JMod_Inventory", function(ln, ply)
 	if not ply:Alive() then return end
+	if true then return end
 	local ActionType = net.ReadInt(8) -- 1: Remove armor | 2: Toggle armor | 3: Repair armor | 4: Recharge armor | 5: Color armor
 	local ID = net.ReadString()
 
@@ -909,31 +909,3 @@ concommand.Add("jmod_debug_removearmor", function(ply, cmd, args)
 		JMod.RemoveArmorByID(ply, k, tobool(args[2]))
 	end
 end, nil, "Removes armor from your target.")
-
-function DeleteFromInvent(ply, item, type)
-    local inv = ply:GetCharacter():GetInventory()
-    local item = inv:HasItem(item)
-    local ab = nil
-
-	if (item) then
-		local type = item.Type
-		if type == 1 then
-			ab = "equipjmodv"
-		elseif type == 2 then
-			ab = "equipjmodh"
-		elseif type == 3 then
-			ab = "equipjmode"
-		elseif type == 4 then
-			ab = "equipjmodg"
-		elseif type == 5 then
-			ab = "equipjmodp"
-		elseif type == 6 then
-			ab = "equipjmodb"
-		elseif type == 7 then
-			ab = "equipjmodc"
-		end
-
-		item:Remove()
-		ply:SetData(ab, false)
-	end
-end

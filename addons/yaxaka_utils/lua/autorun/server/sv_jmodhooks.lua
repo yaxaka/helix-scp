@@ -109,6 +109,32 @@ function JmodRemoveArmorByIDHelix(ply, ID, broken)
 end
 
 
+
+function jmod_sec_delay(ply)
+	if ply.jmodsdelay == nil then
+		ply.jmodsdelay = CurTime() + 0.3
+		return true
+	elseif ply.jmodsdelay > CurTime() then
+		return false
+	elseif ply.jmodsdelay < CurTime() then
+		ply.jmodsdelay = CurTime() + 0.3
+		return true
+	end
+end
+
+function jmod_sec_delay2(ply)
+	if ply.jmodsdelay2 == nil then
+		ply.jmodsdelay2 = CurTime() + 0.3
+		return true
+	elseif ply.jmodsdelay2 > CurTime() then
+		return false
+	elseif ply.jmodsdelay2 < CurTime() then
+		ply.jmodsdelay2 = CurTime() + 0.3
+		return true
+	end
+end
+
+
 hook.Add("JmodCanEquip", "CanEquipCheck", function(ply, armorname)
 	local clear, conflictid = GetAreSlotsClear(ply.EZarmor.items, armorname)
 	if (clear) then
@@ -120,25 +146,36 @@ end)
 
 
 hook.Add("JmodEquip", "EquipBeta", function(ply, armorname, item)
-	if ply.jmodequipdelay == nil then
-		ply.jmodequipdelay = CurTime() + 0.4
-		local clear, conflictid = GetAreSlotsClear(ply.EZarmor.items, armorname)
-		if (clear) then
-			ply:Notify("Вы надели " .. armorname)
-			JMod.EZ_Equip_Armor(ply, armorname)
-		else
-			local itemname = tostring(ply.EZarmor.items[conflictid].name)
-			ply:Notify("Вы не можете надеть это поверх " .. itemname)
+	if IsValid(ply) && item ~= nil && armorname ~= nil then
+		local allowed = jmod_sec_delay(ply)
+		if allowed then
+			local clear, conflictid = GetAreSlotsClear(ply.EZarmor.items, armorname)
+			if (clear) then
+				ply:Notify("Вы надели " .. armorname)
+				JMod.EZ_Equip_Armor(ply, armorname)
+			else
+				local itemname = tostring(ply.EZarmor.items[conflictid].name)
+				ply:Notify("Вы не можете надеть это поверх " .. itemname)
+				item:SetData("equip", false)
+				return false
+			end
+		elseif not allowed then
 			item:SetData("equip", false)
-			return false
+			ply:Notify("Вы делаете это слишком быстро")
 		end
-	elseif ply.jmodequipdelay < CurTime() then
-
 	end
 end)
 
-hook.Add("JmodUnEquip", "EquipBet2a", function(ply, armorname)
-	local jitem = getjmodid(ply, armorname)
-	if (jitem == false) then return end
-	JmodRemoveArmorByIDHelix(ply, jitem, false)
+hook.Add("JmodUnEquip", "EquipBet2a", function(ply, armorname, item)
+	if IsValid(ply) && (item ~= nil) && (armorname ~= nil) then
+		local allowed = jmod_sec_delay2(ply)
+		if allowed then
+			local jitem = getjmodid(ply, armorname)
+			if (jitem == false) then return end
+			JmodRemoveArmorByIDHelix(ply, jitem, false)
+		elseif not allowed then
+			item:SetData("equip", true)
+			ply:Notify("Вы делаете это слишком быстро")
+		end
+	end
 end)

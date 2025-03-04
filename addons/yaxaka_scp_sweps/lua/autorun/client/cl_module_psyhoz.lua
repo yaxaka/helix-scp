@@ -24,6 +24,7 @@ concommand.Add("enablepsyhoz6", function()
 end)
 
 
+
 function yss_module_psyhoz(stage)
   local lply = LocalPlayer()
 
