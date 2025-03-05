@@ -23,6 +23,21 @@ concommand.Add("enablepsyhoz6", function()
     yss_module_psyhoz(6)
 end)
 
+local delay_shize = 0
+
+hook.Add("Think", "ShizaAutomatic", function()
+    local lply = LocalPlayer()
+    if IsValid(lply) then
+        local stage = lply.InsaneColorStage
+        if stage == nil then return end
+        if stage >= 1 then
+          if CurTime() > delay_shize then
+              yss_module_psyhoz(stage)
+              delay_shize = CurTime() + ix.config.Get("shizaDelay", 10)
+            end
+        end
+    end
+end)
 
 
 function yss_module_psyhoz(stage)

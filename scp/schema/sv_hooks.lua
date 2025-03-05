@@ -19,7 +19,7 @@ hook.Add("MedicineEFT", "Psyho", function(ply, type, strong)
 			ply:Notify("Вы не почувствовали ничего нового")
 		else
 			Schema:PillsAnimation(ply)
-			ply:Notify("Вы снизили влияние 035")
+			ply:Notify("Вы чувствуете себя лучше")
 			ply:Minus035LVL()
 		end
 	end
