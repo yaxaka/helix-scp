@@ -44,10 +44,14 @@ net.Receive("SCP035Change", function()
     local lply = LocalPlayer()
     local lvl = net.ReadInt(5)
     local bool = net.ReadBool()
+    print(bool)
+    print(lvl)
     if (lvl ~= nil) then
       lply.InsaneColorStage = lvl
+      print(lply.InsaneColorStage)
     end
     if (bool ~= nil) then
+
       lply.under_035 = bool
     end
 end)

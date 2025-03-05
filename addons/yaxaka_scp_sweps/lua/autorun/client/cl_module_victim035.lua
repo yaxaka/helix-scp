@@ -3,8 +3,8 @@ AddCSLuaFile()
 hook.Add("RenderScreenspaceEffects", "035Change", function()
     local lply = LocalPlayer()
     if IsValid(lply) then
-        if lply:Under035Control() then
-            local lvl = lply:Get035LVL()
+        if lply.under_035 then
+            local lvl = lply.InsaneColorStage
             if lvl == 1 then
                 DrawColorModify(under_035_stage1)
             elseif lvl == 2 then

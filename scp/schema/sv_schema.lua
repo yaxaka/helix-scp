@@ -8,3 +8,9 @@ function Schema:SlapPlayer(client)
 		client:TakeDamage(math.random(5, 10))
 	end
 end
+
+function Schema:PillsAnimation(client)
+	client:Give("pills_base")
+	client:SelectWeapon("pills_base")
+	client:ToggleWepRaised()
+end

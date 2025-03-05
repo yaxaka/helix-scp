@@ -9,3 +9,18 @@ function Schema:GetPlayerDeathSound(client)
 		return "NPC_MetroPolice.Die"
 	end
 end
+
+hook.Add("MedicineEFT", "Psyho", function(ply, type, strong)
+	if not IsValid(ply) or type == nil then return end
+	if type == "Psyho" then
+		local lvl = ply:Get035LVL()
+		if (lvl == nil) or (lvl == 0) then
+			Schema:PillsAnimation(ply)
+			ply:Notify("Вы не почувствовали ничего нового")
+		else
+			Schema:PillsAnimation(ply)
+			ply:Notify("Вы снизили влияние 035")
+			ply:Minus035LVL()
+		end
+	end
+end)

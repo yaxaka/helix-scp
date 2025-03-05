@@ -7,6 +7,7 @@ util.AddNetworkString("SCP035Remove")
 util.AddNetworkString("SCP035RestoreView")
 util.AddNetworkString("SCP035_PsyZombie")
 util.AddNetworkString("SCP035_PsySelect")
+util.AddNetworkString("SCP035Change")
 
 local delay = 0
 scp035_victimtable = {}
