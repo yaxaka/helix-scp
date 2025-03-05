@@ -78,6 +78,7 @@ if not (lply.scp035_additional) then return end
 
             DermaPanel.Think = function(self)
             if v == nil then self:Close() return end
+            if not (v:Alive()) then self:Close() return end
                 local vpos = v:GetPos()
                 local point = vpos + v:OBBCenter()
                 local data2D = point:ToScreen()
@@ -118,7 +119,6 @@ hook.Add("Think", "SCP035_RadiusDraws", function()
 local lply = LocalPlayer()
     if not (lply.scp035_radiusdraws) then return end
     for k,v in pairs(ents.FindInSphere(lply:GetPos(), 400)) do
-        print(foundedply2[v])
         if (v:IsPlayer()) && (v ~= lply) && (foundedply2[v] ~= true) then
             foundedply2[v] = true
             local sizew, sizeh = 32, 32
@@ -137,6 +137,7 @@ local lply = LocalPlayer()
             end
 
             DermaPanel.Think = function(self)
+            if not (v:Alive()) then self:Close() return end
                 local vpos = v:GetPos()
                 local point = vpos + v:OBBCenter()
                 local data2D = point:ToScreen()

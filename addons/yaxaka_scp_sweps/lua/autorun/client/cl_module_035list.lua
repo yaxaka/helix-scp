@@ -152,26 +152,27 @@ local function YUI_DefaultPaint(headerp, self, w, h, sizew, sizeh)
 end
 
 function yss_module_remove035list(net_ply)
-    table.RemoveByValue(scp035_list, ply)
+    table.RemoveByValue(scp035_list, net_ply)
     if (scp035_list[1] ~= nil) then
-        main_panel:Close()
+        scp035_main_panel:Close()
         enable_list035()
     elseif (scp035_list[1] == nil) then
-        main_panel:Close()
+        scp035_main_panel:Close()
     end
 end
 
 function yss_module_prelist(net_ply)
+    if scp035_list[net_ply] then return end
     if scp035_list[1] == nil then
         table.insert(scp035_list, 1, net_ply)
     else
         table.insert(scp035_list, net_ply)
     end
 
-    if main_panel == nil then
+    if scp035_main_panel == nil then
         enable_list035()
     else
-        main_panel:Close()
+        scp035_main_panel:Close()
         enable_list035()
     end
 end
@@ -188,7 +189,7 @@ function enable_list035()
     DermaPanel:SetMouseInputEnabled(false)
     DermaPanel:SetKeyBoardInputEnabled(false) 
     DermaPanel:SetDraggable(false)
-    main_panel = DermaPanel
+    scp035_main_panel = DermaPanel
 
 
     DermaPanel.Paint = function(self, w, h)

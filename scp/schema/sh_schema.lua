@@ -3,9 +3,9 @@
 
 -- Schema info
 Schema.name = "SCP-RP"
-Schema.author = "yaxaka"
-Schema.description = "v0.0.1"
-Schema.description = "v0.0.1"
+Schema.author = "Yaxaka"
+Schema.description = "v0.0.5"
+Schema.description = "v0.0.5"
 
 -- Additional files that aren't auto-included should be included here. Note that ix.util.Include will take care of properly
 -- using AddCSLuaFile, given that your files have the proper naming scheme.

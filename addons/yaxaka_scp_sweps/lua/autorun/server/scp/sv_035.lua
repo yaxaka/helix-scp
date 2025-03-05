@@ -10,23 +10,21 @@ util.AddNetworkString("SCP035_PsySelect")
 
 local delay = 0
 scp035_victimtable = {}
-scp035_victimlvl = {}
 
 
 function scp035_psyradius(ply)
 	if CurTime() < delay then return end
 	for k,v in pairs(ents.FindInSphere(ply:GetPos(), 400)) do
-		if (v:IsPlayer()) && (v ~= ply) && not (scp035_victimtable[v]) then
-			scp_ply_vars.scp_035_ply:ChatPrint("Оказано воздействие на: " .. v:Nick())
-			if (scp035_victimlvl[v] == nil) then
-				scp035_victimlvl[v] = 1
+		if (v:IsPlayer()) && (v ~= ply) && (v:Under035Control() ~= true) then
+			local lvl = v:Get035LVL()
+			if (lvl == nil) then
+				v:Add035LVL()
 				scp035_launchpsy(v, 1)
-			elseif (scp035_victimlvl[v] <= 6) then
-				scp035_victimlvl[v] = scp035_victimlvl[v] + 1
-				scp035_launchpsy(v, scp035_victimlvl[v])
-			elseif (scp035_victimlvl[v] >= 7) then
-				scp035_victimtable[v] = v:Nick()
-				scp035_sendvictims(v, scp035_victimlvl[v])
+			elseif (lvl <= 6) then
+				v:Add035LVL()
+				scp035_launchpsy(v, lvl)
+			elseif (lvl >= 7) then
+				scp035_setcontrol(v)
 			end
 		end
 	end
@@ -34,9 +32,9 @@ function scp035_psyradius(ply)
 end
 
 function scp035_sendvictims(target)
-	local tb = scp035_victimtable
 	local ply = scp_ply_vars.scp_035_ply
 	net.Start("SCP035VictimTable")
+	print("seding")
 	net.WriteEntity(target)
 	net.Send(ply)
 end
@@ -58,10 +56,16 @@ function scp035_secondpsy(ply, task)
 	net.Send(ply)
 end
 
+function scp035_setcontrol(ply)
+	if (ply:Under035Control()) then return end
+	ply:Set035Control()
+	scp035_sendvictims(ply)
+end
+
 net.Receive("SCP035_Task", function(l, ply)
 	if ply == scp_ply_vars.scp_035_ply then
 		local target = net.ReadEntity()
-		if scp035_victimtable[target] && (scp035_victimlvl[target] >= 3) then
+		if target:Under035Control() && (target:Get035LVL() >= 3) then
 			local task = net.ReadString()
 			scp035_secondpsy(target, task)
 		end
@@ -73,16 +77,18 @@ net.Receive("SCP035_PsySelect", function(l, ply)
 	if ply == scp_ply_vars.scp_035_ply then
 		local type = net.ReadInt(3)
 		local target = net.ReadEntity()
-		local psyhozlvl = scp035_victimlvl[target]
+		local psyhozlvl = target:Get035LVL()
 
 		if psyhozlvl == nil then
-			scp035_victimlvl[target] = 1
+			target:Add035LVL()
 			scp035_launchpsy(target, 1)
 			return
 		end
 
 		if type == 1 then
+			if psyhozlvl >= 7 then scp035_setcontrol(target) return end
 			psyhozlvl = psyhozlvl + 1
+			target:Add035LVL()
 			scp035_launchpsy(target, psyhozlvl)
 		end
 
@@ -98,9 +104,10 @@ end)
 
 
 hook.Add("PlayerDeath", "Remove035", function(victim)
-	if scp035_victimtable[victim] then
+	if victim:Under035Control() then
 		table.RemoveByValue(scp035_victimtable, victim:Nick())
-		scp035_victimlvl[victim] = 0
+		victim:Restore035LVL()
+		victim:Remove035Control()
 		net.Start("SCP035Remove")
 		net.WriteEntity(victim)
 		net.Send(scp_ply_vars.scp_035_ply)
@@ -110,18 +117,13 @@ hook.Add("PlayerDeath", "Remove035", function(victim)
 end)
 
 hook.Add("PlayerDisconnected", "Remove035D", function(ply)
-	if scp035_victimtable[victim] then
-		table.RemoveByValue(scp035_victimtable, victim:Nick())
-		scp035_victimlvl[victim] = 0
+	if ply:Under035Control() && (scp_ply_vars.scp_035_ply ~= nil) then
 		net.Start("SCP035Remove")
-		net.WriteEntity(victim)
-	end
-	if scp035_victimlvl[victim] then
-		table.RemoveByValue(scp035_victimtable, victim:Nick())
+		net.WriteEntity(ply)
+		net.Send(scp_ply_vars.scp_035_ply)
 	end
 	if ply == scp_ply_vars.scp_035_ply then
 		scp035_victimtable = {}
-		scp035_victimlvl = {}
 	end
 end)
 

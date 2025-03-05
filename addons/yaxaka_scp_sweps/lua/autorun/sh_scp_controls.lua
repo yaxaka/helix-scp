@@ -26,3 +26,4 @@ hook.Add("PlayerFootstep", "CustomFootstep2", function(ply, pos, foot, sound, vo
 end)
 
 end
+

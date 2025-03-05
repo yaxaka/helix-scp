@@ -39,3 +39,15 @@ end)
 net.Receive("SCP035_PsyZombie", function()
     yss_module_victim035_zombietrick()
 end)
+
+net.Receive("SCP035Change", function()
+    local lply = LocalPlayer()
+    local lvl = net.ReadInt(5)
+    local bool = net.ReadBool()
+    if (lvl ~= nil) then
+      lply.InsaneColorStage = lvl
+    end
+    if (bool ~= nil) then
+      lply.under_035 = bool
+    end
+end)

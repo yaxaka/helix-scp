@@ -9,9 +9,4 @@ function CLASS:CanSwitchTo(client)
     return false
 end
 
-if (SERVER) then
-    function CLASS:OnSpawn(client)
-        net.Start("GuidanceY")
-        net.Send(client)
-    end
-end
+

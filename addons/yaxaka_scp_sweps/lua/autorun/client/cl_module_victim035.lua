@@ -3,18 +3,19 @@ AddCSLuaFile()
 hook.Add("RenderScreenspaceEffects", "035Change", function()
     local lply = LocalPlayer()
     if IsValid(lply) then
-        if lply.InsaneColor then
-            if lply.InsaneColorStage == 1 then
+        if lply:Under035Control() then
+            local lvl = lply:Get035LVL()
+            if lvl == 1 then
                 DrawColorModify(under_035_stage1)
-            elseif lply.InsaneColorStage == 2 then
+            elseif lvl == 2 then
                 DrawColorModify(under_035_stage2)
-            elseif lply.InsaneColorStage == 3 then
+            elseif lvl == 3 then
                 DrawColorModify(under_035_stage3)
-            elseif lply.InsaneColorStage == 4 then
+            elseif lvl == 4 then
                 DrawColorModify(under_035_stage4)
-            elseif lply.InsaneColorStage == 5 then
+            elseif lvl == 5 then
                 DrawColorModify(under_035_stage5)
-            elseif lply.InsaneColorStage == 6 then
+            elseif lvl == 6 then
                 DrawColorModify(under_035_stage6)
             end
         end
@@ -23,7 +24,9 @@ end)
 
 
 
-
+concommand.Add("TestMeta", function()
+    print(LocalPlayer():GetPlayersUnder035())
+end)
 
 
 function yss_module_victim035_zombietrick()

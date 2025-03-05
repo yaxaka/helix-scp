@@ -12,8 +12,6 @@ if (CLIENT) then
 		self.approachtarget = w-20
 		if (item:GetData("equip")) then
 			item.approach = math.Approach(item.approach, self.approachtarget, 5)
-			--surface.SetDrawColor(110, 255, 110, 100)
-			--surface.DrawRect(0, h - 14, approach, 8)
 			draw.RoundedBox(10, 10, h-14, item.approach, 8, Color(110, 255, 110))
 		elseif not (item:GetData("equip")) then
 			item.approach = 1
