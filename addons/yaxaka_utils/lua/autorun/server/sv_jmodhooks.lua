@@ -151,7 +151,6 @@ hook.Add("JmodEquip", "EquipBeta", function(ply, armorname, item)
 		if allowed then
 			local clear, conflictid = GetAreSlotsClear(ply.EZarmor.items, armorname)
 			if (clear) then
-				ply:Notify("Вы надели " .. armorname)
 				JMod.EZ_Equip_Armor(ply, armorname)
 			else
 				local itemname = tostring(ply.EZarmor.items[conflictid].name)
@@ -179,3 +178,34 @@ hook.Add("JmodUnEquip", "EquipBet2a", function(ply, armorname, item)
 		end
 	end
 end)
+
+
+function JmodArmorDestroyed(ply, Info)
+	local inv = ply:GetCharacter():GetInventory()
+	local a = inv:GetItemsByBase("base_jmodarmor")
+	for k,v in pairs(a) do
+		local jname = v.Jname
+		if jname == Info.name then
+			local item = inv:GetItemByID(v.id)
+			local equipped = v.data.equip
+			if equipped then
+				item:Remove()
+			end
+		end
+	end
+end
+
+
+hook.Add("JMod_ArmorRemoved", "RemoveFromInventory", function(ply, Info, Specs, Ent, broken)
+	if broken then
+		JmodArmorDestroyed(ply, Info)
+	end
+end)
+
+hook.Add("PlayerDeath", "DeleteInv", function(ply)
+	local inv = ply:GetCharacter():GetInventory()
+	local items = inv:GetItems(false)
+	for k,v in pairs(items) do
+		v:Remove()
+	end
+end)	
