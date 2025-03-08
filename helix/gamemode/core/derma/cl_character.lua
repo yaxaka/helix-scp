@@ -135,6 +135,7 @@ PANEL = {}
 AccessorFunc(PANEL, "bUsingCharacter", "UsingCharacter", FORCE_BOOL)
 
 function PANEL:Init()
+	local sizew, sizeh = ScrW(), ScrH()
 	local parent = self:GetParent()
 	local padding = self:GetPadding()
 	local halfWidth = ScrW() * 0.5
@@ -144,111 +145,31 @@ function PANEL:Init()
 	self.bUsingCharacter = LocalPlayer().GetCharacter and LocalPlayer():GetCharacter()
 	self:DockPadding(padding, padding, padding, padding)
 
-	local infoLabel = self:Add("DLabel")
-	infoLabel:SetTextColor(Color(255, 255, 255, 25))
-	infoLabel:SetFont("ixMenuMiniFont")
-	infoLabel:SetText(L("helix") .. " " .. GAMEMODE.Version)
-	infoLabel:SizeToContents()
-	infoLabel:SetPos(ScrW() - infoLabel:GetWide() - 4, ScrH() - infoLabel:GetTall() - 4)
+	local backimg = self:Add("DImage")
+	backimg:SetImage("back2.png")
+	backimg:SetPos(-1, 0)
+	backimg:SetSize(ScrW()+1, ScrH())
 
-	local logoPanel = self:Add("Panel")
-	logoPanel:SetSize(ScrW(), ScrH() * 0.25)
-	logoPanel:SetPos(0, ScrH() * 0.25)
-	logoPanel.Paint = function(panel, width, height)
-		local matrix = self.currentMatrix
 
-		-- don't scale the background because it fucks the blur
-		if (matrix) then
-			cam.PopModelMatrix()
-		end
-
-		local newHeight = Lerp(1 - (self.currentDimAmount / 255), 0, height)
-		local y = height * 0.5 - newHeight * 0.5
-		local _, screenY = panel:LocalToScreen(0, 0)
-		screenY = screenY + y
-
-		render.SetScissorRect(0, screenY, width, screenY + newHeight, true)
-		ix.util.DrawBlur(panel, 15, nil, 200)
-
-		-- background dim
-		surface.SetDrawColor(0, 0, 0, 100)
-		surface.DrawRect(0, y, width, newHeight)
-
-		-- border lines
-		surface.SetDrawColor(ix.config.Get("color") or color_white)
-		surface.DrawRect(0, y, width, 1)
-		surface.DrawRect(0, y + newHeight - 1, width, 1)
-
-		if (matrix) then
-			cam.PushModelMatrix(matrix)
-		end
-
-		for _, v in ipairs(panel:GetChildren()) do
-			v:PaintManual()
-		end
-
-		render.SetScissorRect(0, 0, 0, 0, false)
-	end
-
-	-- draw schema logo material instead of text if available
-
-	function randomback()	
-		local randnumber = math.random(1, 4)
-		if randnumber == 1 then
-			return tostring("main_back/back1.png")
-		elseif randnumber == 2 then
-			return tostring("main_back/back2.png")
-		elseif randnumber == 3 then
-			return tostring("main_back/back3.png")
-		elseif randnumber == 4 then
-			return tostring("main_back/back4.png")
-		end		
-	end
-
-	local logo = randomback() and ix.util.GetMaterial(randomback())
-
-	if (true) then
-		local logoImage = self:Add("DImage")
-		logoImage:SetMaterial(logo)
-		logoImage:SetSize(ScrW(), ScrH())
-		logoImage:SetPos(0, ScrH() * 0.0000001)
-		logoImage:SetPaintedManually(true)
-
-		logoPanel:SetTall(logoImage:GetTall() + padding)
-	else
-		local newHeight = padding
-		local subtitle = L2("schemaDesc") or Schema.description
-
-		local titleLabel = logoPanel:Add("DLabel")
-		titleLabel:SetTextColor(color_white)
-		titleLabel:SetFont("ixTitleFont")
-		titleLabel:SetText(L2("schemaName") or Schema.name or L"unknown")
-		titleLabel:SizeToContents()
-		titleLabel:SetPos(halfWidth - titleLabel:GetWide() * 0.5, halfPadding)
-		titleLabel:SetPaintedManually(true)
-		newHeight = newHeight + titleLabel:GetTall()
-
-		if (subtitle) then
-			local subtitleLabel = logoPanel:Add("DLabel")
-			subtitleLabel:SetTextColor(color_white)
-			subtitleLabel:SetFont("ixSubTitleFont")
-			subtitleLabel:SetText(subtitle)
-			subtitleLabel:SizeToContents()
-			subtitleLabel:SetPos(halfWidth - subtitleLabel:GetWide() * 0.5, 0)
-			subtitleLabel:MoveBelow(titleLabel)
-			subtitleLabel:SetPaintedManually(true)
-			newHeight = newHeight + subtitleLabel:GetTall()
-		end
-
-		logoPanel:SetTall(newHeight)
-	end
 
 	-- button list
 	self.mainButtonList = self:Add("ixCharMenuButtonList")
 	self.mainButtonList:Dock(LEFT)
 
+
+	Helix_YUI_CreateText("Text1", self, "Header", "ГЛАВНОЕ МЕНЮ", 103, 172)
+	Helix_YUI_CreateTextFade("Text1", self, "Header2", "MILITARY SCP RP", 103, 259)
+	Helix_YUI_Button("T1", 103, 392, self, "Создать персонажа", "DermaLarge", "Create", 384, 55, parent, bHasCharacter)
+	Helix_YUI_Button("T2", 103, 461, self, "Выбрать персонажа", "DermaLarge", "Load", 384, 55, parent, bHasCharacter)
+	Helix_YUI_Button("T3", 103, 530, self, "Наше комьюнити", "DermaLarge", "Community", 384, 55, parent)
+	Helix_YUI_Button("T4", 103, 1000, self, "Выйти", "DermaLarge", "Exit", 384, 55, parent)
+	Helix_YUI_ButtonCommunity("T5", 103, 782, self, "Discord", "Community", "1", 180, 45, parent)
+	Helix_YUI_ButtonCommunity("T6", 103, 841, self, "Steam", "Community", "1", 180, 45, parent)
+	Helix_YUI_ButtonCommunity("T7", 103, 900, self, "Rules", "Community", "1", 180, 45, parent)
+
+
 	-- create character button
-	local createButton = self.mainButtonList:Add("ixMenuButton")
+	--[[local createButton = self.mainButtonList:Add("ixMenuButton")
 	createButton:SetText("create")
 	createButton:SizeToContents()
 	createButton.DoClick = function()
@@ -303,18 +224,69 @@ function PANEL:Init()
 		else
 			RunConsoleCommand("disconnect")
 		end
+	end--]]
+
+	local newsbox = self:Add("editablepanel")
+	newsbox:SetPos(sizew-600, sizeh/2)
+	newsbox:SetSize(590, sizeh/2.05)
+	newsbox.Paint = function(self, w, h)
+		surface.SetDrawColor(color_button)
+		surface.DrawRect(0, 0, w, h)
+		surface.SetDrawColor(color_button_outline)
+		surface.DrawOutlinedRect(0, 0, w, h, 1)
 	end
 
-	self.mainButtonList:SizeToContents()
+	local MainScroll = vgui.Create( "DScrollPanel", newsbox )
+   	MainScroll:Dock(FILL)
+	for k,v in pairs(scp_update_table) do
+		local headerlog = MainScroll:Add("editablepanel")
+		headerlog:Dock(TOP)
+		headerlog:DockMargin(1, 30, 0, 0)
+		local tw, th = Helix_YUI_GetSize(v["header"], "DermaLarge")
+		headerlog:SetSize(tw, th)
+		headerlog.Paint = function(self, w, h)
+			surface.SetFont("DermaLarge")
+			surface.SetTextColor(color_white)
+			surface.SetTextPos(20, 0)
+			surface.DrawText(v["header"])
+		end
+			
+			
+		local version = MainScroll:Add("editablepanel")
+		version:Dock(TOP)
+		version:DockMargin(1, 0, 0, 12)
+		local tw, th = Helix_YUI_GetSize(v["version"], "DermaDefault")
+		version:SetSize(tw, th)
+		version.Paint = function(self, w, h)
+			surface.SetFont("DermaDefault")
+			surface.SetTextColor(color_white)
+			surface.SetTextPos(23, 0)
+			surface.DrawText(v["version"])
+		end
+			
+			
+		local desc = MainScroll:Add("DLabel")
+		desc:Dock(TOP)
+		desc:DockMargin(10, 0, 0, 10)
+		local tw, th = Helix_YUI_GetSize(v["desc"], "Community")
+		desc:SetSize(200, 60)
+		desc:SetTextColor(color_white)
+		desc:SetFont("Community")
+		desc:SetText("" .. v["desc"])
+		desc.Paint = function(self, w, h)
+			surface.SetDrawColor(Color(91, 91, 91, 80))
+			surface.DrawRect(0, 0, w-10, h)
+		end	
+		desc:SetWrap(true)
+	end
+
+	self.mainButtonList:SizeToContents()-- Main panel
 end
 
 function PANEL:UpdateReturnButton(bValue)
 	if (bValue != nil) then
 		self.bUsingCharacter = bValue
 	end
-
-	self.returnButton:SetText(self.bUsingCharacter and "return" or "leave")
-	self.returnButton:SizeToContents()
 end
 
 function PANEL:OnDim()
@@ -442,7 +414,7 @@ function PANEL:OnCharacterDeleted(character)
 		self.mainPanel.loadButton:SetDisabled(true)
 		self.mainPanel:Undim() -- undim since the load panel will slide down
 	else
-		self.mainPanel.loadButton:SetDisabled(false)
+		--self.mainPanel.loadButton:SetDisabled(false)
 	end
 
 	self.loadCharacterPanel:OnCharacterDeleted(character)
@@ -530,12 +502,6 @@ function PANEL:Paint(width, height)
 	surface.SetTexture(gradient)
 	surface.SetDrawColor(0, 0, 0, 255)
 	surface.DrawTexturedRect(0, 0, width, height)
-
-	if (!ix.option.Get("cheapBlur", false)) then
-		surface.SetDrawColor(0, 0, 0, 150)
-		surface.DrawTexturedRect(0, 0, width, height)
-		ix.util.DrawBlur(self, Lerp((self.currentAlpha - 200) / 255, 0, 10))
-	end
 end
 
 function PANEL:PaintOver(width, height)

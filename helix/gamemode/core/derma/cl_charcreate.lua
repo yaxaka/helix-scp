@@ -490,10 +490,19 @@ function PANEL:VerifyProgression(name)
 
 	return true
 end
-
+local backmat = Material("back2.png", "noclamp smooth")
 function PANEL:Paint(width, height)
-	derma.SkinFunc("PaintCharacterCreateBackground", self, width, height)
-	BaseClass.Paint(self, width, height)
+	surface.SetMaterial( backmat )
+	surface.SetDrawColor( color_white )
+	surface.DrawTexturedRect( 0, 0, width, height )
+	surface.SetFont("Header")
+	surface.SetTextColor(255, 255, 255)
+	surface.SetTextPos(103, 172)
+	surface.DrawText("Создание персонажа")
+	surface.SetFont("Header2")
+	surface.SetTextColor(255, 255, 255, 95)
+	surface.SetTextPos(103, 259)
+	surface.DrawText("MILITARY SCP RP")
 end
 
 vgui.Register("ixCharMenuNew", PANEL, "ixCharMenuPanel")

@@ -246,10 +246,11 @@ vgui.Register("ixCharMenuCarousel", PANEL, "Panel")
 PANEL = {}
 
 AccessorFunc(PANEL, "animationTime", "AnimationTime", FORCE_NUMBER)
-AccessorFunc(PANEL, "backgroundFraction", "BackgroundFraction", FORCE_NUMBER)
 
 function PANEL:Init()
+	local sizew, sizeh = ScrW(), ScrH()
 	local parent = self:GetParent()
+
 	local padding = self:GetPadding()
 	local halfWidth = parent:GetWide() * 0.5 - (padding * 2)
 	local halfHeight = parent:GetTall() * 0.5 - (padding * 2)
@@ -261,12 +262,9 @@ function PANEL:Init()
 	-- main panel
 	self.panel = self:AddSubpanel("main")
 	self.panel:SetTitle("loadTitle")
-	self.panel.OnSetActive = function()
-		self:CreateAnimation(self.animationTime, {
-			index = 2,
-			target = {backgroundFraction = 1},
-			easing = "outQuint",
-		})
+	self.panel.OnSetActive = function(self)
+		Helix_YUI_CreateText("Text22", self, "Header", "ЗАГРУЗКА ПЕРСОНАЖА", 0, 60)
+		Helix_YUI_CreateTextFade("Text22", self, "Header2", "MILITARY SCP RP", 0, 147)
 	end
 
 	-- character button list
@@ -467,9 +465,11 @@ function PANEL:OnCharacterButtonSelected(panel)
 	self.carousel:SetActiveCharacter(panel.character)
 	self.character = panel.character
 end
-
+local backmat = Material("back2.png", "noclamp smooth")
 function PANEL:Paint(width, height)
-	derma.SkinFunc("PaintCharacterLoadBackground", self, width, height)
+	surface.SetMaterial( backmat )
+	surface.SetDrawColor( color_white )
+	surface.DrawTexturedRect( 0, 0, width, height )
 end
 
 vgui.Register("ixCharMenuLoad", PANEL, "ixCharMenuPanel")

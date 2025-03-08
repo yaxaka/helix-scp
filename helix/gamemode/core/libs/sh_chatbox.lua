@@ -545,7 +545,7 @@ do
 				chat.AddText(Color(255, 50, 50), "[LOOC] ", ix.config.Get("chatColor"), speaker:Name()..": "..text)
 			end,
 			CanHear = ix.config.Get("chatRange", 280),
-			prefix = {".//", "[[", "/LOOC"},
+			prefix = {".//", "[[", "/LOOC", "/l"},
 			description = "@cmdLOOC",
 			noSpaceAfter = true
 		})
