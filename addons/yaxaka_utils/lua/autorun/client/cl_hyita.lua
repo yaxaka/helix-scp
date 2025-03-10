@@ -20,7 +20,7 @@ scp_update_table = {
     [4] = {
         version = '0.0.7',
         header = 'Update 4',
-        desc = "Lorem ipsum dolor sit amet, Nam condimentum dolor a.",
+        desc = "Бла бла бла приколямбусы чтото интересное ради теста",
     },
     [3] = {
         version = '0.0.6',
@@ -39,11 +39,6 @@ scp_update_table = {
 	},
 }
 
-local function sort_upd() 
-  for k,v in pairs(scp_update_table) do
-    table.sort( scp_update_table, function(a, b) return a['version'] > b['version'] end )
-  end
-end
 
 
 

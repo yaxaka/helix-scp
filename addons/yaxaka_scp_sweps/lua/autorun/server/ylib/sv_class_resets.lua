@@ -92,6 +92,9 @@ function ResetSCPVar(ply)
 				scp_173_prop:Remove()
 				ply:SetNoDraw(false)
 			end
+			if (ply == scp_ply_vars.scp_035_ply) then
+				scp035_havebody = false
+			end
 
 
 

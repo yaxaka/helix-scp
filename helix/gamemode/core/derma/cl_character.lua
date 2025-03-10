@@ -238,7 +238,7 @@ function PANEL:Init()
 
 	local MainScroll = vgui.Create( "DScrollPanel", newsbox )
    	MainScroll:Dock(FILL)
-   	MainScroll:DockMargin(0, 0, 0, 50)
+   	MainScroll:DockMargin(10, 0, 10, 50)
 
    	table.SortByMember( scp_update_table, "version" )
 
@@ -268,21 +268,28 @@ function PANEL:Init()
 			surface.SetTextPos(23, 0)
 			surface.DrawText(v.version)
 		end
-			
-			
-		local desc = MainScroll:Add("DLabel")
+		
+		local descback = vgui.Create("editablepanel", MainScroll)
+
+		local desc = MainScroll:Add("DLabel", descback)
 		desc:Dock(TOP)
-		desc:DockMargin(10, 0, 0, 10)
+		desc:DockMargin(10, 0, 0, 0)
 		local tw, th = Helix_YUI_GetSize(v.desc, "Community")
-		desc:SetSize(200, 60)
+		desc:SetSize(200, th)
 		desc:SetTextColor(color_white)
 		desc:SetFont("Community")
 		desc:SetText(" " .. v.desc)
 		desc:SetWrap(true)
-		desc.Paint = function(self, w, h)
+		desc:SetAutoStretchVertical(true)
+		local desc_w, desc_h = desc:GetTextSize()
+
+		descback:SetSize(200, desc_h/30)
+		descback:Dock(TOP)
+		descback:DockMargin(0, 0, 0, -desc_h/31)
+		descback.Paint = function(self, w, h)
 			surface.SetDrawColor(Color(91, 91, 91, 80))
-			surface.DrawRect(0, 0, w-10, h)
-		end	
+			surface.DrawRect(0, 0, w-5, h+5)
+		end
 	end
 
 	self.mainButtonList:SizeToContents()-- Main panel

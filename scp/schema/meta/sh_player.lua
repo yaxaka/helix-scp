@@ -64,3 +64,29 @@ function PLAYER:Remove035Control()
 end
 
 
+function PLAYER:StartBodyRot035()
+	local timername = self:Nick() .. "_rotting1"
+	local timername2 = self:Nick() .. "_rotting2"
+	local timername3 = self:Nick() .. "_rotting3"
+	timer.Create(timername, ix.config.Get("RotPhase1"), 1, function()
+		self:SetMaterial("phoenix_storms/wire/pcb_green")
+		self:TakeDamage(10, nil)
+		timer.Create(timername2, ix.config.Get("RotPhase2"), 1, function()
+			self:SetMaterial("phoenix_storms/wire/pcb_red")
+			self:TakeDamage(10, nil)
+			timer.Create(timername3, ix.config.Get("RotPhase3"), 1, function()
+				self:SetMaterial("phoenix_storms/wire/pcb_red")
+				self:TakeDamage(10, nil)
+			end)
+		end)
+	end)
+end
+
+function PLAYER:ResetBodyRot035()
+	local timername = self:Nick() .. "_rotting1"
+	local timername2 = self:Nick() .. "_rotting2"
+	local timername3 = self:Nick() .. "_rotting3"
+	if timer.Exists(timername) then timer.Remove(timername) end
+	if timer.Exists(timername2) then timer.Remove(timername2) end
+	if timer.Exists(timername3) then timer.Remove(timername3) end
+end

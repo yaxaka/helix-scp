@@ -34,7 +34,7 @@ function scp035_psyradius(ply)
 	delay = CurTime() + 1
 end
 
-local scp035_havebody = false
+scp035_havebody = false
 
 function scp035_takebody(owner)
 	local tr = owner:GetEyeTrace().Entity
@@ -46,14 +46,21 @@ function scp035_takebody(owner)
 		local model = tr:GetModel()
 		local targetweapons = tr:GetWeapons()
 		local bodygr = tr:GetBodyGroups()
+		local trhp = tr:Health()
+		local trarm = tr:Armor()
 		tr:Kill()
 		owner:SetModel(model)
+		owner:SetHealth(trhp)
+		owner:SetArmor(trarm)
 		net.Start("SCP035Change2")
 		net.WriteEntity(owner)
 		net.WriteBool(true)
 		net.Broadcast()
+		owner:StartBodyRot035()
 	end
 end
+
+
 
 function scp035_bodydead()
 	net.Start("SCP035Change2")
@@ -180,6 +187,7 @@ hook.Add("PlayerDisconnected", "Remove035D", function(ply)
 	end
 	if ply == scp_ply_vars.scp_035_ply then
 		scp035_victimtable = {}
+		scp035_havebody = false
 	end
 end)
 
