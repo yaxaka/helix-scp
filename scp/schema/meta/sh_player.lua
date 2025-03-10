@@ -63,19 +63,58 @@ function PLAYER:Remove035Control()
 	net.Send(self)
 end
 
+function PLAYER:RotMaterial(Phase, Type, all)
+	local phase_texture = nil
+	if Phase == 1 then
+		phase_texture = "scp_rot/frame8_1"
+	elseif Phase == 2 then
+		phase_texture = "scp_rot/frame8_2"
+	elseif Phase == 3 then
+		phase_texture = "scp_rot/frame8_3"
+	end
+
+	if (Phase == nil) or (Type == nil) then return end
+
+	if (all == false) then
+		for k,v in pairs(self:GetMaterials()) do
+			local find = string.find(v, Type)
+			if find then
+				self:SetSubMaterial(k, phase_texture)
+			end
+		end
+	else
+		for k,v in pairs(self:GetMaterials()) do
+			self:SetSubMaterial(k, phase_texture)
+		end
+	end
+end
+
+function PLAYER:ResetMaterials()
+	for k,v in pairs(self:GetMaterials()) do
+		self:SetSubMaterial(k, "")
+	end
+end
+
 
 function PLAYER:StartBodyRot035()
 	local timername = self:Nick() .. "_rotting1"
 	local timername2 = self:Nick() .. "_rotting2"
 	local timername3 = self:Nick() .. "_rotting3"
 	timer.Create(timername, ix.config.Get("RotPhase1"), 1, function()
-		self:SetMaterial("phoenix_storms/wire/pcb_green")
+		self:RotMaterial(1, "head", false)
+		self:RotMaterial(1, "eye", false)
+		self:RotMaterial(1, "upper", false)
 		self:TakeDamage(10, nil)
+		self:EmitSound("sopli.wav")
 		timer.Create(timername2, ix.config.Get("RotPhase2"), 1, function()
-			self:SetMaterial("phoenix_storms/wire/pcb_red")
+			self:RotMaterial(2, "head", true)
+			self:SetMaterial("scp_rot/frame8_2")
 			self:TakeDamage(10, nil)
+			self:EmitSound("sopli.wav")
 			timer.Create(timername3, ix.config.Get("RotPhase3"), 1, function()
-				self:SetMaterial("phoenix_storms/wire/pcb_red")
+				self:EmitSound("sopli.wav")
+				self:RotMaterial(3, "head", true)
+				self:SetMaterial("scp_rot/frame8_3")
 				self:TakeDamage(10, nil)
 			end)
 		end)
