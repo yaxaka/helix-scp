@@ -163,3 +163,53 @@ hook.Add("Think", "LookatmeHector", function()
         end
     end
 end)
+
+local modelMask = ClientsideModel( "models/scp_035_real/scp_035_real.mdl" )
+modelMask:SetNoDraw( true )
+
+scp035_maskplayer = nil
+
+hook.Add("PostPlayerDraw", "SCP035_DrawMask", function(ply)
+    if scp035_maskplayer == nil then return end
+    if ply ~= scp035_maskplayer then return end
+        local attachments = ply:GetAttachments()
+        local keyEye = nil
+
+        for key, value in ipairs(attachments) do
+            if (value.name == "eyes") then keyEye = value.id end --? We find the attachment eye
+        end
+
+        local offsetvec = keyEye and ply:GetAttachment( keyEye ).Pos or Vector(2.5, -5.6, 0 )
+        local offsetang = keyEye and ply:GetAttachment( keyEye ).Ang or Angle( 180, 0, -180 )
+
+        if (keyEye) then --? If player have eye attachment (very precise)
+            local UpAng, RightAng, ForwardAng = offsetang:Up(), offsetang:Right(), offsetang:Forward()
+
+            offsetvec = offsetvec + RightAng * 0 + ForwardAng * 1.6 + UpAng * -1.3
+            offsetang:RotateAroundAxis(RightAng, 6)
+            offsetang:RotateAroundAxis(UpAng, 0)
+            offsetang:RotateAroundAxis(ForwardAng, 0)
+            modelMask:SetRenderOrigin(offsetvec)
+            modelMask:SetRenderAngles(offsetang)
+        else --? And if he has not
+            local boneid = ply:LookupBone( "ValveBiped.Bip01_Head1" ) --? Work only on models that have this bone, if not, the mask will not show up.
+        
+            if not boneid then
+                return
+            end
+            
+            local matrix = ply:GetBoneMatrix( boneid )
+            
+            if not matrix then 
+                return 
+            end
+            
+            local newpos, newang = LocalToWorld( offsetvec, offsetang, matrix:GetTranslation(), matrix:GetAngles() )
+
+            modelMask:SetPos( newpos )
+            modelMask:SetAngles( newang )
+            modelMask:SetupBones()
+        end
+        
+        modelMask:DrawModel()
+end)

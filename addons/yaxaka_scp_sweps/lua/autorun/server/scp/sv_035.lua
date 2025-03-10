@@ -8,6 +8,7 @@ util.AddNetworkString("SCP035RestoreView")
 util.AddNetworkString("SCP035_PsyZombie")
 util.AddNetworkString("SCP035_PsySelect")
 util.AddNetworkString("SCP035Change")
+util.AddNetworkString("SCP035Change2")
 
 local delay = 0
 scp035_victimtable = {}
@@ -41,14 +42,22 @@ function scp035_takebody(owner)
 		local model = tr:GetModel()
 		local targetweapons = tr:GetWeapons()
 		local bodygr = tr:GetBodyGroups()
-		
 		tr:Kill()
 		owner:SetModel(model)
-
-		for k,v in pairs(targetweapons) do
-			owner:Give(v:GetClass())
-		end
+		net.Start("SCP035Change2")
+		net.WriteEntity(owner)
+		net.WriteBool(true)
+		net.Broadcast()
 	end
+end
+
+function scp035_bodydead()
+	net.Start("SCP035Change2")
+	net.WriteEntity(owner)
+	net.WriteBool(false)
+	net.Broadcast()
+	scp_ply_vars.scp_035_ply:SetModel("models/scp_035_real/scp_035_real.mdl")
+
 end
 
 function scp035_sendvictims(target)
@@ -138,7 +147,26 @@ hook.Add("PlayerDeath", "Remove035", function(victim)
 		net.Start("SCP035RestoreView")
 		net.Send(victim)
 	end
+	if victim == scp_ply_vars.scp_035_ply then
+		local oldpos = victim:GetPos()
+		victim:Spawn()
+		victim:SetPos(oldpos)
+		scp035_bodydead()
+	end
 end)
+
+hook.Add("EntityTakeDamage", "SCP035death", function(ply, dmg)
+	if ply ~= scp_ply_vars.scp_035_ply then return end
+	local hp = ply:Health()
+	local damage = dmg:GetDamage()
+	if damage > hp then
+		scp035_bodydead()
+		dmg:SetDamage(0)
+	end 
+end)
+
+
+
 
 hook.Add("PlayerDisconnected", "Remove035D", function(ply)
 	if ply:Under035Control() && (scp_ply_vars.scp_035_ply ~= nil) then

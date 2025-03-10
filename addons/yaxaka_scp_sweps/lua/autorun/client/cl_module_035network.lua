@@ -58,3 +58,14 @@ net.Receive("SCP035Change", function()
       lply.under_035 = bool
     end
 end)
+
+net.Receive("SCP035Change2", function()
+    local ent = net.ReadEntity()
+    local bool = net.ReadBool()
+    if bool then
+      print(ent)
+      scp035_maskplayer = ent
+    else
+      scp035_maskplayer = nil
+    end
+end)
