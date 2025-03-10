@@ -33,6 +33,24 @@ function scp035_psyradius(ply)
 	delay = CurTime() + 1
 end
 
+function scp035_takebody(owner)
+	local tr = owner:GetEyeTrace().Entity
+	if IsValid(tr) && tr:IsPlayer() then
+		local dist = owner:GetPos():Distance(tr:GetPos())
+		if dist > 60 then return end
+		local model = tr:GetModel()
+		local targetweapons = tr:GetWeapons()
+		local bodygr = tr:GetBodyGroups()
+		
+		tr:Kill()
+		owner:SetModel(model)
+
+		for k,v in pairs(targetweapons) do
+			owner:Give(v:GetClass())
+		end
+	end
+end
+
 function scp035_sendvictims(target)
 	local ply = scp_ply_vars.scp_035_ply
 	net.Start("SCP035VictimTable")

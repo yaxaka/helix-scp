@@ -2,7 +2,7 @@ SWEP.PrintName			= "SCP-035"
 SWEP.Author			= "Yaxaka"
 SWEP.Category        = "Yaxaka's SCP SWEPs"
 SWEP.Instructions		= "TF"
-SWEP.Spawnable = true
+SWEP.Spawnable = false
 SWEP.AdminOnly = true
 SWEP.UseHands = true
 SWEP.DrawAmmo = false
@@ -43,6 +43,9 @@ end
 function SWEP:PrimaryAttack()
 	local owner = self:GetOwner()
 	if SERVER then
+		if self.Mode035 == 0 then
+			scp035_takebody(owner)
+		end
 		if self.Mode035 == 1 then
 			scp035_psyradius(owner)
 		end
