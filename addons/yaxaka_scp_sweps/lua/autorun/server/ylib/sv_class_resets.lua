@@ -65,7 +65,7 @@ function ResetClassParameters(ply, class, faction)
 
 		if class_name == "SCP-035" then
 			scp_ply_vars.scp_035_ply = ply
-			ply:SetModel("models/Gibs/HGIBS.mdl")
+			ply:SetModel("models/vinrax/props/scp035/035_mask.mdl")
 			scp035_victimtable = {}
 			scp035_victimlvl = {}
 			ply:StripWeapons()

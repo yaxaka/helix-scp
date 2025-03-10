@@ -22,7 +22,6 @@ hook.Add("RenderScreenspaceEffects", "035Change", function()
     end
 end)
 
-
 function yss_lookat035(ply, scp)
     if IsValid(ply) then
         if ply:Alive() then
@@ -158,7 +157,7 @@ hook.Add("Think", "LookatmeHector", function()
     for k,v in pairs(ents.FindInSphere(lply:GetPos(), 200)) do
         if v:IsPlayer() && v ~= lply then
             local mdl = v:GetModel()
-            if mdl == "models/Gibs/HGIBS.mdl" then
+            if mdl == "models/vinrax/props/scp035/035_mask.mdl" then
                 yss_lookat035(lply, v)
             end
         end
