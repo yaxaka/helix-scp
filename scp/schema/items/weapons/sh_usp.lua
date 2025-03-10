@@ -3,8 +3,8 @@ ITEM.description = "Разработан немецкой компанией Hec
 ITEM.model = "models/weapons/arccw/c_uc_usp.mdl"
 ITEM.class = "arccw_uc_usp"
 ITEM.weaponCategory = "sidearm"
-ITEM.width = 1
-ITEM.height = 1
+ITEM.width = 2
+ITEM.height = 2
 
 ITEM.iconCam = {
 	pos = Vector(-107.17, 725.52, 8.7),

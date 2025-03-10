@@ -8,6 +8,7 @@ net.Receive("SCP035RestoreView", function()
   local lply = LocalPlayer()
   lply.InsaneColor = false
   lply.under_035 = false
+  text035 = nil
 end)
 
 net.Receive("SCP035_Psy2", function()
@@ -51,7 +52,9 @@ net.Receive("SCP035Change", function()
       print(lply.InsaneColorStage)
     end
     if (bool ~= nil) then
-
+      local lply = LocalPlayer()
+      lply.InsaneColor = false
+      text035 = nil
       lply.under_035 = bool
     end
 end)

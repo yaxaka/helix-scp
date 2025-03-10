@@ -24,3 +24,4 @@ hook.Add("MedicineEFT", "Psyho", function(ply, type, strong)
 		end
 	end
 end)
+

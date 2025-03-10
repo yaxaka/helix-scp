@@ -4,8 +4,8 @@ if CLIENT then
     SWEP.DrawWeaponInfoBox = true
 end
 
-SWEP.PrintName = "Anaglin"
-SWEP.Author = "Craft_Pig"
+SWEP.PrintName = "Pill"
+SWEP.Author = "Yaxaka"
 SWEP.Purpose = 
 [[
 Gives On Painkillers, 95s

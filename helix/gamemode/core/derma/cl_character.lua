@@ -146,7 +146,7 @@ function PANEL:Init()
 	self:DockPadding(padding, padding, padding, padding)
 
 	local backimg = self:Add("DImage")
-	backimg:SetImage("back2.png")
+	backimg:SetImage("back1.png")
 	backimg:SetPos(-1, 0)
 	backimg:SetSize(ScrW()+1, ScrH())
 
@@ -238,46 +238,51 @@ function PANEL:Init()
 
 	local MainScroll = vgui.Create( "DScrollPanel", newsbox )
    	MainScroll:Dock(FILL)
-	for k,v in pairs(scp_update_table) do
+   	MainScroll:DockMargin(0, 0, 0, 50)
+
+   	table.SortByMember( scp_update_table, "version" )
+
+	for _,v in ipairs(scp_update_table) do
+
 		local headerlog = MainScroll:Add("editablepanel")
 		headerlog:Dock(TOP)
 		headerlog:DockMargin(1, 30, 0, 0)
-		local tw, th = Helix_YUI_GetSize(v["header"], "DermaLarge")
+		local tw, th = Helix_YUI_GetSize(v.header, "DermaLarge")
 		headerlog:SetSize(tw, th)
 		headerlog.Paint = function(self, w, h)
 			surface.SetFont("DermaLarge")
 			surface.SetTextColor(color_white)
 			surface.SetTextPos(20, 0)
-			surface.DrawText(v["header"])
+			surface.DrawText(v.header)
 		end
 			
 			
 		local version = MainScroll:Add("editablepanel")
 		version:Dock(TOP)
 		version:DockMargin(1, 0, 0, 12)
-		local tw, th = Helix_YUI_GetSize(v["version"], "DermaDefault")
+		local tw, th = Helix_YUI_GetSize(v.version, "DermaDefault")
 		version:SetSize(tw, th)
 		version.Paint = function(self, w, h)
 			surface.SetFont("DermaDefault")
 			surface.SetTextColor(color_white)
 			surface.SetTextPos(23, 0)
-			surface.DrawText(v["version"])
+			surface.DrawText(v.version)
 		end
 			
 			
 		local desc = MainScroll:Add("DLabel")
 		desc:Dock(TOP)
 		desc:DockMargin(10, 0, 0, 10)
-		local tw, th = Helix_YUI_GetSize(v["desc"], "Community")
+		local tw, th = Helix_YUI_GetSize(v.desc, "Community")
 		desc:SetSize(200, 60)
 		desc:SetTextColor(color_white)
 		desc:SetFont("Community")
-		desc:SetText("" .. v["desc"])
+		desc:SetText(" " .. v.desc)
+		desc:SetWrap(true)
 		desc.Paint = function(self, w, h)
 			surface.SetDrawColor(Color(91, 91, 91, 80))
 			surface.DrawRect(0, 0, w-10, h)
 		end	
-		desc:SetWrap(true)
 	end
 
 	self.mainButtonList:SizeToContents()-- Main panel

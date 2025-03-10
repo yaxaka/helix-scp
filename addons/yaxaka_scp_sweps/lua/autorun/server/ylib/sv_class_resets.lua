@@ -65,6 +65,7 @@ function ResetClassParameters(ply, class, faction)
 
 		if class_name == "SCP-035" then
 			scp_ply_vars.scp_035_ply = ply
+			ply:SetModel("models/Gibs/HGIBS.mdl")
 			scp035_victimtable = {}
 			scp035_victimlvl = {}
 			ply:StripWeapons()
@@ -117,3 +118,4 @@ end
 hook.Add("PlayerDisconnected", "PlayerleaveSCP", function(ply)
     ResetSCPVar2(ply)
 end)
+

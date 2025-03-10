@@ -25,6 +25,7 @@ function scp035_psyradius(ply)
 				v:Add035LVL()
 				scp035_launchpsy(v, lvl)
 			elseif (lvl >= 7) then
+				print("trigger1")
 				scp035_setcontrol(v)
 			end
 		end
@@ -58,8 +59,10 @@ function scp035_secondpsy(ply, task)
 end
 
 function scp035_setcontrol(ply)
-	if (ply:Under035Control()) then return end
+	if (ply:Under035Control() == true) then return end
+	print("trigger2")
 	ply:Set035Control()
+	print(ply)
 	scp035_sendvictims(ply)
 end
 
@@ -87,9 +90,11 @@ net.Receive("SCP035_PsySelect", function(l, ply)
 		end
 
 		if type == 1 then
-			if psyhozlvl >= 7 then scp035_setcontrol(target) return end
+			if psyhozlvl >= 7 then print("trigger5") scp035_setcontrol(target) return end
+			print("trigger4")
 			psyhozlvl = psyhozlvl + 1
 			target:Add035LVL()
+			scp035_setcontrol(target)
 			scp035_launchpsy(target, psyhozlvl)
 		end
 

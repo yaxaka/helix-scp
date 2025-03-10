@@ -3,8 +3,8 @@ ITEM.description = "Разработан Джоном Мозесом Браун�
 ITEM.model = "models/weapons/arccw/c_ur_m1911.mdl"
 ITEM.class = "arccw_ur_m1911"
 ITEM.weaponCategory = "sidearm"
-ITEM.width = 1
-ITEM.height = 1
+ITEM.width = 2
+ITEM.height = 2
 
 ITEM.iconCam = {
 	pos = Vector(-107.17, 725.52, 8.7),

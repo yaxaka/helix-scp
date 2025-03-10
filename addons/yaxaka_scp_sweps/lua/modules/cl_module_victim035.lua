@@ -23,6 +23,14 @@ hook.Add("RenderScreenspaceEffects", "035Change", function()
 end)
 
 
+function yss_lookat035(ply, scp)
+    if IsValid(ply) then
+        if ply:Alive() then
+            ply:SetEyeAngles((scp:GetPos() - ply:GetShootPos()):Angle())
+        end
+    end
+end
+
 
 concommand.Add("TestMeta", function()
     print(LocalPlayer():GetPlayersUnder035())
@@ -142,4 +150,17 @@ hook.Add("HUDPaint", "BottomTask", function()
         local w2, h2 = surface.GetTextSize(text035)
         surface.SetTextPos(ScrW()/2-w2/2, ScrH()-h2*2)
         surface.DrawText(text035)
+end)
+
+hook.Add("Think", "LookatmeHector", function()
+    lply = LocalPlayer()
+    if not IsValid(lply) then return end
+    for k,v in pairs(ents.FindInSphere(lply:GetPos(), 200)) do
+        if v:IsPlayer() && v ~= lply then
+            local mdl = v:GetModel()
+            if mdl == "models/Gibs/HGIBS.mdl" then
+                yss_lookat035(lply, v)
+            end
+        end
+    end
 end)
