@@ -157,7 +157,7 @@ hook.Add("Think", "LookatmeHector", function()
     for k,v in pairs(ents.FindInSphere(lply:GetPos(), 200)) do
         if v:IsPlayer() && v ~= lply then
             local mdl = v:GetModel()
-            if mdl == "models/vinrax/props/scp035/035_mask.mdl" then
+            if mdl == "models/scp_035_real/scp_035_real.mdl" then
                 yss_lookat035(lply, v)
             end
         end

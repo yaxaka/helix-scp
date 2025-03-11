@@ -93,6 +93,7 @@ function PLAYER:ResetMaterials()
 	for k,v in pairs(self:GetMaterials()) do
 		self:SetSubMaterial(k, "")
 	end
+	self:SetMaterial("")
 end
 
 

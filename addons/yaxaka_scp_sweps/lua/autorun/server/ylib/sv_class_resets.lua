@@ -9,74 +9,31 @@ function ResetClassParameters(ply, class, faction)
 		
 
 		if class_name == "SCP-096" then
-			ply:SetWalkSpeed(50)
-       		ply:SetSlowWalkSpeed(50)
-        	ply:SetRunSpeed(50)
-        	ply:StripWeapons()
-        	ply:Give("scp096_swep")
-        	ply.SCP = true
-        	ply:ToggleWepRaised()
+			ply:SetSCP(yss_scp096)
         	scp096_reset_targets()
-        	ply:SetModel("models/washton/scp096/scp096unity.mdl")
         	scp_ply_vars.scp_096_ply = ply
 		end
 
 		if class_name == "SCP-173" then
-			ply:SetWalkSpeed(200)
-        	ply:SetSlowWalkSpeed(150)
-        	ply:SetRunSpeed(500)
-        	ply:StripWeapons()
-        	ply:Give("scp173_swep")
-        	ply.SCP = true
-        	ply:ToggleWepRaised()
-        	spawn_scp173_model(ply)
+			ply:SetSCP(yss_scp173)
         	scp_ply_vars.scp_173_ply = ply
+        	spawn_scp173_model(ply)
 		end
 
 		if class_name == "SCP-999" then
 			scp_ply_vars.scp_999_ply = ply
 		end
 
-		if class_name == "SCP-131-A" then
-			scp_ply_vars.scp_131_a_ply = ply
-			ply:SetModel("models/scprp/scp131a2.mdl")
-			ply:StripWeapons()
-			ply:Give("scp131_swep")
-			ply.SCP = true
-			ply:ToggleWepRaised()
-			ply:SetWalkSpeed(200)
-			ply:SetSlowWalkSpeed(150)
-			ply:SetRunSpeed(500)
-			ply:SetFriction(0.05)
-		end
-
-		if class_name == "SCP-131-B" then
-			scp_ply_vars.scp_131_b_ply = ply
-			ply:SetModel("models/scprp/scp131b2.mdl")
-			ply:StripWeapons()
-			ply:Give("scp131_swep")
-			ply.SCP = true
-			ply:ToggleWepRaised()
-			ply:SetWalkSpeed(200)
-			ply:SetSlowWalkSpeed(150)
-			ply:SetRunSpeed(500)
-			ply:SetFriction(0.05)
-		end
-
 		if class_name == "SCP-035" then
+			ply:SetSCP(yss_scp035)
 			scp_ply_vars.scp_035_ply = ply
-			ply:SetModel("models/scp_035_real/scp_035_real.mdl")
 			scp035_victimtable = {}
 			scp035_victimlvl = {}
-			ply:StripWeapons()
-			ply:Give("scp035_swep")
-			ply.SCP = true
-			ply:ToggleWepRaised()
 		end
 	end
 
 	if team_name ~= "SCP" then
-		ply.SCP = false
+		ply:RemoveSCP()
 		
 	end
 
@@ -85,6 +42,7 @@ end
 function ResetSCPVar(ply)
 	net.Start("ResetSCP_Client")
 	net.Send(ply)
+	ply:ResetMaterials()
 	for i,v in pairs(scp_ply_vars) do
 		if scp_ply_vars[i] == ply then
 
@@ -98,7 +56,6 @@ function ResetSCPVar(ply)
 
 
 
-			ply.SCP = false
 			scp_ply_vars[i] = nil
 			--ply:Spawn()
 		end
