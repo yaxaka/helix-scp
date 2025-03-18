@@ -4,6 +4,7 @@ ITEM.description = "Органайзер высокого уровня для т
 ITEM.category = "Медицина"
 ITEM.width = 2
 ITEM.height = 2
+ITEM.pillBag = true
 
 ITEM.invWidth = ix.config.Get("PillsWidthC", 3)
 ITEM.invHeight = ix.config.Get("PillsHeightC", 4)

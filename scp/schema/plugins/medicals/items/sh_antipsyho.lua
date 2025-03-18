@@ -4,6 +4,7 @@ ITEM.description = "Таблетка овальной формы, с грави�
 ITEM.category = "Медицина"
 ITEM.width = 1
 ITEM.height = 1
+ITEM.pill = true
 
 ITEM.noBusiness = true
 

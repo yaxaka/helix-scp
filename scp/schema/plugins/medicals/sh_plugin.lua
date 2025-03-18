@@ -7,6 +7,26 @@ PLUGIN.readme = [[
 https://steamcommunity.com/id/yaxaka/
 ]]
 
+local case_table = {
+	["tablecase1"] = true,
+	["tablecase2"] = true, 
+	["tablecase3"] = true,
+}
+
+if SERVER then
+
+function PLUGIN:CanTransferItem(item, currentInv, oldInv)
+	local client = item.GetOwner and item:GetOwner() or nil
+	if (oldInv.vars ~= nil) then
+		local ispillbag = case_table[oldInv.vars.isBag]
+		if (ispillbag) && not (item.pill) then
+			client:Notify("Вы можете положить сюда только таблетки!")
+			return false
+		end
+	end
+end
+
+end
 
 
 ix.config.Add("shizaDelay", 10, "Раз в какое время запускать функцию шизы", nil, {
