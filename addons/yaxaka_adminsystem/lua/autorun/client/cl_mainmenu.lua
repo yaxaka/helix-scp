@@ -294,6 +294,7 @@ function PANELMain:Init()
 	self.Zones.ImageHover = Material("admin_zones_hover.png")
 	self.Zones.Color = Color(148, 40, 150, 200)
 	self.Zones.HoverColor = Color(148, 40, 150, 255)
+	
 	self.Logs = self.mainbuttons:Add("YButton")
 	self.Logs:SetPos(247, 141)
 	self.Logs:SetSize(128, 128)

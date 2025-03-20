@@ -43,10 +43,31 @@ function PANEL:Init()
 		local nickw, nickh = Helix_YUI_GetSize(nick, "NickFont")
 		local classw, classh = Helix_YUI_GetSize(class, "HudHintTextLarge")
 
-		self.Back = self:Add("editablepanel")
+		self.Back = self:Add("DButton")
 		self.Back:SetSize(700, 25)
+		self.Back:SetText("")
 		self.Back:Dock(TOP)
 		self.Back:DockMargin(0, 15, 0, 0)
+		self.Back.Target = v
+
+		function self.Back:DoClick()
+			print(self.Target)
+			local Menu = DermaMenu()
+
+			local btnWithIcon = Menu:AddOption( "Option with icon" )
+			btnWithIcon:SetIcon( "icon16/bug.png" )	-- Icons are in materials/icon16 folder
+
+			Menu:AddSpacer()
+
+			local Child, Parent = Menu:AddSubMenu( "Предупреждения" )
+			Parent:SetIcon( "icon16/arrow_refresh.png" )
+			Child:AddOption( "Телепорт в NonRP зону" ):SetIcon( "icon16/group.png" )
+			Child:AddOption( "NonRP поведение" ):SetIcon( "icon16/group.png" )
+			Child:AddOption( "Ручной ввод .../" ):SetIcon( "icon16/group.png" )
+
+			Menu:Open()
+
+		end
 
 
 		self.Name = self:Add("DLabel", self.Back)
@@ -76,8 +97,12 @@ function PANEL:Init()
 		self.class:DockMargin(nickw+steamidw+classw/2+10, -13, 0, 0)
 
 		self.Back.Paint = function(self, w, h)
-			surface.SetDrawColor(0, 109, 155)
-			surface.DrawRect(0, 0, w, h)
+			if self:IsHovered() then
+				surface.SetDrawColor(0, 141, 202)
+			else
+				surface.SetDrawColor(0, 109, 155)
+			end
+				surface.DrawRect(0, 0, w, h)
 		end
 	end
 end
