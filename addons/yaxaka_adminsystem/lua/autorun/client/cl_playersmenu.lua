@@ -17,6 +17,17 @@ surface.CreateFont( "NickFont", {
 } )
 
 
+function yas_sendwarn(text_type, priority, target)
+	print("trigger")
+	print(text_type)
+	net.Start("YAS_Channel")
+	net.WriteInt(text_type, 5)
+	net.WriteInt(priority, 5)
+	net.WriteEntity(target)
+	net.SendToServer()
+end
+
+
 local PANEL = {}
 
 
@@ -51,7 +62,6 @@ function PANEL:Init()
 		self.Back.Target = v
 
 		function self.Back:DoClick()
-			print(self.Target)
 			local Menu = DermaMenu()
 
 			local btnWithIcon = Menu:AddOption( "Option with icon" )
@@ -60,10 +70,13 @@ function PANEL:Init()
 			Menu:AddSpacer()
 
 			local Child, Parent = Menu:AddSubMenu( "Предупреждения" )
-			Parent:SetIcon( "icon16/arrow_refresh.png" )
-			Child:AddOption( "Телепорт в NonRP зону" ):SetIcon( "icon16/group.png" )
-			Child:AddOption( "NonRP поведение" ):SetIcon( "icon16/group.png" )
-			Child:AddOption( "Ручной ввод .../" ):SetIcon( "icon16/group.png" )
+			Parent:SetIcon( "icon16/user_red.png" )
+			Child:AddOption( "Телепорт в NonRP зону", function() yas_sendwarn(2, 1, self.Target) end ):SetIcon( "icon16/group.png" )
+			Child:AddOption( "NonRP поведение", function() yas_sendwarn(1, 2, self.Target) end ):SetIcon( "icon16/group.png" )
+			Child:AddOption( "Ручной ввод .../", function() yas_sendwarn(1, 1, self.Target) end ):SetIcon( "icon16/group.png" )
+
+			
+
 
 			Menu:Open()
 
@@ -88,7 +101,6 @@ function PANEL:Init()
 		self.Steamid:Dock(TOP)
 		self.Steamid:DockMargin(nickw+15, -26, 0, 0)
 
-		print(nickw+steamidw+15)
 		self.class = self:Add("YLabel", self.Back)
 		self.class:SetFont("HudHintTextLarge")
 		self.class:SetText(class)
