@@ -10,3 +10,12 @@ hook.Add("PlayerInitialSpawn", "Yas_Role", function(ply)
 	end
 end)
 
+util.AddNetworkString("YAS_Channel")
+
+net.Receive("YAS_Channel", function(len, ply)
+	local role = ply:GetRole()
+	if role == "Moderator" then return end
+	net.Start("YAS_Channel")
+	net.WriteTable(yas_roles)
+	net.Send(ply)
+end)
