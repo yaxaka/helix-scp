@@ -130,6 +130,7 @@ function PANEL3:Init()
 end
 
 function PANEL3:DoClick()
+	yas_bclick()
 	local parent = self:GetParent()
 	parent:Close()
 end
@@ -155,6 +156,7 @@ function PANEL33:Init()
 end
 
 function PANEL33:DoClick()
+	yas_bclick()
 	local parent = self:GetParent()
 	if parent.Activetab == nil then
 
@@ -185,6 +187,7 @@ function PANEL4:Init()
 end
 
 function PANEL4:DoClick()
+	yas_bclick()
 	local parent = self:GetParent()
 	local mainparent = parent:GetParent()
 	local newpanel = self.NewPanel
@@ -294,7 +297,7 @@ function PANELMain:Init()
 	self.Zones.ImageHover = Material("admin_zones_hover.png")
 	self.Zones.Color = Color(148, 40, 150, 200)
 	self.Zones.HoverColor = Color(148, 40, 150, 255)
-	
+
 	self.Logs = self.mainbuttons:Add("YButton")
 	self.Logs:SetPos(247, 141)
 	self.Logs:SetSize(128, 128)

@@ -77,10 +77,20 @@ function PANEL:Init()
 				Teleport:AddOption( "Телепортировать на точку", function() yas_tp_send(ply_target) end ):SetIcon( "icon16/user_go.png" )
 			end
 
+			local Mute, Parent3 = Menu:AddSubMenu( "Мут" )
+			Parent3:SetIcon( "icon16/sound.png" ) 
 
-
+			if ply_target.voice_muted ~= nil then
+				Mute:AddOption( "Размутить воис", function() yas_voiceunmute(ply_target) end ):SetIcon( "icon16/sound_add.png" )
+			else
+				Mute:AddOption( "Замутить воис", function() yas_voicemute(ply_target) end ):SetIcon( "icon16/sound_mute.png" )
+			end
 			
-
+			if ply_target.chat_muted ~= nil then
+				Mute:AddOption( "Размутить чат", function() yas_chatunmute(ply_target) end ):SetIcon( "icon16/sound_add.png" )
+			else
+				Mute:AddOption( "Замутить чат", function() yas_chatmute(ply_target) end ):SetIcon( "icon16/sound_mute.png" )
+			end
 
 			Menu:Open()
 

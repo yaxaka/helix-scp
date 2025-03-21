@@ -6,6 +6,8 @@ local load_queue = {}
 
 hook.Add("PlayerInitialSpawn", "Yas_Role", function(ply)
 	load_queue[ ply ] = true
+	ply.voice_muted = false
+	ply.chat_muted = false
 
 	if yas_LoadPlayer(ply) == nil or false then
 		yas_SavePlayer(ply, "User")
@@ -31,6 +33,7 @@ end )
 util.AddNetworkString("YAS_Setup")
 util.AddNetworkString("YAS_Warning")
 util.AddNetworkString("YAS_TP")
+util.AddNetworkString("YAS_Mutes")
 
 net.Receive("YAS_Warning", function(len, ply)
 
@@ -65,4 +68,21 @@ net.Receive("YAS_TP", function(len, ply)
 
 	target:Notify("Вы были телепортированы администрацией сервера.")
 	target:SetPos(pos)
+end)
+
+net.Receive("YAS_Mutes", function(len, ply)
+	if not ply:Auth("mute") then ply:Notify("5051") return end
+
+	local type = net.ReadInt(4)
+	local target = net.ReadEntity()
+
+	if type == 1 then
+		ply.voice_muted = true
+	elseif type == 2 then
+		ply.voice_muted = false
+	elseif type == 3 then
+		ply.chat_muted = true
+	elseif type == 4 then
+		ply.chat_muted = false
+	end
 end)
