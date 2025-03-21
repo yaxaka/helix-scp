@@ -5,22 +5,36 @@ end)
 local load_queue = {}
 
 hook.Add("PlayerInitialSpawn", "Yas_Role", function(ply)
+	load_queue[ ply ] = true
+
 	if yas_LoadPlayer(ply) == nil or false then
 		yas_SavePlayer(ply, "User")
 	end
+
+	if yas_LoadPlayer(ply) == "Superadmin" then
+		ply:SetUserGroup("superadmin")
+	end
 end)
 
+hook.Add( "StartCommand", "myAddonName/Load", function( ply, cmd )
+	if load_queue[ ply ] and not cmd:IsForced() then
+		load_queue[ ply ] = nil
+
+		net.Start("YAS_Setup")
+		net.WriteString(ply:GetRole())
+		net.WriteString(ply:GetFlags())
+		net.Send(ply)
+	end
+end )
 
 
-
-
-util.AddNetworkString("YAS_Channel")
+util.AddNetworkString("YAS_Setup")
 util.AddNetworkString("YAS_Warning")
+util.AddNetworkString("YAS_TP")
 
-net.Receive("YAS_Channel", function(len, ply)
-	local role = ply:GetRole()
+net.Receive("YAS_Warning", function(len, ply)
 
-	if role == "Moderator" then return end
+	if not ply:Auth("warn") then return end
 
 	local text_type = net.ReadInt(5)
 	local priority = net.ReadInt(5)
@@ -41,4 +55,14 @@ net.Receive("YAS_Channel", function(len, ply)
 
 	net.Send(target)
 
+end)
+
+net.Receive("YAS_TP", function(len, ply)
+	if not ply:Auth("tp") then return end
+
+	local target = net.ReadEntity()
+	local pos = net.ReadVector()
+
+	target:Notify("Вы были телепортированы администрацией сервера.")
+	target:SetPos(pos)
 end)

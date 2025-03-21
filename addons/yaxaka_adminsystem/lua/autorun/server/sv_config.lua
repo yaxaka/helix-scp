@@ -1,24 +1,28 @@
 yas_roles = {
-	{	name = "User",
+	['User'] = {	
+		name = "User",
 		flags = nil,
 		superadmin = false,
 		color = Color(255, 255, 255),
 		hierarchy = 0,	},
 
-	{	name = "Moderator",
-		flags = 'watch,reports',
+	['Moderator'] = {	
+		name = "Moderator",
+		flags = 'warn,tp',
 		superadmin = false,
 		color = Color(41, 26, 114),
 		hierarchy = 2,	},
 
-	{	name = "Superadmin",
-		flags = 'watch,reports,full',
+	['Superadmin'] = {	
+		name = "Superadmin",
+		flags = 'warn,tp,full',
 		superadmin = true,
 		color = Color(108, 0, 0),
 		hierarchy = 1024,	},
 
-	{	name = "Tester",
-		flags = 'watch,reports,full',
+	['Tester'] = {	
+		name = "Tester",
+		flags = 'warn,tp,full',
 		superadmin = true,
 		color = Color(108, 0, 0),
 		hierarchy = 1,	},
@@ -34,3 +38,4 @@ yas_config = {
 	text_nonrp = "Внимание! Ваши действия являются неадекватными, и вам стоит прекратить. Если вы продолжите, вы можете получить блокировку на длительный срок",
 	text_nonrpzone = "Внимание! Просьба не выходить из сервера и найти укромное место для телепортации Вас в NONRP зону!",
 }
+

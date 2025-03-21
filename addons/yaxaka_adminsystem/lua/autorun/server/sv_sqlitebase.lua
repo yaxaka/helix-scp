@@ -14,9 +14,8 @@ function yas_validrole(role)
 	for k,v in pairs(yas_roles) do
 		if (v.name == role) then
 			return true
-		else
-			print("Invalid YAS Role!")
-			return false
 		end
 	end
+	print("Invalid YAS Role!")
+	return false
 end

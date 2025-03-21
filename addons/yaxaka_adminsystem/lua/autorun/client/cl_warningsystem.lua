@@ -80,6 +80,8 @@ local function yas_warntype1(text, priority)
 	local a = vgui.Create("YASNotify")
 
 	timer.Create("YAS_WarnColors", 0.5, 0, function()
+		if not IsValid(a) then timer.Remove("YAS_WarnColors") end
+
    		if sendedwarntype ~= warntype then
    			warntype = sendedwarntype
    			surface.PlaySound("yas/yas_warn.wav")

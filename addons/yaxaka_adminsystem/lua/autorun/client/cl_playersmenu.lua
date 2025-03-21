@@ -17,17 +17,6 @@ surface.CreateFont( "NickFont", {
 } )
 
 
-function yas_sendwarn(text_type, priority, target)
-	print("trigger")
-	print(text_type)
-	net.Start("YAS_Channel")
-	net.WriteInt(text_type, 5)
-	net.WriteInt(priority, 5)
-	net.WriteEntity(target)
-	net.SendToServer()
-end
-
-
 local PANEL = {}
 
 
@@ -63,17 +52,32 @@ function PANEL:Init()
 
 		function self.Back:DoClick()
 			local Menu = DermaMenu()
+			ply_target = self.Target
+			local selfpos = LocalPlayer():GetPos()
 
-			local btnWithIcon = Menu:AddOption( "Option with icon" )
-			btnWithIcon:SetIcon( "icon16/bug.png" )	-- Icons are in materials/icon16 folder
+
+			local btnWithIcon = Menu:AddOption( "Скопировать SteamID", function() SetClipboardText(ply_target:SteamID()) end )
+			btnWithIcon:SetIcon( "icon16/page_copy.png" )
 
 			Menu:AddSpacer()
 
-			local Child, Parent = Menu:AddSubMenu( "Предупреждения" )
-			Parent:SetIcon( "icon16/user_red.png" )
-			Child:AddOption( "Телепорт в NonRP зону", function() yas_sendwarn(2, 1, self.Target) end ):SetIcon( "icon16/group.png" )
-			Child:AddOption( "NonRP поведение", function() yas_sendwarn(1, 2, self.Target) end ):SetIcon( "icon16/group.png" )
-			Child:AddOption( "Ручной ввод .../", function() yas_sendwarn(1, 1, self.Target) end ):SetIcon( "icon16/group.png" )
+			local Warns, Parent = Menu:AddSubMenu( "Предупреждения" )
+			Parent:SetIcon( "icon16/exclamation.png" )
+			Warns:AddOption( "Телепорт в NonRP зону", function() yas_sendwarn(2, 1, ply_target) end ):SetIcon( "icon16/email_go.png" )
+			Warns:AddOption( "NonRP поведение", function() yas_sendwarn(1, 2, ply_target) end ):SetIcon( "icon16/email_go.png" )
+			Warns:AddOption( "Ручной ввод", function() yas_sendwarn(1, 1, ply_target) end ):SetIcon( "icon16/email_edit.png" )
+
+			Menu:AddSpacer()
+
+			local Teleport, Parent2 = Menu:AddSubMenu( "Телепорт" )
+			Parent2:SetIcon( "icon16/plugin_go.png" ) 
+			Teleport:AddOption( "Установить точку телепорта", function() yas_tp_pos(ply_target, selfpos) end ):SetIcon( "icon16/user_edit.png" )
+
+			if ply_target.yas_tp_pos ~= nil then
+				Teleport:AddOption( "Телепортировать на точку", function() yas_tp_send(ply_target) end ):SetIcon( "icon16/user_go.png" )
+			end
+
+
 
 			
 
@@ -90,7 +94,7 @@ function PANEL:Init()
 		self.Name:SetBright(false)
 		self.Name:SetFont("NickFont")
 		self.Name:Dock(TOP)
-		self.Name:DockMargin(10, -26, 0, 5)
+		self.Name:DockMargin(10, -27, 0, 5)
 
 
 

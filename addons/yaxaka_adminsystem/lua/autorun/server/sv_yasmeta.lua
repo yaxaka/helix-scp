@@ -3,14 +3,42 @@ local Player = FindMetaTable("Player")
 
 
 function Player:GetRole()
-	if yas_LoadPlayer(self) == nil or false then
-		return yas_LoadPlayer(self)
+	local role = yas_LoadPlayer(self)
+	if role == nil or false then
+		return nil
 	else
-		local role = yas_LoadPlayer(self)
-		for k,v in pairs(yas_roles) do
-			if v.name == role then
-				return role, v.color
-			end
-		end
+		local color = yas_roles[role].color
+		return role, color
+	end
+end
+
+function Player:GetFlags()
+	local flags = sql.QueryValue("SELECT Flags FROM yas_roles WHERE SteamID64 = " .. self:SteamID64())
+	if flags == false or nil then
+		return 'nil'
+	else
+		return flags
+	end
+end
+
+function Player:SetRole(role)
+	if yas_validrole(role) then
+		yas_SavePlayer(self, role)
+	end
+end
+
+function Player:Auth(flag)
+	local role = self:GetRole()
+	local flags = yas_roles[role].flags
+
+	if flags == nil then return false end
+
+	local have_flag = string.find(flags, flag)
+	local full_access = string.find(flags, "full")
+
+	if have_flag or full_access then
+		return true
+	else
+		return false
 	end
 end
