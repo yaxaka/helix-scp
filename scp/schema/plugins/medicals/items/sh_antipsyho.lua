@@ -12,7 +12,7 @@ ITEM.noBusiness = true
 
 ITEM.functions.Use = {
     name = "Использовать", 
-    icon = "icon16/add.png", 
+    icon = "icon16/pill.png", 
     OnRun = function(item)
         local client = item.player
 

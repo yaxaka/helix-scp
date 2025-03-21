@@ -21,7 +21,7 @@ end
 
 ITEM.functions.EquipOn = {
 	name = "Экипировать",
-	icon = "icon16/add.png", 
+	icon = "icon16/shield.png", 
 	OnRun = function(item)
 		local client = item.player
 		local entity = item.entity
@@ -46,7 +46,7 @@ ITEM.functions.EquipOn = {
 
 ITEM.functions.EquipOff = {
 	name = "Снять",
-	icon = "icon16/add.png", 
+	icon = "icon16/shield_delete.png", 
 	OnRun = function(item)
 		local client = item.player
 		local entity = item.entity

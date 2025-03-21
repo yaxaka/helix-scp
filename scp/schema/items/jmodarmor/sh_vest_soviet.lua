@@ -5,6 +5,7 @@ ITEM.category = "JArmor"
 ITEM.width = 2 
 ITEM.height = 3
 ITEM.Jname = "6B516"
+
 ITEM.functions.drop = {
 	tip = "dropTip",
 	icon = "icon16/world.png",
