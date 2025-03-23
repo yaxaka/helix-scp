@@ -7,6 +7,7 @@ util.AddNetworkString( "Cuffs_DragPlayer" )
 
 util.AddNetworkString( "Cuffs_TiePlayers" )
 util.AddNetworkString( "Cuffs_UntiePlayers" )
+util.AddNetworkString("SCP096Bag")
 
 local function GetTrace( ply )
 	local tr = util.TraceLine( {start=ply:EyePos(), endpos=ply:EyePos()+(ply:GetAimVector()*100), filter=ply} )
@@ -272,6 +273,11 @@ end)
 hook.Add("OnHandcuffed", "DayZCuffs RemoveInventoryItem", function(ply, cuffedply, handcuffs)
 	if cuffedply == scp_ply_vars.scp_096_ply then
 		cuffedply.BagOn = true
+		net.Start("SCP096Bag")
+		net.WriteEntity(cuffedply)
+		net.WriteBool(true)
+		net.Broadcast()
+		scp_096_chillout(cuffedply)
 		ply:Notify("Вы надели мешок")
 		cuffedply:Notify("Вам надели мешок")
 	end
@@ -280,6 +286,10 @@ end)
 hook.Add("OnHandcuffBreak", "DayZCuffs GiveInventoryItemIfFriend", function(cuffedply, handcuffs, friend)
 	if cuffedply == scp_ply_vars.scp_096_ply then
 		cuffedply.BagOn = false
+		net.Start("SCP096Bag")
+		net.WriteEntity(cuffedply)
+		net.WriteBool(false)
+		net.Broadcast()
 		cuffedply:Notify("С вас слетел мешок")
 	end
 end)

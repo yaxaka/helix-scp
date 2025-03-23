@@ -213,3 +213,53 @@ hook.Add("PostPlayerDraw", "SCP035_DrawMask", function(ply)
         
         modelMask:DrawModel()
 end)
+
+--scp096bag = nil
+
+local modelBag = ClientsideModel( "models/props_junk/garbage_bag001a.mdl" )
+modelBag:SetNoDraw( true )
+
+hook.Add("PostPlayerDraw", "SCP096_DrawMask", function(ply)
+    if scp096bag == nil then return end
+    if ply ~= scp096bag then return end
+        local attachments = ply:GetAttachments()
+        local keyEye = nil
+
+        for key, value in ipairs(attachments) do
+            if (value.name == "eyes") then keyEye = value.id end --? We find the attachment eye
+        end
+
+        local offsetvec = keyEye and ply:GetAttachment( keyEye ).Pos or Vector(-1, -2, -1)
+        local offsetang = keyEye and ply:GetAttachment( keyEye ).Ang or Angle(0, 0, -180)
+
+        if (keyEye) then --? If player have eye attachment (very precise)
+            local UpAng, RightAng, ForwardAng = offsetang:Up(), offsetang:Right(), offsetang:Forward()
+
+            offsetvec = offsetvec + RightAng * 0 + ForwardAng * 1.6 + UpAng * -1.3
+            offsetang:RotateAroundAxis(RightAng, 6)
+            offsetang:RotateAroundAxis(UpAng, 0)
+            offsetang:RotateAroundAxis(ForwardAng, 0)
+            modelBag:SetRenderOrigin(offsetvec)
+            modelBag:SetRenderAngles(offsetang)
+        else --? And if he has not
+            local boneid = ply:LookupBone( "ValveBiped.Bip01_Head1" ) --? Work only on models that have this bone, if not, the mask will not show up.
+        
+            if not boneid then
+                return
+            end
+            
+            local matrix = ply:GetBoneMatrix( boneid )
+            
+            if not matrix then 
+                return 
+            end
+            
+            local newpos, newang = LocalToWorld( offsetvec, offsetang, matrix:GetTranslation(), matrix:GetAngles() )
+
+            modelBag:SetPos( newpos )
+            modelBag:SetAngles( newang )
+            modelBag:SetupBones()
+        end
+        
+        modelBag:DrawModel()
+end)
