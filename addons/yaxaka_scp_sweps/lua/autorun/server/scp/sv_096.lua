@@ -123,6 +123,7 @@ end
 
 
 function scp_096_chillout(scp)
+	if scp096_scream_sound == nil then return end
 	scp096_scream_sound:Stop()
     scp:SetWalkSpeed(100)
     scp:SetSlowWalkSpeed(100)

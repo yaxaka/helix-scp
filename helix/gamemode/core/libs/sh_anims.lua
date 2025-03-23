@@ -458,10 +458,8 @@ if (SERVER) then
 			self.ixSeqCallback = callback
 			if (self ~= scp096_ply) then
 				self:SetCycle(0)
-				print("trigger")
 				self:SetPlaybackRate(0.1)
 			else
-				print("right trigger")
 				self:SetCycle(0)
 				self:SetPlaybackRate(0.1)
 			end

@@ -48,7 +48,13 @@ hook.Add( "SetupMove", "Cuffs Move Penalty", function(ply, mv, cmd)
 	local Distance = cuffs:GetRopeLength()
 	
 	local distFromTarget = ShootPos:Distance( TargetPoint )
-	if distFromTarget<=(Distance+5) then return end
+	local seq = ply:GetSequence()
+	if distFromTarget<=(Distance+5) then
+		if seq == 4 then
+			ply:LeaveSequence()
+		end
+		return
+	end
 	if ply:InVehicle() then
 		if SERVER and (distFromTarget>(Distance*3)) then
 			ply:ExitVehicle()
@@ -93,7 +99,9 @@ hook.Add( "SetupMove", "Cuffs Move Penalty", function(ply, mv, cmd)
 		local vec1 = kidnapper:GetShootPos()
 		local vec2 = ply:GetShootPos()
 		ply:SetEyeAngles( ( vec1 - vec2 ):Angle() )
+		ply:ForceSequence("walk", nil, nil, true)
 	end
+
 	mv:SetVelocity( dir )
 	
 	if SERVER and mv:GetVelocity():Length()>=(mv:GetMaxClientSpeed()*10) and ply:IsOnGround() and CurTime()>(ply.Cuff_NextDragDamage or 0) then
