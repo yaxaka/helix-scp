@@ -88,6 +88,12 @@ hook.Add( "SetupMove", "Cuffs Move Penalty", function(ply, mv, cmd)
 		if vertMult>0 then ply.Cuff_ForceJump=ply end
 	end
 	
+	if (dir ~= nil) then
+		local curr_sequence = ply:GetSequence()
+		local vec1 = kidnapper:GetShootPos()
+		local vec2 = ply:GetShootPos()
+		ply:SetEyeAngles( ( vec1 - vec2 ):Angle() )
+	end
 	mv:SetVelocity( dir )
 	
 	if SERVER and mv:GetVelocity():Length()>=(mv:GetMaxClientSpeed()*10) and ply:IsOnGround() and CurTime()>(ply.Cuff_NextDragDamage or 0) then

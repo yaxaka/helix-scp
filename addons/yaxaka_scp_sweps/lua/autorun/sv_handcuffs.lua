@@ -168,6 +168,7 @@ net.Receive( "Cuffs_DragPlayer", function(_,ply)
 	end
 end)
 
+
 local HookModel = Model("models/props_c17/TrapPropeller_Lever.mdl")
 net.Receive( "Cuffs_TiePlayers", function(_,ply)
 	if (not IsValid(ply)) or ply:IsHandcuffed() then return end

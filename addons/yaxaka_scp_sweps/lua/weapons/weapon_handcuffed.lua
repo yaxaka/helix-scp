@@ -448,4 +448,3 @@ function SWEP:GetBonePos( bonename, vm )
 	return pos, ang
 end
 
--- vk.com/urbanichka
