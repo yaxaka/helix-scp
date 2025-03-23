@@ -13,7 +13,8 @@ function Player:GetRole()
 end
 
 function Player:GetFlags()
-	local flags = sql.QueryValue("SELECT Flags FROM yas_roles WHERE SteamID64 = " .. self:SteamID64())
+	local role = self:GetRole()
+	local flags = yas_roles[role].flags
 	if flags == false or nil then
 		return 'nil'
 	else
