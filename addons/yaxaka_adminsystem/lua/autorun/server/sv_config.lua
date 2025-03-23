@@ -8,7 +8,7 @@ yas_roles = {
 
 	['Moderator'] = {	
 		name = "Moderator",
-		flags = 'warn,tp',
+		flags = 'warn,tp,pm',
 		superadmin = false,
 		color = Color(41, 26, 114),
 		hierarchy = 2,	},
@@ -22,7 +22,7 @@ yas_roles = {
 
 	['Tester'] = {	
 		name = "Tester",
-		flags = 'warn,tp,full',
+		flags = 'warn,tp,full,pm',
 		superadmin = true,
 		color = Color(108, 0, 0),
 		hierarchy = 1,	},

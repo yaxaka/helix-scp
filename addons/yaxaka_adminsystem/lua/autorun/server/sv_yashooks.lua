@@ -34,6 +34,10 @@ util.AddNetworkString("YAS_Setup")
 util.AddNetworkString("YAS_Warning")
 util.AddNetworkString("YAS_TP")
 util.AddNetworkString("YAS_Mutes")
+util.AddNetworkString("YAS_PM")
+util.AddNetworkString("YAS_God")
+util.AddNetworkString("YAS_HP")
+util.AddNetworkString("YAS_Freeze")
 
 net.Receive("YAS_Warning", function(len, ply)
 
@@ -58,6 +62,15 @@ net.Receive("YAS_Warning", function(len, ply)
 
 	net.Send(target)
 
+end)
+
+net.Receive("YAS_PM", function(len, ply)
+	if not ply:Auth("pm") then return end
+
+	local target = net.ReadEntity()
+	local text = net.ReadString()
+
+	target:ChatNotify("Администратор: " .. text)
 end)
 
 net.Receive("YAS_TP", function(len, ply)
@@ -85,4 +98,39 @@ net.Receive("YAS_Mutes", function(len, ply)
 	elseif type == 4 then
 		ply.chat_muted = false
 	end
+end)
+
+net.Receive("YAS_Freeze", function(len, ply)
+	if not ply:Auth("freeze") then return end
+
+	local target = net.ReadEntity()
+	local type = net.ReadInt(4)
+
+	if type == 1 then
+		target:Freeze(true)
+	else
+		target:Freeze(false)
+	end
+end)
+
+net.Receive("YAS_God", function(len, ply)
+	if not ply:Auth("god") then return end
+
+	local target = net.ReadEntity()
+	local type = net.ReadInt(4)
+
+	if type == 1 then
+		target:GodEnable()
+	else
+		target:GodDisable()
+	end
+end)
+
+net.Receive("YAS_HP", function(len, ply)
+	if not ply:Auth("hp") then return end
+
+	local target = net.ReadEntity()
+
+	target:SetHealth(target:GetMaxHealth())
+
 end)
