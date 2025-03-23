@@ -103,13 +103,13 @@ function PANEL:Init()
 
 			local Frez, ParentFrez = Menu:AddSubMenu( "Заморозка" )
 			ParentFrez:SetIcon( "icon16/plugin_go.png" ) 
-			Frez:AddOption( "Заморозить", function() yas_freeze(ply_target, 1) end ):SetIcon( "icon16/lightning_add.png" )
-			Frez:AddOption( "Разморозить", function() yas_freeze(ply_target, 2) end ):SetIcon( "icon16/lightning_delete.png" )
+			Frez:AddOption( "Включить", function() yas_freeze(ply_target, 1) end ):SetIcon( "icon16/lightning_add.png" )
+			Frez:AddOption( "Выключить", function() yas_freeze(ply_target, 2) end ):SetIcon( "icon16/lightning_delete.png" )
 
-			local God, ParentGod = Menu:AddSubMenu( "Заморозка" )
+			local God, ParentGod = Menu:AddSubMenu( "Бессмертие" )
 			ParentGod:SetIcon( "icon16/plugin_go.png" ) 
-			God:AddOption( "Включить бессмертие", function() yas_god(ply_target, 1) end ):SetIcon( "icon16/wand.png" )
-			God:AddOption( "Выключить бессмертие", function() yas_god(ply_target, 2) end ):SetIcon( "icon16/wand.png" )
+			God:AddOption( "Включить", function() yas_god(ply_target, 1) end ):SetIcon( "icon16/wand.png" )
+			God:AddOption( "Выключить", function() yas_god(ply_target, 2) end ):SetIcon( "icon16/wand.png" )
 
 			local hp = Menu:AddOption( "Восстановить хп", function() yas_hp(ply_target) end )
 			hp:SetIcon( "icon16/heart_add.png" )

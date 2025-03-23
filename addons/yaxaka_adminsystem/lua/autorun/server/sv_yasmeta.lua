@@ -15,7 +15,7 @@ end
 function Player:GetFlags()
 	local role = self:GetRole()
 	local flags = yas_roles[role].flags
-	if flags == false or nil then
+	if (flags == false) or (flags == nil) then
 		return 'nil'
 	else
 		return flags

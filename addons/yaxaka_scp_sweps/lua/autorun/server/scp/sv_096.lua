@@ -14,6 +14,7 @@ util.AddNetworkString("SCP096_SelfModel")
 
 hook.Add("Think", "SCP096_Parse", function()
 	if scp_ply_vars.scp_096_ply == nil then return end
+	if scp_ply_vars.scp_096_ply.BagOn == true then return end
 	for i, v in ipairs(player.GetAll()) do
     	local tr = v:GetEyeTrace()
     		if IsValid(tr.Entity) then

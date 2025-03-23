@@ -44,7 +44,7 @@ function yas_validrole(role)
 end
 
 timer.Create("/YAS_SQLSave/", 60, 0, function()
-	if #sqlsave_queue <= 0 then print("YAS SQL Queue empty") return end
+	if #sqlsave_queue <= 0 then return end
 	for k,v in pairs(sqlsave_queue) do
 		print("Saving player " .. k .. " with assigned role: " .. v)
 		yas_SQLSavePlayers(k, v)
