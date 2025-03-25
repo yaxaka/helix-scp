@@ -82,13 +82,6 @@ function scp096_triggered_func(scp)
 	scp:Freeze(true)
 	scp:EmitSound("096_triggering.wav")
 	scp096_triggered_anim(scp)
-	timer.Create("SCP_096_TRIGGERED", 29, 1, function()
-		scp096_scream_sound:PlayEx(1, 100)
-		scp:Freeze(false)
-		scp:SetWalkSpeed(400)
-		scp:SetRunSpeed(650)
-		scp:SetNoDraw(false)
-	end)
 end
 
 function scp096_triggered_anim(scp)
@@ -107,9 +100,22 @@ function scp096_triggered_anim(scp)
 	scpanim:SetPlaybackRate(0.1)
 	net.Start("SCP096_SelfModel")
 	net.Send(scp)
-	timer.Create("SCP_096_REMOVEFAKE", 29, 1, function()
-		scpanim:Remove()
+	timer.Create("SCP_096_REMOVEFAKE", 0.1, 0, function()
+		local f = scpanim:IsSequenceFinished()
+		if f then
+			scpanim:Remove()
+			scp096_triggered_anim2(scp)
+			timer.Remove("SCP_096_REMOVEFAKE")
+		end
 	end)
+end
+
+function scp096_triggered_anim2(scp)
+	scp096_scream_sound:PlayEx(1, 100)
+	scp:Freeze(false)
+	scp:SetWalkSpeed(400)
+	scp:SetRunSpeed(650)
+	scp:SetNoDraw(false)
 end
 
 function scp096_fake(fake)
