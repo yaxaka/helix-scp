@@ -176,7 +176,7 @@ hook.Add("PostPlayerDraw", "SCP035_DrawMask", function(ply)
         local keyEye = nil
 
         for key, value in ipairs(attachments) do
-            if (value.name == "eyes") then keyEye = value.id end --? We find the attachment eye
+            if (value.name == "eyes") then keyEye = value.id end 
         end
 
         local offsetvec = keyEye and ply:GetAttachment( keyEye ).Pos or Vector(2.5, -5.6, 0 )
@@ -192,7 +192,7 @@ hook.Add("PostPlayerDraw", "SCP035_DrawMask", function(ply)
             modelMask:SetRenderOrigin(offsetvec)
             modelMask:SetRenderAngles(offsetang)
         else --? And if he has not
-            local boneid = ply:LookupBone( "ValveBiped.Bip01_Head1" ) --? Work only on models that have this bone, if not, the mask will not show up.
+            local boneid = ply:LookupBone( "ValveBiped.Bip01_Head1" )
         
             if not boneid then
                 return
@@ -226,7 +226,7 @@ hook.Add("PostPlayerDraw", "SCP096_DrawMask", function(ply)
         local keyEye = nil
 
         for key, value in ipairs(attachments) do
-            if (value.name == "eyes") then keyEye = value.id end --? We find the attachment eye
+            if (value.name == "eyes") then keyEye = value.id end 
         end
 
         local offsetvec = keyEye and ply:GetAttachment( keyEye ).Pos or Vector(-1, -2, -1)
@@ -242,13 +242,14 @@ hook.Add("PostPlayerDraw", "SCP096_DrawMask", function(ply)
             modelBag:SetRenderOrigin(offsetvec)
             modelBag:SetRenderAngles(offsetang)
         else --? And if he has not
-            local boneid = ply:LookupBone( "ValveBiped.Bip01_Head1" ) --? Work only on models that have this bone, if not, the mask will not show up.
+            local boneid = ply:LookupBone( "ValveBiped.Bip01_Head1" ) 
         
             if not boneid then
                 return
             end
             
             local matrix = ply:GetBoneMatrix( boneid )
+
             
             if not matrix then 
                 return 
@@ -263,3 +264,5 @@ hook.Add("PostPlayerDraw", "SCP096_DrawMask", function(ply)
         
         modelBag:DrawModel()
 end)
+
+

@@ -1,3 +1,16 @@
+util.AddNetworkString("Shifrator")
+
+local function shifrator_control(item, ply, bool)
+	if not item.Shifrator then return end
+	net.Start("Shifrator")
+	if bool then
+		net.WriteBool(true)
+	else
+		net.WriteBool(false)
+	end
+	net.Send(ply)
+end
+
 local function GetAreSlotsClear(currentArmorItems, newArmorName)
 	local NewArmorInfo = JMod.ArmorTable[newArmorName]
 	local RequiredSlots = NewArmorInfo.slots
@@ -47,6 +60,7 @@ function JmodRemoveArmorByIDHelix(ply, ID, broken)
 			if Specs.snds and Specs.snds.uneq then
 				ply:EmitSound(Specs.snds.uneq, 60, math.random(80, 120))
 			else
+				if EquipSounds == nil then return end
 				ply:EmitSound(table.Random(EquipSounds), 60, math.random(80, 120))
 			end
 		end
@@ -152,6 +166,7 @@ hook.Add("JmodEquip", "EquipBeta", function(ply, armorname, item)
 			local clear, conflictid = GetAreSlotsClear(ply.EZarmor.items, armorname)
 			if (clear) then
 				JMod.EZ_Equip_Armor(ply, armorname)
+				shifrator_control(item, ply, true)
 			else
 				local itemname = tostring(ply.EZarmor.items[conflictid].name)
 				ply:Notify("Вы не можете надеть это поверх " .. itemname)
@@ -171,6 +186,7 @@ hook.Add("JmodUnEquip", "EquipBet2a", function(ply, armorname, item)
 		if allowed then
 			local jitem = getjmodid(ply, armorname)
 			if (jitem == false) then return end
+			shifrator_control(item, ply, false)
 			JmodRemoveArmorByIDHelix(ply, jitem, false)
 		elseif not allowed then
 			item:SetData("equip", true)
@@ -209,3 +225,4 @@ hook.Add("PlayerDeath", "DeleteInv", function(ply)
 		v:Remove()
 	end
 end)	
+

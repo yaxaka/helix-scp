@@ -277,7 +277,6 @@ hook.Add("OnHandcuffed", "DayZCuffs RemoveInventoryItem", function(ply, cuffedpl
 		net.WriteEntity(cuffedply)
 		net.WriteBool(true)
 		net.Broadcast()
-		scp_096_chillout(cuffedply)
 		ply:Notify("Вы надели мешок")
 		cuffedply:Notify("Вам надели мешок")
 	end

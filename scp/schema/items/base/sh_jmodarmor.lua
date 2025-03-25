@@ -27,6 +27,7 @@ ITEM.functions.EquipOn = {
 		local entity = item.entity
 		local equip = item:GetData("equip") 
 		if (IsValid(client)) && (equip ~= true) then
+			print("clienteq")
 			item:SetData("equip", true)
 			item:OnEquipped()
 		end
@@ -52,6 +53,7 @@ ITEM.functions.EquipOff = {
 		local entity = item.entity
 
 		if (IsValid(client)) && (item:GetData("equip") == true) then
+			print("clientuneq")
 			item:SetData("equip", false)
 			item:OnUnequipped()
 		end
@@ -78,23 +80,19 @@ ITEM:Hook("drop", function(item)
 end)
 
 
---[[
-function ITEM:CanTransfer(oldInventory, newInventory)
-	if (newInventory and self:GetData("equip")) then
-		return false
-	end
-
-	return true
-end--]]
-
-
 
 function ITEM:OnEquipped()
 	local client = self.player
 	hook.Run("JmodEquip", client, self.Jname, self)
+	if self.Shifrator then
+		client.Shifrator = true
+	end
 end
 
 function ITEM:OnUnequipped()
 	local client = self.player
 	hook.Run("JmodUnEquip", client, self.Jname, self)
+	if self.Shifrator then
+		client.Shifrator = false
+	end
 end

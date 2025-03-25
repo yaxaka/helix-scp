@@ -19,8 +19,8 @@ color_button_pressed = Color(0, 2, 94)
 scp_update_table = {
     [4] = {
         version = '0.0.7',
-        header = 'Update 4',
-        desc = "Бла бла бла приколямбусы чтото интересное ради теста",
+        header = 'Набор юного тревожника',
+        desc = "Добавлен органайзер таблов(таблетница). 3D модели в пути!",
     },
     [3] = {
         version = '0.0.6',
@@ -373,3 +373,34 @@ function Helix_YUI_ButtonClose(nname, x, y, parent, text, font, func, w, h)
         surface.DrawOutlinedRect( 0, 0, w, h, 1)
     end
 end
+
+
+
+net.Receive("Shifrator", function(l, ply)
+    local b = net.ReadBool()
+    if b then
+        LocalPlayer().Shifrator = true
+    else
+        LocalPlayer().Shifrator = nil
+    end
+end)
+
+hook.Add("PostDrawTranslucentRenderables", "Shifrator", function()
+    if LocalPlayer().Shifrator == nil or false then return end
+    local postodraw = nil
+    for k,v in pairs(player.GetAll()) do
+        local mdl = v:GetModel()
+        if mdl == "models/washton/scp096/scp096unity.mdl" then
+            local boneid = v:LookupBone( "ValveBiped.Bip01_Head1" )
+            local bonepos = v:GetBonePosition(boneid) 
+            postodraw = bonepos + Vector(3, 0, 2)
+        end
+    end
+    render.SetColorMaterial()
+
+    local pos = LocalPlayer():GetEyeTrace().HitPos
+
+    if postodraw == nil then return end
+    render.DrawSphere( postodraw, 7, 30, 30, Color( 0, 0, 0, 255 ) )
+
+end)

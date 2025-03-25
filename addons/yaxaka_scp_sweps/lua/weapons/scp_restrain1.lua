@@ -2,16 +2,16 @@ AddCSLuaFile()
 
 SWEP.Base = "weapon_cuff_base"
 
-SWEP.Category = "Handcuffs"
+SWEP.Category = "SCP Utility"
 SWEP.Author = "my_hat_stinks"
-SWEP.Instructions = "Stretchable restraint."
+SWEP.Instructions = "Подойди и надень!."
 
 SWEP.Spawnable = true
 SWEP.AdminOnly = true
 SWEP.AdminSpawnable = true
 
 SWEP.Slot = 3
-SWEP.PrintName = "Elastic Restraint"
+SWEP.PrintName = "Мешок для SCP-096"
 
 //
 // Handcuff Vars
@@ -22,7 +22,7 @@ SWEP.CuffMaterial = "models/props_pipes/GutterMetal01a"
 SWEP.CuffRope = "models/effects/vol_light001"
 SWEP.CuffStrength = 1.0
 SWEP.CuffRegen = 2.0
-SWEP.RopeLength = 100
+SWEP.RopeLength = 50
 SWEP.CuffReusable = true
 
 SWEP.CuffBlindfold = false

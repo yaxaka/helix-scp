@@ -18,7 +18,7 @@ hook.Add("Think", "SCP096_Parse", function()
 	for i, v in ipairs(player.GetAll()) do
     	local tr = v:GetEyeTrace()
     		if IsValid(tr.Entity) then
-    			if (tr.Entity == scp_ply_vars.scp_096_ply) && not (v.scp096_1) && (v:Alive()) && (scp_ply_vars.scp_096_ply ~= v) && (scp_ply_vars.scp_096_ply:IsPlayer()) then
+    			if (tr.Entity == scp_ply_vars.scp_096_ply) && not (v.scp096_1) && (v:Alive()) && (scp_ply_vars.scp_096_ply ~= v) && (scp_ply_vars.scp_096_ply:IsPlayer()) && (v.Shifrator ~= true) then
     				v:ChatPrint(tr.HitBox)
     				if (tr.HitBox == 18) then
     					v.scp096_1 = true
