@@ -8,12 +8,13 @@ hook.Add("PlayerInitialSpawn", "Yas_Role", function(ply)
 	load_queue[ ply ] = true
 	ply.voice_muted = false
 	ply.chat_muted = false
+	local role = ply:GetRole()
 
-	if yas_LoadPlayer(ply) == nil or false then
-		yas_SavePlayer(ply, "User")
+	if role == nil or false then
+		ply:SetRole("User")
 	end
 
-	if yas_LoadPlayer(ply) == "Superadmin" then
+	if role == "Superadmin" then
 		ply:SetUserGroup("superadmin")
 	end
 end)

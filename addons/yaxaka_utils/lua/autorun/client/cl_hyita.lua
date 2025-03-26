@@ -147,7 +147,7 @@ function Helix_YUI_Button(nname, x, y, dparent, text, font, func, w, h, parent, 
     name:SetPos(x, y)                    
     name:SetSize(w, h)
     name.Pressed = false                  
-    name.DoClick = function()
+    name.DoClick = function(self)
         chat.PlaySound()
         if func == "Create" then
             local maximum = hook.Run("GetMaxPlayerCharacter", LocalPlayer()) or ix.config.Get("maxCharacters", 5)
@@ -163,7 +163,7 @@ function Helix_YUI_Button(nname, x, y, dparent, text, font, func, w, h, parent, 
         end
         if func == "Load" then      
             if (!bHasCharacter) then
-                name:SetDisabled(true)
+                self:SetDisabled(true)
             end
             dparent:Dim()
             parent.loadCharacterPanel:SlideUp()

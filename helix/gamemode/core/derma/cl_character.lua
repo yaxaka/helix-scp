@@ -141,6 +141,7 @@ function PANEL:Init()
 	local halfWidth = ScrW() * 0.5
 	local halfPadding = padding * 0.5
 	local bHasCharacter = #ix.characters > 0
+	print(bHasCharacter)
 
 	self.bUsingCharacter = LocalPlayer().GetCharacter and LocalPlayer():GetCharacter()
 	self:DockPadding(padding, padding, padding, padding)

@@ -1,12 +1,13 @@
 yas_plyroles_table = {}
-local sqlsave_queue = {}
+yas_sqlsave_queue = {}
 
 function yas_CreateTable()
 	sql.Query("CREATE TABLE IF NOT EXISTS yas_roles ( SteamID64 INTEGER PRIMARY KEY, Role STRING )")
+	sql.Query("INSERT OR REPLACE INTO yas_roles ( SteamID64, Role ) VALUES ( " ..  0000000 .. ", " .. sql.SQLStr("User") .. " )")
 end
 
 function yas_SQLSavePlayers(id, role)
-	sql.Query("INSERT OR REPLACE INTO yas_roles ( SteamID64, Role ) VALUES ( " ..  ply:SteamID64() .. ", " .. sql.SQLStr(role) .. " )")
+	sql.Query("INSERT OR REPLACE INTO yas_roles ( SteamID64, Role ) VALUES ( " ..  id .. ", " .. sql.SQLStr(role) .. " )")
 end
 
 function yas_LoadPlayerOld(ply)
@@ -23,9 +24,10 @@ end
 yas_localtable()
 
 function yas_SavePlayer(ply, role)
+	print(ply:SteamID64() .. " queued for role save.")
 	local steamid = ply:SteamID64()
 	yas_plyroles_table[steamid] = role
-	sqlsave_queue[steamid] = role
+	yas_sqlsave_queue[steamid] = role
 end
 
 function yas_LoadPlayer(ply)
@@ -44,10 +46,10 @@ function yas_validrole(role)
 end
 
 timer.Create("/YAS_SQLSave/", 60, 0, function()
-	if #sqlsave_queue <= 0 then return end
-	for k,v in pairs(sqlsave_queue) do
+	if #yas_sqlsave_queue <= 0 then return end
+	for k,v in pairs(yas_sqlsave_queue) do
 		print("Saving player " .. k .. " with assigned role: " .. v)
 		yas_SQLSavePlayers(k, v)
 	end
-	sqlsave_queue = {}
+	yas_sqlsave_queue = {}
 end)
