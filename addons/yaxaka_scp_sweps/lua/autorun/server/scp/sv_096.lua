@@ -24,10 +24,7 @@ hook.Add("Think", "SCP096_Parse", function()
     					v.scp096_1 = true
     					scp096_1_count = scp096_1_count + 1
     					scp096_triggered_func(scp_ply_vars.scp_096_ply)
-    					net.Start("SCP096_1_Ent")
-    					net.WriteInt(1, 3)
-    					net.WriteEntity(v)
-    					net.Send(scp_ply_vars.scp_096_ply)
+    					ysn_send("SCP096_1_Ent", {1, v}, scp_ply_vars.scp_096_ply)
     				end
     			end
     		end
@@ -187,10 +184,7 @@ hook.Add("PlayerDeath", "SCP096_AfterKill", function(victim)
 		scp096_1_count = 0
 		scp096_triggered = false
 		scp_096_chillout(scp_ply_vars.scp_096_ply)
-		net.Start("SCP096_1_Ent")
-		net.WriteInt(2, 3)
-		net.WriteEntity(victim)
-		net.Send(scp_ply_vars.scp_096_ply)
+		ysn_send("SCP096_1_Ent", {2, victim}, scp_ply_vars.scp_096_ply)
 	end
 end)
 

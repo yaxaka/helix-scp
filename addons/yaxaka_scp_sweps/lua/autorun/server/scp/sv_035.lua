@@ -26,7 +26,6 @@ function scp035_psyradius(ply)
 				v:Add035LVL()
 				scp035_launchpsy(v, lvl)
 			elseif (lvl >= 7) then
-				print("trigger1")
 				scp035_setcontrol(v)
 			end
 		end
@@ -73,10 +72,7 @@ end
 
 function scp035_sendvictims(target)
 	local ply = scp_ply_vars.scp_035_ply
-	net.Start("SCP035VictimTable")
-	print("seding")
-	net.WriteEntity(target)
-	net.Send(ply)
+	ysn_send("SCP035VictimTable", {target}, ply)
 end
 
 function scp035_launchpsy(ply, lvl)
@@ -91,9 +87,7 @@ function scp035_launchpsy_zombie(ply)
 end
 
 function scp035_secondpsy(ply, task)
-	net.Start("SCP035_Psy2")
-	net.WriteString(task)
-	net.Send(ply)
+	ysn_send("SCP035_Psy2", {task}, ply)
 end
 
 function scp035_setcontrol(ply)
@@ -152,11 +146,13 @@ hook.Add("PlayerDeath", "Remove035", function(victim)
 		table.RemoveByValue(scp035_victimtable, victim:Nick())
 		victim:Restore035LVL()
 		victim:Remove035Control()
-		net.Start("SCP035Remove")
-		net.WriteEntity(victim)
-		net.Send(scp_ply_vars.scp_035_ply)
+
+		ysn_send("SCP035Remove", {victim}, scp_ply_vars.scp_035_ply)
+
 		net.Start("SCP035RestoreView")
 		net.Send(victim)
+
+
 	end
 	if victim == scp_ply_vars.scp_035_ply then
 		local oldpos = victim:GetPos()
@@ -181,9 +177,7 @@ end)
 
 hook.Add("PlayerDisconnected", "Remove035D", function(ply)
 	if ply:Under035Control() && (scp_ply_vars.scp_035_ply ~= nil) then
-		net.Start("SCP035Remove")
-		net.WriteEntity(ply)
-		net.Send(scp_ply_vars.scp_035_ply)
+		ysn_send("SCP035Remove", {ply}, scp_ply_vars.scp_035_ply)
 	end
 	if ply == scp_ply_vars.scp_035_ply then
 		scp035_victimtable = {}
