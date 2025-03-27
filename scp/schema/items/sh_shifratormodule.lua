@@ -6,28 +6,8 @@ ITEM.width = 1
 ITEM.height = 1
 ITEM.noBusiness = true
 ITEM.eqs = 0
-
-ITEM.functions.drop = {
-	tip = "dropTip",
-	icon = "icon16/world.png",
-	OnRun = function(item)
-		local bSuccess, error = item:Transfer(nil, nil, nil, item.player)
-
-		if (!bSuccess and isstring(error)) or (item:GetData("equip")) then
-			item.player:Notify("Error")
-			return false
-		else
-			item:Remove()
-		end
-
-		return false
-		end,
-		OnCanRun = function(item)
-			return !IsValid(item.entity) and !item.noDrop and (item:GetData("equip") == false)
-	end
-}
-
-
+ITEM.hp = 100
+ITEM.broken = false
 
 if (CLIENT) then
 	function ITEM:PaintOver(item, w, h)
@@ -46,7 +26,7 @@ end
 
 ITEM.functions.EquipOn = {
 	name = "Экипировать",
-	icon = "icon16/shield.png", 
+	icon = "icon16/lightning_add.png", 
 	OnRun = function(item)
 		local client = item.player
 		local entity = item.entity
@@ -61,9 +41,12 @@ ITEM.functions.EquipOn = {
 	OnCanRun = function(item)
 		local equip = item:GetData("equip")
 		local client = item.player
-		if (equip ~= true) && not (IsValid(item.entity)) && (IsValid(client)) then
+		if (equip ~= true) && not (IsValid(item.entity)) && (IsValid(client)) && not (item.broken) then
 			return true
 		else
+			if (item.broken) then
+				client:Notify("Устройство сломано")
+			end
 			return false
 		end
 	end
@@ -71,7 +54,7 @@ ITEM.functions.EquipOn = {
 
 ITEM.functions.EquipOff = {
 	name = "Снять",
-	icon = "icon16/shield_delete.png", 
+	icon = "icon16/lightning_delete.png", 
 	OnRun = function(item)
 		local client = item.player
 		local entity = item.entity
@@ -95,13 +78,59 @@ ITEM.functions.EquipOff = {
 	end
 }
 
+ITEM.functions.hp = {
+    name = "Узнать состояние", 
+    tip = "Чем меньше значение, тем нестабильнее работа", 
+    icon = "icon16/information.png", 
+    OnRun = function(item)
+        local client = item.player
+        local entity = item.entity -- only set if this is function is being ran while the item is in the world
 
+        if (IsValid(client)) then
+            client:Notify("Состояние: " .. item.hp .. "/100")
+        end
+
+        return false
+    end,
+    OnCanRun = function(item)
+        local client = item.player
+        return IsValid(client)
+    end
+}
 
 function ITEM:OnEquipped()
 	local client = self.player
+	local timerid = tostring(self)
+
 	client.Shifrator = true
+
+	timer.Create(timerid, 2, 0, function()
+		self.hp = self.hp - 1
+		if self.hp <= 10 then
+			client:Notify("Шифратор отключён.")
+			timer.Remove(timerid)
+			self:SetData("equip", false)
+			self:OnUnequipped(client)
+			return
+		end
+	end)
+
 end
 
-function ITEM:OnUnequipped()
+function ITEM:OnUnequipped(oldclient)
 	local client = self.player
+	local timerid = tostring(self)
+
+	if client == nil then
+		oldclient.Shifrator = false
+	else
+		client.Shifrator = false
+	end
+	
+
+	if timer.Exists(timerid) then timer.Remove(timerid) end
+
+	if self.hp <= 10 then
+		self.broken = true
+	end
 end
