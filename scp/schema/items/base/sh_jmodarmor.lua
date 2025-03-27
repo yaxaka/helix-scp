@@ -27,7 +27,6 @@ ITEM.functions.EquipOn = {
 		local entity = item.entity
 		local equip = item:GetData("equip") 
 		if (IsValid(client)) && (equip ~= true) then
-			print("clienteq")
 			item:SetData("equip", true)
 			item:OnEquipped()
 		end

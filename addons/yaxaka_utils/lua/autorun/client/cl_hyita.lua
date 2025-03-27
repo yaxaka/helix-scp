@@ -375,19 +375,27 @@ function Helix_YUI_ButtonClose(nname, x, y, parent, text, font, func, w, h)
 end
 
 
+local stage_pomehi = 0
 
 net.Receive("Shifrator", function(l, ply)
     local b = net.ReadBool()
-    if b then
+    print(b)
+    if b == true then
         LocalPlayer().Shifrator = true
-    else
+        shifrator_pomehi()
+    elseif b == false then
+        if timer.Exists("ShifrPomehi") then timer.Remove("ShifrPomehi") end
+        if timer.Exists("ShifrSwitch") then timer.Remove("ShifrSwitch") end
+        if timer.Exists("ChpControl") then timer.Remove("ShifrSwitch") end
+        stage_pomehi = 0
         LocalPlayer().Shifrator = false
     end
-    print(b)
 end)
+
 
 hook.Add("PostDrawTranslucentRenderables", "Shifrator", function()
     if (LocalPlayer().Shifrator == false) or (LocalPlayer().Shifrator == nil) then return end
+    if pomehi_error == true then return end
     local postodraw = nil
     for k,v in pairs(player.GetAll()) do
         local mdl = v:GetModel()
@@ -403,5 +411,63 @@ hook.Add("PostDrawTranslucentRenderables", "Shifrator", function()
 
     if postodraw == nil then return end
     render.DrawSphere( postodraw, 7, 30, 30, Color( 0, 0, 0, 255 ) )
+
+end)
+
+
+function shifrator_pomehi()
+    local tbl = LocalPlayer():GetCharacter():GetInventory():GetItems(true)
+
+    for k,v in pairs(tbl) do
+        if v.name == "Шифратор" && v.data.equip == true && LocalPlayer().Shifrator == true then
+            if (v.hp <= 75) && (v.hp >= 50) then
+                stage_pomehi = 1
+            elseif (v.hp <= 49) && (v.hp >=30) then
+                stage_pomehi = 2
+            elseif (v.hp <= 29) then
+                stage_pomehi = 3
+            end
+        end
+    end
+
+    if timer.Exists("ShifrSwitch") then return else
+        timer.Create("ShifrSwitch", 5, 0, function()
+            if stage_pomehi == 3 then
+                pomehi_error = true
+                stage_pomehi = 0
+            elseif stage_pomehi == 0 then
+                pomehi_error = false
+                stage_pomehi = 3
+            end
+        end)
+    end
+
+end
+
+
+hook.Add("HUDPaint", "ShifrPomehi", function()
+    if stage_pomehi == 0 then return end
+    if LocalPlayer().Shifrator == false then return end
+
+    if stage_pomehi == 1 then
+        for i=1,10 do
+            surface.SetDrawColor(0, 0, 0)
+            surface.DrawRect(math.random(1, ScrW()), math.random(1, ScrH()), math.random(1, 10), math.random(1,10))
+        end
+    end
+
+    if stage_pomehi == 2 then
+        for i=1,20 do
+            surface.SetDrawColor(Color(math.random(0, 20), math.random(0, 20), math.random(0, 20)))
+            surface.DrawRect(math.random(1, ScrW()), math.random(1, ScrH()), math.random(1, 40), math.random(1,40))
+        end
+    end
+
+    if stage_pomehi == 3 then
+        for i=1,30 do
+            surface.SetDrawColor(Color(math.random(0, 50), math.random(0, 50), math.random(0, 50)))
+            surface.DrawRect(math.random(1, ScrW()), math.random(1, ScrH()), math.random(1, 100), math.random(1,100))
+        end
+    end
 
 end)

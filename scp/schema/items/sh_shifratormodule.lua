@@ -102,29 +102,44 @@ function ITEM:OnEquipped()
 	local client = self.player
 	local timerid = tostring(self)
 
-	client.Shifrator = true
+	hook.Run("Shifrator", self, client)
 
-	timer.Create(timerid, 2, 0, function()
+	client.shifrator_attached = true
+
+	timer.Create(timerid, 5, 0, function()
 		self.hp = self.hp - 1
-		if self.hp <= 10 then
+
+		if (self.hp == 75)then
+			client:Notify("Шифратор отключён.")
+			timer.Remove(timerid)
+			self:SetData("equip", false)
+			self:OnUnequipped(client)
+		elseif (self.hp == 49) then
+			client:Notify("Шифратор отключён.")
+			timer.Remove(timerid)
+			self:SetData("equip", false)
+			self:OnUnequipped(client)
+		elseif (self.hp <= 10) then
 			client:Notify("Шифратор отключён.")
 			timer.Remove(timerid)
 			self:SetData("equip", false)
 			self:OnUnequipped(client)
 			return
 		end
+
 	end)
 
 end
 
 function ITEM:OnUnequipped(oldclient)
+
 	local client = self.player
 	local timerid = tostring(self)
 
 	if client == nil then
-		oldclient.Shifrator = false
+		oldclient.shifrator_attached = false
 	else
-		client.Shifrator = false
+		client.shifrator_attached = false
 	end
 	
 

@@ -1,14 +1,46 @@
 util.AddNetworkString("Shifrator")
 
-local function shifrator_control(item, ply, bool)
+function shifrator_control(item, ply, bool)
 	if not item.Shifrator then return end
+	local timerid = ply:Nick() .. "_ShifrError"
+	local timerid2 = ply:Nick() .. "_ViewShifr"
 
-	if ply.Shifrator == nil then
-		ply.Shifrator = false
+	if ply.shifrator_attached == nil then
+		ply.shifrator_attached = false
 	end
 
-	ysn_send("Shifrator", {ply.Shifrator}, ply)
+	if (bool) then 
+		ysn_send("Shifrator", {ply.shifrator_attached}, ply)
+		ply.Ignore096 = true
+	elseif not (bool) then
+		ysn_send("Shifrator", {false}, ply)
+		ply.Ignore096 = false
+		timer.Remove(timerid)
+		timer.Remove(timerid2)
+	end
+
 end
+
+hook.Add("Shifrator", "Controller", function(item, ply)
+	local hp = item.hp
+	local timerid = ply:Nick() .. "_ShifrError"
+	local timerid2 = ply:Nick() .. "_ViewShifr"
+
+	if hp == nil then return end
+
+	timer.Create(timerid2, 5, 0, function()
+		if hp <= 29 then
+			timer.Create(timerid, 5, 0, function()
+				if (ply.Ignore096 == true) then
+					ply.Ignore096 = false
+				else
+					ply.Ignore096 = true
+				end
+			
+			end)
+		end
+	end)
+end)
 
 local function GetAreSlotsClear(currentArmorItems, newArmorName)
 	local NewArmorInfo = JMod.ArmorTable[newArmorName]
