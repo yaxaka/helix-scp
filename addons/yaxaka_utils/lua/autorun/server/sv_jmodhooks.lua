@@ -2,13 +2,12 @@ util.AddNetworkString("Shifrator")
 
 local function shifrator_control(item, ply, bool)
 	if not item.Shifrator then return end
-	net.Start("Shifrator")
-	if bool then
-		net.WriteBool(true)
-	else
-		net.WriteBool(false)
+
+	if ply.Shifrator == nil then
+		ply.Shifrator = false
 	end
-	net.Send(ply)
+
+	ysn_send("Shifrator", {ply.Shifrator}, ply)
 end
 
 local function GetAreSlotsClear(currentArmorItems, newArmorName)

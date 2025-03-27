@@ -39,6 +39,10 @@ function ysn_send(name, datatable, ply)
 			net.WriteInt(v, int)
 		end
 
+		if tp == "boolean" then
+			net.WriteBool(v)
+		end
+
 		if tp == "table" then
 			net.WriteTable(v)
 		end

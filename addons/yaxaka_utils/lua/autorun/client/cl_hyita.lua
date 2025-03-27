@@ -381,12 +381,13 @@ net.Receive("Shifrator", function(l, ply)
     if b then
         LocalPlayer().Shifrator = true
     else
-        LocalPlayer().Shifrator = nil
+        LocalPlayer().Shifrator = false
     end
+    print(b)
 end)
 
 hook.Add("PostDrawTranslucentRenderables", "Shifrator", function()
-    if LocalPlayer().Shifrator == nil or false then return end
+    if (LocalPlayer().Shifrator == false) or (LocalPlayer().Shifrator == nil) then return end
     local postodraw = nil
     for k,v in pairs(player.GetAll()) do
         local mdl = v:GetModel()

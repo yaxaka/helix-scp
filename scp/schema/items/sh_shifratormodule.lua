@@ -1,19 +1,44 @@
-ITEM.name = "JMOD Armor"
-ITEM.description = "A Jmod Outfit Base."
-ITEM.category = "JArmor"
-ITEM.model = "models/Gibs/HGIBS.mdl"
-ITEM.width = 1
+ITEM.name = "Шифратор"
+ITEM.model = Model("models/alyx_emptool_prop.mdl")
+ITEM.description = "Модификация для ПНВ"
+ITEM.category = "ПНВ"
+ITEM.width = 1 
 ITEM.height = 1
-ITEM.jData = {}
-ITEM.approach = 1
+ITEM.noBusiness = true
+ITEM.eqs = 0
+
+ITEM.functions.drop = {
+	tip = "dropTip",
+	icon = "icon16/world.png",
+	OnRun = function(item)
+		local bSuccess, error = item:Transfer(nil, nil, nil, item.player)
+
+		if (!bSuccess and isstring(error)) or (item:GetData("equip")) then
+			item.player:Notify("Error")
+			return false
+		else
+			item:Remove()
+		end
+
+		return false
+		end,
+		OnCanRun = function(item)
+			return !IsValid(item.entity) and !item.noDrop and (item:GetData("equip") == false)
+	end
+}
+
+
 
 if (CLIENT) then
 	function ITEM:PaintOver(item, w, h)
 		self.approachtarget = w-20
+		
 		if (item:GetData("equip")) then
+			if item.eqs == 0 then item.eqs = 1 surface.PlaySound("npc/scanner/scanner_electric1.wav") end
 			item.approach = math.Approach(item.approach, self.approachtarget, 5)
 			draw.RoundedBox(10, 10, h-14, item.approach, 8, Color(110, 255, 110))
 		elseif not (item:GetData("equip")) then
+			if item.eqs == 1 then item.eqs = 0 surface.PlaySound("npc/scanner/scanner_electric2.wav") end
 			item.approach = 1
 		end
 	end
@@ -27,7 +52,6 @@ ITEM.functions.EquipOn = {
 		local entity = item.entity
 		local equip = item:GetData("equip") 
 		if (IsValid(client)) && (equip ~= true) then
-			print("clienteq")
 			item:SetData("equip", true)
 			item:OnEquipped()
 		end
@@ -73,19 +97,11 @@ ITEM.functions.EquipOff = {
 
 
 
-ITEM:Hook("drop", function(item)
-	--item:SetCollisionGroup(1)
-	print("t")
-end)
-
-
-
 function ITEM:OnEquipped()
 	local client = self.player
-	hook.Run("JmodEquip", client, self.Jname, self)
+	client.Shifrator = true
 end
 
 function ITEM:OnUnequipped()
 	local client = self.player
-	hook.Run("JmodUnEquip", client, self.Jname, self)
 end

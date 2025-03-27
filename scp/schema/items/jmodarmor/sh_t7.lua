@@ -5,6 +5,7 @@ ITEM.category = "ПНВ"
 ITEM.width = 1 
 ITEM.height = 1
 ITEM.Jname = "T-7 Thermal Goggles"
+
 ITEM.functions.drop = {
 	tip = "dropTip",
 	icon = "icon16/world.png",
