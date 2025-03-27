@@ -6,9 +6,7 @@ function yas_CreateTable()
 	sql.Query("INSERT OR REPLACE INTO yas_roles ( SteamID64, Role ) VALUES ( " ..  0000000 .. ", " .. sql.SQLStr("User") .. " )")
 end
 
-function yas_SQLSavePlayers(id, role)
-	sql.Query("INSERT OR REPLACE INTO yas_roles ( SteamID64, Role ) VALUES ( " ..  id .. ", " .. sql.SQLStr(role) .. " )")
-end
+
 
 function yas_LoadPlayerOld(ply)
 	return sql.QueryValue("SELECT Role FROM yas_roles WHERE SteamID64 = " .. ply:SteamID64())
@@ -24,10 +22,13 @@ end
 yas_localtable()
 
 function yas_SavePlayer(ply, role)
-	print(ply:SteamID64() .. " queued for role save.")
-	local steamid = ply:SteamID64()
-	yas_plyroles_table[steamid] = role
-	yas_sqlsave_queue[steamid] = role
+	if yas_validrole(role) then
+		sql.Query("INSERT OR REPLACE INTO yas_roles ( SteamID64, Role ) VALUES ( " ..  ply:SteamID64() .. ", " .. sql.SQLStr(role) .. " )")
+		yas_plyroles_table[ply:SteamID64()] = role
+		ymsg_d("Saved " .. ply:SteamID64() .. " with role " .. role)
+	else
+		ymsg_e("Cant save yas_role for: " .. ply:SteamID64() .. ", invalid yas role!")
+	end
 end
 
 function yas_LoadPlayer(ply)
@@ -41,15 +42,7 @@ function yas_validrole(role)
 			return true
 		end
 	end
-	print("Invalid YAS Role!")
+	ymsg_e("Invalid YAS role!")
 	return false
 end
 
-timer.Create("/YAS_SQLSave/", 60, 0, function()
-	if #yas_sqlsave_queue <= 0 then return end
-	for k,v in pairs(yas_sqlsave_queue) do
-		print("Saving player " .. k .. " with assigned role: " .. v)
-		yas_SQLSavePlayers(k, v)
-	end
-	yas_sqlsave_queue = {}
-end)

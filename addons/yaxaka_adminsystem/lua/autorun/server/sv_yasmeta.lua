@@ -26,6 +26,7 @@ function Player:SetRole(role)
 	if yas_validrole(role) then
 		yas_SavePlayer(self, role)
 	end
+	yas_refreshply(self)
 end
 
 function Player:Auth(flag)

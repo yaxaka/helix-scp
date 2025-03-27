@@ -23,10 +23,7 @@ hook.Add( "StartCommand", "myAddonName/Load", function( ply, cmd )
 	if load_queue[ ply ] and not cmd:IsForced() then
 		load_queue[ ply ] = nil
 
-		net.Start("YAS_Setup")
-		net.WriteString(ply:GetRole())
-		net.WriteString(ply:GetFlags())
-		net.Send(ply)
+		yas_refreshply(ply)
 	end
 end )
 
