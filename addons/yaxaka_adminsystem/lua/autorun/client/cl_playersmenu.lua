@@ -19,7 +19,6 @@ surface.CreateFont( "NickFont", {
 
 local PANEL = {}
 
-
 function PANEL:Init()
 	local parent = self:GetParent()
 	
@@ -110,6 +109,37 @@ function PANEL:Init()
 			ParentGod:SetIcon( "icon16/plugin_go.png" ) 
 			God:AddOption( "Включить", function() yas_god(ply_target, 1) end ):SetIcon( "icon16/wand.png" )
 			God:AddOption( "Выключить", function() yas_god(ply_target, 2) end ):SetIcon( "icon16/wand.png" )
+
+			local teams = ix.faction.teams
+			local Faction, ParentFact = Menu:AddSubMenu( "Выдать вайтлист" )
+			ParentFact:SetIcon( "icon16/user.png" )
+			for k,v in pairs(ix.faction.teams) do
+				local name = v.name
+				local indx = v.index
+				if name == nil then return end
+				local Class, ParentCls = Faction:AddSubMenu(v.name)
+				ParentCls:SetIcon( "icon16/user_suit.png" )
+				for a,b in pairs(ix.class.list) do
+					if b.faction == indx then
+						Class:AddOption( b.name, function() yas_setclass(ply_target, b.index, indx, true) end ):SetIcon( "icon16/user_add.png" )
+					end
+				end
+			end
+
+			local Faction2, ParentFact2 = Menu:AddSubMenu( "Забрать вайтлист" )
+			ParentFact2:SetIcon( "icon16/user.png" )
+			for k,v in pairs(ix.faction.teams) do
+				local name = v.name
+				local indx = v.index
+				if name == nil then return end
+				local Class, ParentCls = Faction2:AddSubMenu(v.name)
+				ParentCls:SetIcon( "icon16/user_suit.png" )
+				for a,b in pairs(ix.class.list) do
+					if b.faction == indx then
+						Class:AddOption( b.name, function() yas_setclass(ply_target, b.index, indx, false) end ):SetIcon( "icon16/user_delete.png" )
+					end
+				end
+			end
 
 			local hp = Menu:AddOption( "Восстановить хп", function() yas_hp(ply_target) end )
 			hp:SetIcon( "icon16/heart_add.png" )

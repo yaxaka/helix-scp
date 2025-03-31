@@ -104,6 +104,16 @@ function yas_hp(target)
 	yas_bsend()
 end
 
+function yas_setclass(target, index, index2, bool)
+	net.Start("YAS_CLS")
+	net.WriteBool(bool)
+	net.WriteEntity(target)
+	net.WriteString(index)
+	net.WriteString(index2)
+	net.SendToServer()
+	yas_bsend()
+end
+
 function yas_bclick()
 	surface.PlaySound("yas/yas_button2.wav")
 end

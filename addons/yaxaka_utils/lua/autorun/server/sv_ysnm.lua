@@ -19,7 +19,6 @@ function ysn_int(num)
 end
 
 
-
 function ysn_send(name, datatable, ply)
 	--not (IsValid(ply))
 	if (datatable == nil) or (name == nil) or not (IsValid(ply)) then return end
@@ -67,3 +66,6 @@ function ysn_send(name, datatable, ply)
 	net.Send(ply)
 	ymsg_d("Message " .. name .. " end")
 end
+
+
+PrintTable(ix.class.list)

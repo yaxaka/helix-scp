@@ -36,10 +36,21 @@ util.AddNetworkString("YAS_PM")
 util.AddNetworkString("YAS_God")
 util.AddNetworkString("YAS_HP")
 util.AddNetworkString("YAS_Freeze")
+util.AddNetworkString("YAS_CLS")
+
+function log_af(ply)
+	ymsg_w("Access restricted for " .. ply:SteamID64() .. " (" .. ply:Nick() .. ") ")
+end
+
+function log_ag(ply, func, target)
+	ymsg_d(ply:SteamID64() .. " (" .. ply:Nick() .. ") executed " .. tostring(func) .. " on " .. target:Nick())
+end
+
+
 
 net.Receive("YAS_Warning", function(len, ply)
 
-	if not ply:Auth("warn") then return end
+	if not ply:Auth("warn") then log_af(ply) return end
 
 	local text_type = net.ReadInt(5)
 	local priority = net.ReadInt(5)
@@ -59,16 +70,17 @@ net.Receive("YAS_Warning", function(len, ply)
 	end
 
 	net.Send(target)
-
+	log_ag(ply, "warn", target)
 end)
 
 net.Receive("YAS_PM", function(len, ply)
-	if not ply:Auth("pm") then return end
+	if not ply:Auth("pm") then log_af(ply) return end
 
 	local target = net.ReadEntity()
 	local text = net.ReadString()
 
 	target:ChatNotify("Администратор: " .. text)
+	log_ag(ply, "pm", target)
 end)
 
 net.Receive("YAS_TP", function(len, ply)
@@ -79,10 +91,11 @@ net.Receive("YAS_TP", function(len, ply)
 
 	target:Notify("Вы были телепортированы администрацией сервера.")
 	target:SetPos(pos)
+	log_ag(ply, "tp", target)
 end)
 
 net.Receive("YAS_Mutes", function(len, ply)
-	if not ply:Auth("mute") then ply:Notify("5051") return end
+	if not ply:Auth("mute") then log_af(ply) return end
 
 	local type = net.ReadInt(4)
 	local target = net.ReadEntity()
@@ -96,10 +109,11 @@ net.Receive("YAS_Mutes", function(len, ply)
 	elseif type == 4 then
 		ply.chat_muted = false
 	end
+	log_ag(ply, "mute", target)
 end)
 
 net.Receive("YAS_Freeze", function(len, ply)
-	if not ply:Auth("freeze") then return end
+	if not ply:Auth("freeze") then log_af(ply) return end
 
 	local target = net.ReadEntity()
 	local type = net.ReadInt(4)
@@ -109,10 +123,11 @@ net.Receive("YAS_Freeze", function(len, ply)
 	else
 		target:Freeze(false)
 	end
+	log_ag(ply, "freeze", target)
 end)
 
 net.Receive("YAS_God", function(len, ply)
-	if not ply:Auth("god") then return end
+	if not ply:Auth("god") then log_af(ply) return end
 
 	local target = net.ReadEntity()
 	local type = net.ReadInt(4)
@@ -122,13 +137,34 @@ net.Receive("YAS_God", function(len, ply)
 	else
 		target:GodDisable()
 	end
+	log_ag(ply, "god", target)
 end)
 
 net.Receive("YAS_HP", function(len, ply)
-	if not ply:Auth("hp") then return end
+	if not ply:Auth("hp") then log_af(ply) return end
 
 	local target = net.ReadEntity()
 
 	target:SetHealth(target:GetMaxHealth())
+	log_ag(ply, "hp", target)
+end)
 
+net.Receive("YAS_CLS", function(len, ply)
+	if not ply:Auth("whitelist") then log_af(ply) return end
+
+	local bol = net.ReadBool()
+	local target = net.ReadEntity()
+	local class = tonumber(net.ReadString())
+	local faction = tonumber(net.ReadString())
+
+	local whitelists = target:GetData("whitelists")
+	local fvalue = ix.faction.Get(faction).uniqueID
+
+	if bol then
+		target:SetClassWhitelisted(class, true)
+	elseif not bol then
+		target:SetClassWhitelisted(class, false)
+	end
+
+	log_ag(ply, "whitelist", target)
 end)
