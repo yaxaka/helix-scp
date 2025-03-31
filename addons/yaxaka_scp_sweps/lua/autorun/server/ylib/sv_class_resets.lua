@@ -1,40 +1,26 @@
 util.AddNetworkString("ResetSCP_Client")
 
+local transcription = {
+	['SCP-096'] = yss_scp096,
+	['SCP-173'] = yss_scp173,
+	['SCP-999'] = yss_scp999,
+	['SCP-035'] = yss_scp035,
+	['SCP-131-A'] = yss_scp131a,
+	['SCP-131-B'] = yss_scp131b,
+	['SCP-000'] = yss_scp000,
+}
+
 function ResetClassParameters(ply, class, faction)
 	local team_name = team.GetName(faction)
 	local class_name = class.name
 	ResetSCPVar(ply)
 
 	if team_name == "SCP" then
-		
-
-		if class_name == "SCP-096" then
-			ply:SetSCP(yss_scp096)
-        	scp096_reset_targets()
-        	scp_ply_vars.scp_096_ply = ply
-		end
-
-		if class_name == "SCP-173" then
-			ply:SetSCP(yss_scp173)
-        	scp_ply_vars.scp_173_ply = ply
-        	spawn_scp173_model(ply)
-		end
-
-		if class_name == "SCP-999" then
-			scp_ply_vars.scp_999_ply = ply
-		end
-
-		if class_name == "SCP-035" then
-			ply:SetSCP(yss_scp035)
-			scp_ply_vars.scp_035_ply = ply
-			scp035_victimtable = {}
-			scp035_victimlvl = {}
-		end
+		ply:SetSCP(transcription[class_name])
 	end
 
 	if team_name ~= "SCP" then
 		ply:RemoveSCP()
-		
 	end
 
 end

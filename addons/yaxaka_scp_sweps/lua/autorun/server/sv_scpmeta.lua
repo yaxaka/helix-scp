@@ -13,6 +13,7 @@ function PLAYER:SetupSCP(value)
 end
 
 function PLAYER:SetSCP(value)
+	if value == nil then ymsg_e("Incorrect SCP table value!") return end
 	self.SCPName = value
 	self.SCP = true
 	self:SetupSCP(value)
