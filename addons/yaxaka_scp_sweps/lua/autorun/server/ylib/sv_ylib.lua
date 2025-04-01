@@ -35,3 +35,19 @@ end
 hook.Add("PostGamemodeLoaded", "CreateTables", function()
 	LoadSCPTables_Helix()
 end)
+
+hook.Add("AnimationShifrator", "First", function(parent, child)
+	hook.Add("Think", "ShifratorAnimation", function()
+		if parent.Act2 == true then
+        	if parent.NewTarget >= 13 then
+            	parent.NewTarget = parent.NewTarget - 0.3
+            	child:SetLocalPos(Vector(0, 0, parent.NewTarget))
+            else
+            	if parent.NewTarget2 >= 1 then
+            		parent.NewTarget2 = parent.NewTarget2 - 7
+            		child:SetLocalAngles(Angle(90, 0, parent.NewTarget2))
+            	end
+        	end
+    	end
+	end)
+end)

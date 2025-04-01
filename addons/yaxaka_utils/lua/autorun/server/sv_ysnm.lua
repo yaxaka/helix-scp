@@ -68,4 +68,3 @@ function ysn_send(name, datatable, ply)
 end
 
 
-PrintTable(ix.class.list)
