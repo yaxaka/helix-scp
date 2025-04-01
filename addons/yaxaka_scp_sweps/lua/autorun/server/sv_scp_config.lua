@@ -1,3 +1,17 @@
+hook.Add("PostGamemodeLoaded", "LoadTranscription", function()
+
+transcription_tabloscp = {
+	['SCP-096'] = yss_scp096,
+	['SCP-173'] = yss_scp173,
+	['SCP-999'] = yss_scp999,
+	['SCP-035'] = yss_scp035,
+	['SCP-131-A'] = yss_scp131a,
+	['SCP-131-B'] = yss_scp131b,
+	['SCP-000'] = yss_scp000,
+}
+print("1")
+end)
+
 yss_scp131a = {
 	model = "models/scprp/scp131a2.mdl",
 	weapon = "scp131_swep",
@@ -33,7 +47,6 @@ yss_scp035 = {
 	runspeed = 240,
 	friction = 1,
 	customfunction = function(ply)
-		spawn_scp173_model(ply)
 		scp_ply_vars.scp_035_ply = ply
 	end
 }
@@ -59,7 +72,6 @@ yss_scp096 = {
 	runspeed = 50,
 	friction = 1,
 	customfunction = function(ply)
-		spawn_scp173_model(ply)
 		scp_ply_vars.scp_096_ply = ply
 	end
 }

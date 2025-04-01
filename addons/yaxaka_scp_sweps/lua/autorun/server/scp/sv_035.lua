@@ -92,9 +92,7 @@ end
 
 function scp035_setcontrol(ply)
 	if (ply:Under035Control() == true) then return end
-	print("trigger2")
 	ply:Set035Control()
-	print(ply)
 	scp035_sendvictims(ply)
 end
 

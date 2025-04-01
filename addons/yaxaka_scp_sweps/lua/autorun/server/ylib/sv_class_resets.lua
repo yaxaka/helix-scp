@@ -1,15 +1,5 @@
 util.AddNetworkString("ResetSCP_Client")
 
-transcription_tabloscp = {
-	['SCP-096'] = yss_scp096,
-	['SCP-173'] = yss_scp173,
-	['SCP-999'] = yss_scp999,
-	['SCP-035'] = yss_scp035,
-	['SCP-131-A'] = yss_scp131a,
-	['SCP-131-B'] = yss_scp131b,
-	['SCP-000'] = yss_scp000,
-}
-
 function ResetClassParameters(ply, class, faction)
 	local team_name = team.GetName(faction)
 	local class_name = class.name

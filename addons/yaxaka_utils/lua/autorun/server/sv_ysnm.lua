@@ -47,7 +47,7 @@ function ysn_send(name, datatable, ply)
 		end
 
 		if tp == "Player" then
-			net.WritePlayer(v)
+			net.WriteEntity(v)
 		end
 
 		if tp == "Vector" then

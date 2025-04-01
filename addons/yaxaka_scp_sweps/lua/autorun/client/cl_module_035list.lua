@@ -162,18 +162,25 @@ function yss_module_remove035list(net_ply)
 end
 
 function yss_module_prelist(net_ply)
+    print(net_ply)
     if scp035_list[net_ply] then return end
+    print(net_ply)
+    print(1)
     if scp035_list[1] == nil then
+        print(2)
         table.insert(scp035_list, 1, net_ply)
     else
+        print(3)
         table.insert(scp035_list, net_ply)
     end
-
+        print(4)
     if scp035_main_panel == nil then
         enable_list035()
+        print(5)
     else
         scp035_main_panel:Close()
         enable_list035()
+        print(6)
     end
 end
 
