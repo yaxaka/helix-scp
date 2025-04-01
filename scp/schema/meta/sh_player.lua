@@ -102,17 +102,20 @@ function PLAYER:StartBodyRot035()
 	local timername2 = self:Nick() .. "_rotting2"
 	local timername3 = self:Nick() .. "_rotting3"
 	timer.Create(timername, ix.config.Get("RotPhase1"), 1, function()
+		if not IsValid(self) then return end
 		self:RotMaterial(1, "head", false)
 		self:RotMaterial(1, "eye", false)
 		self:RotMaterial(1, "upper", false)
 		self:TakeDamage(10, nil)
 		self:EmitSound("sopli.wav")
 		timer.Create(timername2, ix.config.Get("RotPhase2"), 1, function()
+			if not IsValid(self) then return end
 			self:RotMaterial(2, "head", true)
 			self:SetMaterial("scp_rot/frame8_2")
 			self:TakeDamage(10, nil)
 			self:EmitSound("sopli.wav")
 			timer.Create(timername3, ix.config.Get("RotPhase3"), 1, function()
+				if not IsValid(self) then return end
 				self:EmitSound("sopli.wav")
 				self:RotMaterial(3, "head", true)
 				self:SetMaterial("scp_rot/frame8_3")
