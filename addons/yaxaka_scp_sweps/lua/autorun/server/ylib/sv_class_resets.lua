@@ -1,6 +1,6 @@
 util.AddNetworkString("ResetSCP_Client")
 
-local transcription = {
+transcription_tabloscp = {
 	['SCP-096'] = yss_scp096,
 	['SCP-173'] = yss_scp173,
 	['SCP-999'] = yss_scp999,
@@ -16,7 +16,7 @@ function ResetClassParameters(ply, class, faction)
 	ResetSCPVar(ply)
 
 	if team_name == "SCP" then
-		ply:SetSCP(transcription[class_name])
+		ply:SetSCP(transcription_tabloscp[class_name])
 	end
 
 	if team_name ~= "SCP" then
@@ -33,6 +33,7 @@ function ResetSCPVar(ply)
 		if scp_ply_vars[i] == ply then
 
 			if (ply == scp_ply_vars.scp_173_ply) then
+				print(scp_173_prop)
 				scp_173_prop:Remove()
 				ply:SetNoDraw(false)
 			end

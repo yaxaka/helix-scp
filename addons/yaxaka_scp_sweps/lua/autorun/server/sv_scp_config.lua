@@ -32,15 +32,23 @@ yss_scp035 = {
 	slowwalkspeed = 150,
 	runspeed = 240,
 	friction = 1,
+	customfunction = function(ply)
+		spawn_scp173_model(ply)
+		scp_ply_vars.scp_035_ply = ply
+	end
 }
 
 yss_scp173 = {
-	model = "models/scp_035_real/scp_035_real.mdl",
+	model = "models/props_interiors/VendingMachineSoda01a.mdl",
 	weapon = "scp173_swep",
 	walkspeed = 200,
 	slowwalkspeed = 150,
 	runspeed = 500,
 	friction = 1,
+	customfunction = function(ply)
+		spawn_scp173_model(ply)
+		scp_ply_vars.scp_173_ply = ply
+	end
 }
 
 yss_scp096 = {
@@ -50,6 +58,10 @@ yss_scp096 = {
 	slowwalkspeed = 50,
 	runspeed = 50,
 	friction = 1,
+	customfunction = function(ply)
+		spawn_scp173_model(ply)
+		scp_ply_vars.scp_096_ply = ply
+	end
 }
 
 yss_scp000 = {

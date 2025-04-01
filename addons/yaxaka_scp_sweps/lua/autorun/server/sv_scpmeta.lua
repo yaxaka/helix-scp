@@ -10,6 +10,10 @@ function PLAYER:SetupSCP(value)
 	self:SetSlowWalkSpeed(value.slowwalkspeed)
 	self:SetRunSpeed(value.runspeed)
 	self:SetFriction(value.friction)
+	local customfunc = value.customfunction
+	if customfunc ~= nil then
+		value.customfunction(self)
+	end
 end
 
 function PLAYER:SetSCP(value)
