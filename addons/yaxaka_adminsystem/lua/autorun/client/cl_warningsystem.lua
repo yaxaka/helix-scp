@@ -79,6 +79,7 @@ local function yas_warntype1(text, priority)
 	warn_text = text
 	local a = vgui.Create("YASNotify")
 
+	lastnotify = 1
 	timer.Create("YAS_WarnColors", 0.5, 0, function()
 		if not IsValid(a) then timer.Remove("YAS_WarnColors") end
 
@@ -92,6 +93,7 @@ local function yas_warntype1(text, priority)
 
    	timer.Create("YAS_WarnDelete", 5, 1, function()
    		a:Remove()
+   		lastnotify = 0
    	end)
 
 end
@@ -100,6 +102,7 @@ net.Receive("YAS_Warning", function()
 	local priority = net.ReadInt(5)
 	local text = net.ReadString()
 
+	if lastnotify == 1 then return end
 	yas_warntype1(text, priority)
 
 end)
