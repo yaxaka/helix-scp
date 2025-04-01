@@ -37,7 +37,7 @@ end)
 function scp096_attack(victim, scp)
 	local d = DamageInfo()
 	local victimpos = victim:GetPos()
-	d:SetDamage(victim:Health())
+	d:SetDamage(victim:Health() * 1000)
 	d:SetAttacker(scp)
 	d:SetDamageType(DMG_GENERIC) 
 
