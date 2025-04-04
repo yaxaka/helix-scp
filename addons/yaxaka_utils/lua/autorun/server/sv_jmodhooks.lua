@@ -9,9 +9,10 @@ function shifrator_control(item, ply, bool)
 		ply.shifrator_attached = false
 	end
 
-	if (bool) then 
+	if (bool) then
+		print(ply.shifrator_attached) 
 		ysn_send("Shifrator", {ply.shifrator_attached}, ply)
-		ply.Ignore096 = true
+		ply.Ignore096 = ply.shifrator_attached
 	elseif not (bool) then
 		ysn_send("Shifrator", {false}, ply)
 		ply.Ignore096 = false

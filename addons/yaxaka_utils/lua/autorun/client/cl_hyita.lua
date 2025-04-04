@@ -425,35 +425,21 @@ function shifrator_pomehi()
 
     for k,v in pairs(tbl) do
         if v.name == "Шифратор" && v.data.equip == true && LocalPlayer().Shifrator == true then
-            if (v.hp <= 75) && (v.hp >= 50) then
+            if (v.hp > 50) && (v.hp < 75) then
                 stage_pomehi = 1
-            elseif (v.hp <= 49) && (v.hp >=30) then
+            elseif (v.hp > 30) && (v.hp < 49) then
                 stage_pomehi = 2
-            elseif (v.hp <= 29) then
+            elseif (v.hp < 29) then
                 stage_pomehi = 3
             end
         end
     end
-
-    if timer.Exists("ShifrSwitch") then return else
-        timer.Create("ShifrSwitch", 5, 0, function()
-            if stage_pomehi == 3 then
-                pomehi_error = true
-                stage_pomehi = 0
-            elseif stage_pomehi == 0 then
-                pomehi_error = false
-                stage_pomehi = 3
-            end
-        end)
-    end
-
 end
 
 
 hook.Add("HUDPaint", "ShifrPomehi", function()
     if stage_pomehi == 0 then return end
     if LocalPlayer().Shifrator == false then return end
-
     if stage_pomehi == 1 then
         for i=1,10 do
             surface.SetDrawColor(0, 0, 0)
