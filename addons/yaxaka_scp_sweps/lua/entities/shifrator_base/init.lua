@@ -14,7 +14,7 @@ function ENT:Initialize()
     self.NewTarget = 15
     self.NewTarget2 = 90
     self.Stage = 0
-    self.items = {}
+    self.charged = false
     local phys = self:GetPhysicsObject() 
     if phys:IsValid() then 
         phys:Wake()
@@ -28,10 +28,14 @@ function ENT:Use( activator )
             local inv = activator:GetCharacter():GetInventory()
             local item = inv:HasItem("shifratormodule")
 
+        if not self.charged && self.Stage == 1 then
+            activator:Notify("Шифратор не заряжен!")
+        end
+
         if self.Act == nil && self.Stage == 0 then
 
             if item == false then return end
-            if item.hp > 111 then activator:Notify("Ваш шифратор в хорошем состоянии") return end
+            if item.hp > 50 then activator:Notify("Ваш шифратор в хорошем состоянии") return end
             item:Remove() 
 
             local scaner = ents.Create("base_gmodentity")
@@ -47,14 +51,16 @@ function ENT:Use( activator )
             self:EmitSound("shifrator/station_plugin.wav")
             hook.Run("AnimationShifrator", self, self.Act)
             self.Stage = 1
-        elseif self.Act ~= nil && self.Stage == 1 then
+        elseif self.Act ~= nil && self.Stage == 1 && self.charged == true then
             inv:Add("shifratormodule", 1)
             self:EmitSound("shifrator/station_plugin.wav")
             hook.Run("AnimationShifrator2", self, self.Act)
             self.Stage = 0
+            self.charged = false
 
             self.Act = nil
         end
+
     end
 end
 

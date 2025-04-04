@@ -8,12 +8,16 @@ function ENT:Initialize()
     self:PhysicsInit( SOLID_VPHYSICS ) 
     self:SetMoveType( MOVETYPE_VPHYSICS ) 
     self:SetSolid( SOLID_VPHYSICS )
+    self:SetUseType(SIMPLE_USE)
     self.Stations = {}
+    self.Charging = false
     local phys = self:GetPhysicsObject() 
     if phys:IsValid() then 
         phys:Wake() 
     end
 end
+
+
 
 function ENT:Think()
     local a = self:GetPos()
@@ -36,6 +40,31 @@ end
 
 function ENT:Use( activator )
     if (activator:IsPlayer()) then
-        
+        if self:GetObrazec() == false then
+            activator:Notify("Образец для загрузки отсутствует!")
+            self:SetObrazec(true)
+            return
+        end
+        if #self.Stations <= 0 then
+            activator:Notify("Нет подключённых станций!")
+            return
+        end
+
+        if self.Charging then
+            activator:Notify("Зарядка ещё в процессе!")
+            return
+        end
+
+        self.Charging = true
+        self:EmitSound("shifrator/station_charge.wav")
+        self:SetCharging(true)
+        timer.Create(self:EntIndex() .. "charging", 13, 1, function()
+            for k,v in pairs(self.Stations) do
+                v.charged = true
+            end
+            self.Charging = false
+            self:SetCharging(false)
+            self:EmitSound("shifrator/station_alert.wav")
+        end)
     end
 end

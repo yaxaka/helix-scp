@@ -2,7 +2,7 @@ include("shared.lua")
 
 function ENT:Initialize()
     self.Stations = {}
-    self.Have096 = false
+    self.TargetN = 120
 end
 
 function ENT:Draw( flags )
@@ -47,14 +47,31 @@ function ENT:Draw( flags )
         surface.SetTextPos(13, 143)
         surface.SetTextColor(0, 0, 0)
         surface.DrawText("Подключено:." .. #self.Stations)
-        surface.SetTextPos(220, 143)
-        if not self.Have096 then
+        surface.SetTextPos(245, 143)
+        if self:GetObrazec() == false then
             surface.SetTextColor(255, 0, 0)
-            surface.DrawText("Образец: ###")
+            surface.DrawText("Образец: !!!")
         else
-            surface.DrawText("Образец установлен")
+            surface.SetTextColor(0, 255, 0)
+            surface.DrawText("Образец {||}")
         end
 
+        if self:GetCharging() then
+            for i=1,100 do
+                surface.SetDrawColor(math.random(1, 255), math.random(1, 255), math.random(1, 255))
+                surface.DrawRect(7, 200, math.random(25, 376) * resolution, math.random(25, 120) * resolution)
+            end
+
+            surface.SetDrawColor(0, 0, 0, 255)
+
+            if self.TargetN >= 1 then
+                self.TargetN = self.TargetN - 0.14
+            end
+
+            surface.DrawRect(7, 200, 376 * resolution, self.TargetN * resolution)
+        else
+            self.TargetN = 120
+        end
         for k,v in pairs(self.Stations) do
             
             if v == NULL then
