@@ -13,6 +13,8 @@ function ENT:Initialize()
     self.Act2 = false
     self.NewTarget = 15
     self.NewTarget2 = 90
+    self.Stage = 0
+    self.items = {}
     local phys = self:GetPhysicsObject() 
     if phys:IsValid() then 
         phys:Wake()
@@ -23,7 +25,15 @@ end
 
 function ENT:Use( activator )
     if (activator:IsPlayer()) then
-        if self.Act == nil then
+            local inv = activator:GetCharacter():GetInventory()
+            local item = inv:HasItem("shifratormodule")
+
+        if self.Act == nil && self.Stage == 0 then
+
+            if item == false then return end
+            if item.hp > 111 then activator:Notify("Ваш шифратор в хорошем состоянии") return end
+            item:Remove() 
+
             local scaner = ents.Create("base_gmodentity")
             scaner:SetModel("models/alyx_emptool_prop.mdl")
             scaner:SetParent(self, 1)
@@ -36,6 +46,14 @@ function ENT:Use( activator )
             self.Act2 = true
             self:EmitSound("shifrator/station_plugin.wav")
             hook.Run("AnimationShifrator", self, self.Act)
+            self.Stage = 1
+        elseif self.Act ~= nil && self.Stage == 1 then
+            inv:Add("shifratormodule", 1)
+            self:EmitSound("shifrator/station_plugin.wav")
+            hook.Run("AnimationShifrator2", self, self.Act)
+            self.Stage = 0
+
+            self.Act = nil
         end
     end
 end

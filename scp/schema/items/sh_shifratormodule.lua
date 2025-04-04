@@ -106,7 +106,7 @@ function ITEM:OnEquipped()
 
 	client.shifrator_attached = true
 
-	timer.Create(timerid, 5, 0, function()
+	timer.Create(timerid, 1, 0, function()
 		self.hp = self.hp - 1
 
 		if (self.hp == 75)then

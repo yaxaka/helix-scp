@@ -59,6 +59,9 @@ function ENT:Draw( flags )
             
             if v == NULL then
                 table.RemoveByValue(self.Stations, v)
+            else
+                local dist = v:GetPos():DistToSqr(self:GetPos())
+                if dist >= 27000 then table.RemoveByValue(self.Stations, v) return end
             end
         end
     cam.End3D2D()

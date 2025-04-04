@@ -51,3 +51,27 @@ hook.Add("AnimationShifrator", "First", function(parent, child)
     	end
 	end)
 end)
+
+hook.Add("AnimationShifrator2", "First", function(parent, child)
+	hook.Add("Think", "ShifratorAnimation", function()
+		if parent.Act2 == true then
+
+        	if parent.NewTarget <= 14.7 && parent.NewTarget2 >= 83 then
+            	parent.NewTarget = parent.NewTarget + 0.3
+            	child:SetLocalPos(Vector(0, 0, parent.NewTarget))
+            	if parent.NewTarget == 15 then
+            		timer.Create(parent:EntIndex() .. "childremove", 0.2, 1, function()
+            			child:Remove()
+            		end)
+            	end
+            end
+
+            if parent.NewTarget2 <= 83 then
+            	parent.NewTarget2 = parent.NewTarget2 + 8
+            	child:SetLocalAngles(Angle(90, 0, parent.NewTarget2))
+            else
+
+            end
+    	end
+	end)
+end)

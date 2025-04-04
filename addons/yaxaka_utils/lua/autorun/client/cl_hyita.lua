@@ -17,6 +17,11 @@ local color_textentry = Color(0, 37, 184)
 color_button_pressed = Color(0, 2, 94)
 
 scp_update_table = {
+    [5] = {
+        version = '0.0.8',
+        header = 'Жуки повсюду!',
+        desc = "Фикс различных багов, прототип функций шифратора",
+    },
     [4] = {
         version = '0.0.7',
         header = 'Набор юного тревожника',
