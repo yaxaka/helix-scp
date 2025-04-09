@@ -1,8 +1,8 @@
 
-"scp"
+"militaryrp"
 {
 	"base" 			"helix"
-	"title" 		"SCP-RP"
+	"title" 		"MilitaryRP"
 	"author" 		"yaxaka"
 	"menusystem"	"1"
 }
