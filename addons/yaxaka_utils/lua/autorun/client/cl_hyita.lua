@@ -169,9 +169,10 @@ function Helix_YUI_Button(nname, x, y, dparent, text, font, func, w, h, parent, 
         if func == "Load" then      
             if (!bHasCharacter) then
                 self:SetDisabled(true)
+            else
+                dparent:Dim()
+                parent.loadCharacterPanel:SlideUp()
             end
-            dparent:Dim()
-            parent.loadCharacterPanel:SlideUp()
         end
         if func == "Exit" then
             if (dparent.bUsingCharacter) then
@@ -180,6 +181,11 @@ function Helix_YUI_Button(nname, x, y, dparent, text, font, func, w, h, parent, 
                 RunConsoleCommand("disconnect")
             end
         end    
+
+        if func == "Edu1" then
+            dparent:Close()
+        end
+
     end
     name.OnDepressed = function(s)
     	s.Pressed = true
@@ -400,7 +406,6 @@ end)
 
 hook.Add("PostDrawTranslucentRenderables", "Shifrator", function()
     if (LocalPlayer().Shifrator == false) or (LocalPlayer().Shifrator == nil) then return end
-    if pomehi_error == true then return end
     local postodraw = nil
     for k,v in pairs(player.GetAll()) do
         local mdl = v:GetModel()

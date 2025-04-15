@@ -1,5 +1,5 @@
 AddCSLuaFile()
-
+print("1")
 imgui = {}
 
 imgui.skin = {
@@ -23,7 +23,7 @@ end
 local _devMode = false -- cached local variable updated once in a while
 
 function imgui.Hook(name, id, callback)
-	local hookUniqifier = debug.getinfo(4).short_src
+	local hookUniqifier = debug.getinfo(1).short_src
 	hook.Add(name, "IMGUI / " .. id .. " / " .. hookUniqifier, callback)
 end
 

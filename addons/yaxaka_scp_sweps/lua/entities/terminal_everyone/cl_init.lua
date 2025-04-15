@@ -7,7 +7,6 @@ local edlogo = Material("terminal_ed.png", "noclamp smooth")
 local seclogo = Material("terminal_sec.png", "noclamp smooth")
 local exlogo = Material("terminal_ex.png", "noclamp smooth")
 
-local imgui = include("imgui.lua") -- imgui.lua should be in same folder and AddCSLuaFile'd
 
 surface.CreateFont( "font1", {
     font = "Arial", -- Use the font-name which is shown to you by your operating system Font Viewer.
@@ -28,10 +27,28 @@ surface.CreateFont( "font1", {
 } )
 
 surface.CreateFont( "font2", {
-    font = "Arial", -- Use the font-name which is shown to you by your operating system Font Viewer.
+    font = "Consolas", -- Use the font-name which is shown to you by your operating system Font Viewer.
     extended = false,
-    size = 100,
-    weight = 500,
+    size = 120,
+    weight = 600,
+    blursize = 0,
+    scanlines = 0,
+    antialias = true,
+    underline = false,
+    italic = false,
+    strikeout = false,
+    symbol = false,
+    rotary = false,
+    shadow = false,
+    additive = false,
+    outline = false,
+} )
+
+surface.CreateFont( "font2_sub", {
+    font = "Consolas", -- Use the font-name which is shown to you by your operating system Font Viewer.
+    extended = false,
+    size = 60,
+    weight = 600,
     blursize = 0,
     scanlines = 0,
     antialias = true,
@@ -95,7 +112,7 @@ function ENT:DrawTranslucent()
 
         surface.SetFont("font2")
         surface.SetTextColor(0, 0, 0)
-        surface.SetTextPos(63 * res, 17 * res)
+        surface.SetTextPos(58 * res, 17 * res)
         surface.DrawText("RAT-Terminal")
         local page = self:GetPage()
 
@@ -110,7 +127,7 @@ function ENT:DrawTranslucent()
         surface.DrawTexturedRect(518 * res, 17 * res, 22 * res, 22 * res)
 
 
-        if self:GetPage() == 0 then
+        if page == 0 then
             circle = 0
 
             local loginpressed = imgui.xButtonImage(paymat, 201 * res, 70 * res, 164 * res, 110 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
@@ -120,11 +137,24 @@ function ENT:DrawTranslucent()
                 self:EmitSound("terminal_beep.wav")
                 self:SetPage(405)
                 timer.Create(self:EntIndex() .. "_beepwait", 1, 1, function()
-                    self:SetPage(1)
+                    local fact = (ix.faction.Get(LocalPlayer():Team()).name)
+                    print(fact)
+                    if fact == "МОГ Эпсилон-11" then
+                        self:SetPage(1)
+                    elseif fact == "Научный персонал" then
+                        self:SetPage(2)
+                    else
+                        self:SetPage(0)
+                        self:EmitSound("buttons/combine_button1.wav")
+                    end
                 end)
             end
 
-        elseif self:GetPage() == 1 then
+        elseif page == 1 then
+
+            surface.SetFont("font2_sub")
+            surface.SetTextPos(195*res, 25*res)
+            surface.DrawText("/MTF_DUTY")
 
             local nick = LocalPlayer():Nick()
 
@@ -132,7 +162,7 @@ function ENT:DrawTranslucent()
             local w, h = surface.GetTextSize(nick)
 
 
-            surface.SetTextPos(40*res, 81*res)
+            surface.SetTextPos(40*res, 79*res)
             surface.SetTextColor(0, 0, 0)
             surface.DrawText(nick)
 
@@ -152,11 +182,20 @@ function ENT:DrawTranslucent()
             surface.SetTextPos(393*res, 229*res)
             surface.DrawText("Выход")
 
+
+
             if expressed then
                 self:SetPage(0)
             end
 
-        elseif self:GetPage() == 405 then
+        elseif page == 2 then
+
+            surface.SetFont("font2_sub")
+            surface.SetTextPos(178*res, 24*res)
+            surface.DrawText("/RESEARCH_JOB")
+
+
+        elseif page == 405 then
 
             draw.SimpleText("Loading", "font1", 565 * res / 2, 318 * res / 2 + 400, Color(0,0,0), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             surface.SetMaterial(paymat)
