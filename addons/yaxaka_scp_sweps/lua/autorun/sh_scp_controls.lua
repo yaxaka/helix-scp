@@ -20,7 +20,7 @@ if (CLIENT) then
 
 hook.Add("PlayerFootstep", "CustomFootstep2", function(ply, pos, foot, sound, volume, rf)
 	local mdl = ply:GetModel()
-	if (mdl == "models/scprp/scp131a2.mdl" or "models/scprp/scp131b2.mdl") then
+	if (mdl == "models/scprp/scp131a2.mdl" or mdl == "models/scprp/scp131b2.mdl") then
 		return true
 	end
 end)

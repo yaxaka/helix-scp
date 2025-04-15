@@ -182,7 +182,9 @@ function ENT:DrawTranslucent()
             surface.SetTextPos(393*res, 229*res)
             surface.DrawText("Выход")
 
-
+            if edpressed then
+                drawedu()
+            end
 
             if expressed then
                 self:SetPage(0)
