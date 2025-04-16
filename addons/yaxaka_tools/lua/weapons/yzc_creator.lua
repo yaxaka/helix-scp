@@ -80,7 +80,7 @@ end
 function SWEP:SecondaryAttack()
 	local owner = self:GetOwner()
 	yzc_SecondPos = owner:GetEyeTrace().HitPos
-	if (CLIENT) then yzc_stage = 2 chat.PlaySound() end
+	if (CLIENT) then yzc_stage = 2 chat.PlaySound() print(yzc_FirstPos) print(yzc_SecondPos) end
 end
 
 function SWEP:Reload()

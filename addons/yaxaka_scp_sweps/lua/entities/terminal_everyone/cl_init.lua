@@ -186,6 +186,13 @@ function ENT:DrawTranslucent()
                 drawedu()
             end
 
+            if secpressed then
+                self:SetPage(0)
+                net.Start("yq_request")
+                net.WriteInt(1, 11)
+                net.SendToServer()
+            end
+
             if expressed then
                 self:SetPage(0)
             end
