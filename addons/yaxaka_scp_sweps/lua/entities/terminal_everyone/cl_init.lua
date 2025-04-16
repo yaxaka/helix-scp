@@ -6,7 +6,8 @@ local loginlogo = Material("terminal_login.png", "noclamp smooth")
 local edlogo = Material("terminal_ed.png", "noclamp smooth")
 local seclogo = Material("terminal_sec.png", "noclamp smooth")
 local exlogo = Material("terminal_ex.png", "noclamp smooth")
-
+yq_active_task = "Undefined"
+yq_progress = 1 -- 53max
 
 surface.CreateFont( "font1", {
     font = "Arial", -- Use the font-name which is shown to you by your operating system Font Viewer.
@@ -31,6 +32,42 @@ surface.CreateFont( "font2", {
     extended = false,
     size = 120,
     weight = 600,
+    blursize = 0,
+    scanlines = 0,
+    antialias = true,
+    underline = false,
+    italic = false,
+    strikeout = false,
+    symbol = false,
+    rotary = false,
+    shadow = false,
+    additive = false,
+    outline = false,
+} )
+
+surface.CreateFont( "font_tektur", {
+    font = "Tektur", -- Use the font-name which is shown to you by your operating system Font Viewer.
+    extended = true,
+    size = 120,
+    weight = 600,
+    blursize = 0,
+    scanlines = 0,
+    antialias = true,
+    underline = false,
+    italic = false,
+    strikeout = false,
+    symbol = false,
+    rotary = false,
+    shadow = false,
+    additive = false,
+    outline = false,
+} )
+
+surface.CreateFont( "font_tektur2", {
+    font = "Tektur", -- Use the font-name which is shown to you by your operating system Font Viewer.
+    extended = true,
+    size = 160,
+    weight = 650,
     blursize = 0,
     scanlines = 0,
     antialias = true,
@@ -110,7 +147,7 @@ function ENT:DrawTranslucent()
         surface.SetMaterial(scplogo)
         surface.DrawTexturedRect(8 * res, 5 * res, 48 * res, 48 * res)
 
-        surface.SetFont("font2")
+        surface.SetFont("font_tektur")
         surface.SetTextColor(0, 0, 0)
         surface.SetTextPos(58 * res, 17 * res)
         surface.DrawText("RAT-Terminal")
@@ -153,12 +190,12 @@ function ENT:DrawTranslucent()
         elseif page == 1 then
 
             surface.SetFont("font2_sub")
-            surface.SetTextPos(195*res, 25*res)
+            surface.SetTextPos(182*res, 25*res)
             surface.DrawText("/MTF_DUTY")
 
             local nick = LocalPlayer():Nick()
 
-            surface.SetFont("font2")
+            surface.SetFont("font_tektur")
             local w, h = surface.GetTextSize(nick)
 
 
@@ -187,10 +224,26 @@ function ENT:DrawTranslucent()
             end
 
             if secpressed then
-                self:SetPage(0)
-                net.Start("yq_request")
-                net.WriteInt(2, 11)
-                net.SendToServer()
+                local frame = vgui.Create( "DFrame" )
+                frame:SetSize( 100, 60 )
+                frame:Center()
+                frame:MakePopup()
+                frame:SetTitle("")
+
+                local DComboBox = vgui.Create( "DComboBox", frame )
+                DComboBox:SetPos( 5, 30 )
+                DComboBox:SetSize( 100, 20 )
+                DComboBox:SetValue( "Задания" )
+                DComboBox:AddChoice( "Охрана одной зоны", "Охрана" )
+                DComboBox:AddChoice( "Патрулирование", "Патрулирование" )
+                DComboBox.OnSelect = function(index, value, data)
+                    self:SetPage(3)
+                    yq_active_task = data
+                    frame:Close()
+                    net.Start("yq_request")
+                    net.WriteInt(value, 11)
+                    net.SendToServer()
+                end
             end
 
             if expressed then
@@ -203,6 +256,40 @@ function ENT:DrawTranslucent()
             surface.SetTextPos(178*res, 24*res)
             surface.DrawText("/RESEARCH_JOB")
 
+        elseif page == 3 then
+
+            local nick = LocalPlayer():Nick()
+
+            surface.SetFont("font_tektur")
+            local w, h = surface.GetTextSize(nick)
+            surface.SetTextPos(40*res, 79*res)
+            surface.SetTextColor(0, 0, 0)
+            surface.DrawText(nick)
+
+            surface.SetDrawColor(0, 0, 0)
+            surface.DrawOutlinedRect(33*res, 102*res, 500*res, 182*res, 2*res)
+            surface.DrawOutlinedRect(33*res, 78*res, w+15*res, 26*res, 2*res)  
+
+
+            surface.DrawOutlinedRect(63*res, 212*res, 440*res, 25*res, 2*res) 
+
+            surface.SetMaterial(seclogo)
+            surface.DrawTexturedRect(39*res, 110*res, 40*res, 40*res)
+
+            surface.SetFont("font_tektur2")
+            local w, h = surface.GetTextSize(yq_active_task)
+            surface.SetTextPos(565/2*res-w/2, 162*res)
+            surface.DrawText(yq_active_task)
+
+            surface.DrawRect(69*res, 215*res, 5*res, 19*res)
+
+            for i=1,yq_progress do
+                surface.DrawRect((69*res)+i*40, 215*res, 5*res, 19*res)
+            end
+
+            if yq_active_task == "Undefined" then
+                self:SetPage(0)
+            end
 
         elseif page == 405 then
 

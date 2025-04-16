@@ -28,9 +28,9 @@ yaxaka_quests = {
 					for k,v in pairs(ents.FindInBox(v_min, v_max)) do
 						if v == ply then
 							ply:Notify("Прогресс")
-							print(self)
 							ply.secprogress = ply.secprogress + 1
-							if ply.secprogress >= 3 then
+							yq_sendprogress(ply, ply.secprogress*10)
+							if ply.secprogress >= 5 then
 								yaxaka_quests.mtf['Security'].OnSuccess(ply)
 							end
 						end
@@ -48,6 +48,7 @@ yaxaka_quests = {
 				yq_notify_player(ply, false, "Охрана по чекпоинтам")
 			end,
 			OnStart = function(ply, num)
+
 				ply.secprogress = 0
 				ply.seccheckprogress = 1
 				yaxaka_quests.mtf['Security2'].SendNew(ply)

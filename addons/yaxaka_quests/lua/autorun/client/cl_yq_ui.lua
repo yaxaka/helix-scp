@@ -12,10 +12,15 @@ net.Receive("yq_security", function()
 	LocalPlayer():ChatNotify(desc)
 end)
 
+net.Receive("yq_progress", function()
+	yq_progress = net.ReadInt(7)
+end)
+
 net.Receive("yq_reset", function()
 	point_min = nil
 	point_max = nil
-
+	yq_active_task = "Undefined"
+	yq_progress = 1
 end)
 
 
@@ -23,13 +28,6 @@ concommand.Add('reset_quests', function()
 	net.Start("yq_reset")
 	net.SendToServer()
 end)
-
-
-
-
-
-
-
 
 
 

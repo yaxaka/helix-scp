@@ -142,7 +142,7 @@ function Helix_YUI_CreateText(nname, parent, font, text, posx, posy)
     name:SetFont(font)
     name:SetText(text)
     name:SetName(nname)
-    name:SetPos(posx*yu_scale, posy*yu_scale)
+    name:SetPos(posx, posy)
     name:SetSize(Helix_YUI_GetSize(text, font))
 end
 
@@ -152,7 +152,7 @@ function Helix_YUI_CreateTextFade(nname, parent, font, text, posx, posy)
     name:SetText(text)
     name:SetTextColor(Color(255, 255, 255, 95))
     name:SetName(nname)
-    name:SetPos(posx*yu_scale, posy*yu_scale)
+    name:SetPos(posx, posy)
     name:SetSize(Helix_YUI_GetSize(text, font))
 end
 
@@ -164,8 +164,8 @@ function Helix_YUI_CreateHeader(nname, w, h, parent, font, text)
 
     local name = vgui.Create("DLabel", parent, nname)
     name:SetName(nname)
-    name:SetPos(xx*yu_scale, yy*yu_scale)
-    name:SetSize(tw*yu_scale, th*yu_scale)
+    name:SetPos(xx, yy)
+    name:SetSize(tw, th)
     name:SetFont(font)
     name:SetColor(color_header)
     name:SetText(text)
@@ -179,8 +179,8 @@ function Helix_YUI_Button(nname, x, y, dparent, text, font, func, w, h, parent, 
     name:SetText(text)
     name:SetColor(color_btext)
     name:SetFont(font)                 
-    name:SetPos(x*yu_scale, y*yu_scale)                    
-    name:SetSize(w*yu_scale, h*yu_scale)
+    name:SetPos(x, y)                    
+    name:SetSize(w, h)
     name.Pressed = false                  
     name.DoClick = function(self)
         chat.PlaySound()
@@ -253,8 +253,8 @@ function Helix_YUI_ButtonE(nname, x, y, dparent, text, font, func, w, h, parent,
     name:SetText(text)
     name:SetColor(color_btext)
     name:SetFont(font)                 
-    name:SetPos(x*yu_scale, y*yu_scale)                    
-    name:SetSize(w*yu_scale, h*yu_scale)
+    name:SetPos(x, y)                    
+    name:SetSize(w, h)
     name.Pressed = false                  
     name.DoClick = function()
         chat.PlaySound() 
@@ -293,8 +293,8 @@ function Helix_YUI_ButtonCommunity(nname, x, y, parent, img, font, func, w, h)
     name:SetText("")
     name:SetColor(color_white)
     name:SetFont(font)                 
-    name:SetPos(x*yu_scale, y*yu_scale)                    
-    name:SetSize(w*yu_scale, h*yu_scale)
+    name:SetPos(x, y)                    
+    name:SetSize(w, h)
     name.Pressed = false
     name.png = nil
     name.text = nil
@@ -333,29 +333,29 @@ function Helix_YUI_ButtonCommunity(nname, x, y, parent, img, font, func, w, h)
 
         	surface.SetFont("Community")
         	surface.SetTextColor(color_btext_hover)
-        	surface.SetTextPos(52*yu_scale, h/2-th/2)
+        	surface.SetTextPos(52, h/2-th/2)
         	surface.DrawText(self.text)
 
         	surface.SetDrawColor(Color(200, 200, 200, 255))
         	surface.SetMaterial(self.png)
-			surface.DrawTexturedRect(10*yu_scale, h/2-32*yu_scale/2, 32*yu_scale, 32*yu_scale)
+			surface.DrawTexturedRect(10, h/2-32/2, 32, 32)
         else
         	surface.SetDrawColor(color_button)
             surface.DrawRect(0, 0, w, h)
 
             surface.SetFont("Community")
             surface.SetTextColor(color_btext)
-            surface.SetTextPos(52*yu_scale, h/2-th/2)
+            surface.SetTextPos(52, h/2-th/2)
             surface.DrawText(self.text)
 
             surface.SetDrawColor(Color(255, 255, 255, 255))
         	surface.SetMaterial(self.png)
-			surface.DrawTexturedRect(10*yu_scale, h/2-32*yu_scale/2, 32*yu_scale, 32*yu_scale)
+			surface.DrawTexturedRect(10, h/2-32/2, 32, 32)
         end
         if self.Pressed then
         	surface.SetDrawColor(color_white)
         	surface.SetMaterial(self.png)
-        	surface.DrawTexturedRect(10*yu_scale, h/2-32*yu_scale/2, 32*yu_scale, 32*yu_scale)
+        	surface.DrawTexturedRect(10, h/2-32/2, 32, 32)
         end
     end
 end
@@ -366,8 +366,8 @@ function Helix_YUI_ButtonImage(nname, x, y, parent, img, font, func, w, h)
     name:SetName(nname)
     name:SetImage(img)
     name:SetColor(color_white)
-    name:SetPos(x*yu_scale, y*yu_scale)                    
-    name:SetSize(w*yu_scale, h*yu_scale)
+    name:SetPos(x, y)                    
+    name:SetSize(w, h)
     name:SetStretchToFit(true)
     name.Pressed = false                  
     name.DoClick = function()
@@ -400,8 +400,8 @@ function Helix_YUI_ButtonClose(nname, x, y, parent, text, font, func, w, h)
     name:SetText(text)
     name:SetColor(color_white)
     name:SetFont(font)                 
-    name:SetPos(x*yu_scale, y*yu_scale)                    
-    name:SetSize(w*yu_scale, h*yu_scale)                  
+    name:SetPos(x, y)                    
+    name:SetSize(w, h)                  
     name.DoClick = function()
         chat.PlaySound()
         parent:Close()

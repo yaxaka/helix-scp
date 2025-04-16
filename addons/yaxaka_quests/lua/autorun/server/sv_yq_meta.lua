@@ -51,3 +51,4 @@ end
 function ply:GetSecurityPoint()
 	return self.qsp_min, self.qsp_max, self.qsp_name
 end
+
