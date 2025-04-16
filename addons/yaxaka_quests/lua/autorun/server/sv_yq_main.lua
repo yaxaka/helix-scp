@@ -2,13 +2,22 @@ util.AddNetworkString("yq_security")
 util.AddNetworkString("yq_reset")
 util.AddNetworkString("yq_request")
 
+local transcript = {
+	[1] = function(ply)
+		ply:GiveQuest("Security")
+	end,
+
+	[2] = function(ply)
+		ply:GiveQuest("Security2", 4)
+	end,
+}
+
 net.Receive("yq_request", function(l, ply)
 	if ply:HaveQuest() then return end
 
 	local quest = net.ReadInt(11)
-	if quest == 1 then
-		ply:GiveQuest("Security")
-	end
+	if transcript[quest] == nil then return end
+	transcript[quest](ply)
 end)
 
 net.Receive("yq_reset", function(l, ply)

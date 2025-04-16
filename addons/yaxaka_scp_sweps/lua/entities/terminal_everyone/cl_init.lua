@@ -189,7 +189,7 @@ function ENT:DrawTranslucent()
             if secpressed then
                 self:SetPage(0)
                 net.Start("yq_request")
-                net.WriteInt(1, 11)
+                net.WriteInt(2, 11)
                 net.SendToServer()
             end
 

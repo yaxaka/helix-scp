@@ -21,7 +21,11 @@ function ply:GiveQuest(name, custom)
 		if v[name] then
 			self.activequest = v[name]
 			ymsg_d(self:SteamID64() .. " получил квест " .. v[name].Name)
-			v[name].OnStart(self)
+			if custom == nil then
+				v[name].OnStart(self)
+			else
+				v[name].OnStart(self, custom)
+			end
 		end
 	end
 end

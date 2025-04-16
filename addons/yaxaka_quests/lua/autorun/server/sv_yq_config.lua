@@ -10,7 +10,6 @@ yaxaka_quests = {
 				yq_notify_player(ply, false, "Охрана зоны")
 			end,
 			OnStart = function(ply)
-				print("debugg")
 				local pick_point = yaxaka_quests_securitydots[math.random(1, #yaxaka_quests_securitydots)]
 
 				ply:SetSecurityPoint(pick_point)
@@ -37,6 +36,56 @@ yaxaka_quests = {
 						end
 					end
 				end)
+			end, 
+		},
+		['Security2'] = {
+			Name = "Охрана по чекпоинтам",
+			Desc = "Пройдите в необходимую точку",
+			OnSuccess = function(ply)
+				yq_notify_player(ply, true, "Охрана по чекпоинтам")
+			end,
+			OnFail = function(ply)
+				yq_notify_player(ply, false, "Охрана по чекпоинтам")
+			end,
+			OnStart = function(ply, num)
+				ply.secprogress = 0
+				ply.seccheckprogress = 1
+				yaxaka_quests.mtf['Security2'].SendNew(ply)
+
+				timer.Create(ply:SteamID64() .. "_security2", 3, 0, function()
+					if not ply:HaveQuest() then timer.Remove(ply:SteamID64() .. "_security2") return end
+
+					local v_min, v_max = ply:GetSecurityPoint()
+
+					for k,v in pairs(ents.FindInBox(v_min, v_max)) do
+						if v == ply then
+							ply:Notify("Прогресс")
+							ply.secprogress = ply.secprogress + 1
+							if ply.secprogress >= 3 then
+								ply.secprogress = 0
+								ply.seccheckprogress = ply.seccheckprogress + 1
+
+								if ply.seccheckprogress >= num then
+									yaxaka_quests.mtf['Security2'].OnSuccess(ply)
+									return
+								end
+
+								yaxaka_quests.mtf['Security2'].SendNew(ply)
+
+							end
+						end
+					end
+				end)
+			end,
+			SendNew = function(ply)
+				local pick_point = yaxaka_quests_securitydots[ply.seccheckprogress]
+				ply:SetSecurityPoint(pick_point)
+				local v_min, v_max = ply:GetSecurityPoint()
+				net.Start("yq_security")
+				net.WriteString("Пройдите к " .. pick_point.name)
+				net.WriteVector(v_min)
+				net.WriteVector(v_max)
+				net.Send(ply)
 			end, 
 		},
 	},
