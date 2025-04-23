@@ -101,6 +101,11 @@ end
 
 local table_unlocked = {}
 
+
+concommand.Add("achivvvv", function()
+    am_mainmenu()
+end)
+
 function am_unlocked(class, achiv)
     PrintTable(table_unlocked)
     local h_id = am_table[class][achiv].id

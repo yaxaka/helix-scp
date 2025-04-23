@@ -44,6 +44,28 @@ scp_update_table = {
 	},
 }
 
+test_labatable = {
+    [1] = {
+        id = "idsamzmc",
+        print_name = "Плоть говноеда",
+        desc = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolo",
+        category = "Органические материалы",
+        danger = 1,
+        author = "Doctor Coomer",
+    }
+}
+
+test_labatable2 = {
+    [1] = {
+        id = "idsamzmc22",
+        desc = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolo",
+        category = "Органические материалы",
+        danger = 1,
+        desc2 = "Обнаружен в [REDACTED]",
+    }
+}
+
+
 
 local font_sizew, font_sizeh = ScrW(), ScrH()
 font_scale = 1

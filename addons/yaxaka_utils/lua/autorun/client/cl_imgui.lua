@@ -498,4 +498,34 @@ function imgui.xButtonImage(material, x, y, w, h, borderWidth, borderClr, hoverC
 	return shouldAcceptInput() and imgui.IsHovering(x, y, w, h) and gState.pressed
 end
 
+function imgui.xButtonImageUnder(tx, ty, text, font, material, x, y, w, h, borderWidth, borderClr, hoverClr, pressColor)
+	local bw = borderWidth or 1
+	surface.SetFont(font)
+	local tw, th = surface.GetTextSize(text)
+
+	local bgColor = imgui.IsHovering(x, y, w, h) and imgui.skin.backgroundHover or imgui.skin.background
+	local borderColor =
+		((imgui.IsPressing() and imgui.IsHovering(x, y, w, h)) and (pressColor or imgui.skin.borderPress))
+		or (imgui.IsHovering(x, y, w, h) and (hoverClr or imgui.skin.borderHover))
+		or (borderClr or imgui.skin.border)
+
+	surface.SetDrawColor(bgColor)
+	surface.SetMaterial(material)
+	surface.DrawTexturedRect(x, y, w, h)
+	surface.SetTextColor(borderClr)
+	surface.SetTextPos(x + tx, y + h + ty)
+	surface.DrawText(text)
+
+	if bw > 0 then
+		surface.SetDrawColor(borderColor)
+		surface.SetMaterial(material)
+		surface.DrawTexturedRect(x, y, w, h)
+		surface.SetTextColor(borderColor)
+		surface.SetTextPos(x + tx, y + h + ty)
+		surface.DrawText(text)
+	end
+
+	return shouldAcceptInput() and imgui.IsHovering(x, y, w, h) and gState.pressed
+end
+
 return imgui
