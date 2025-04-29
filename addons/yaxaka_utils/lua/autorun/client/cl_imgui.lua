@@ -447,6 +447,35 @@ function imgui.xButton(x, y, w, h, borderWidth, borderClr, hoverClr, pressColor)
 	return shouldAcceptInput() and imgui.IsHovering(x, y, w, h) and gState.pressed
 end
 
+
+function imgui.xButtonTerminal(text, font, x, y, borderWidth, borderClr, hoverClr, pressColor)
+	local bw = borderWidth or 1
+	surface.SetFont(font)
+	local tw, th = surface.GetTextSize(text)
+
+	local bgColor = imgui.IsHovering(x, y, tw+10, th+10) and imgui.skin.backgroundHover or imgui.skin.background
+	local borderColor =
+		((imgui.IsPressing() and imgui.IsHovering(x, y, tw+10, th+10)) and (pressColor or imgui.skin.borderPress))
+		or (imgui.IsHovering(x, y, tw+10, th+10) and (hoverClr or imgui.skin.borderHover))
+		or (borderClr or imgui.skin.border)
+
+	surface.SetDrawColor(bgColor)
+	surface.SetTextColor(bgColor)
+	surface.DrawOutlinedRect(x, y, tw+60, th+30, borderWidth)
+	surface.SetTextPos(x+30, y+10)
+	surface.DrawText(text)
+
+	if bw > 0 then
+		surface.SetDrawColor(borderColor)
+		surface.SetTextColor(borderColor)
+		surface.DrawOutlinedRect(x, y, tw+60, th+30, borderWidth)
+		surface.SetTextPos(x+30, y+10)
+		surface.DrawText(text)
+	end
+
+	return shouldAcceptInput() and imgui.IsHovering(x, y, tw+10, th+10) and gState.pressed
+end
+
 function imgui.xCursor(x, y, w, h)
 	local fgColor = imgui.IsPressing() and imgui.skin.foregroundPress or imgui.skin.foreground
 	local mx, my = gState.mx, gState.my

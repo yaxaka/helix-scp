@@ -57,8 +57,8 @@ test_labatable = {
 
 test_labatable2 = {
     [1] = {
-        id = "idsamzmc22",
-        desc = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolo",
+        id = "2842_ZNCB",
+        desc = "Какое-то длинное описание на русском",
         category = "Органические материалы",
         danger = 1,
         desc2 = "Обнаружен в [REDACTED]",
@@ -151,7 +151,167 @@ surface.CreateFont( "Education", {
     outline = true,
 } )
 
+surface.CreateFont( "font1", {
+    font = "Arial", -- Use the font-name which is shown to you by your operating system Font Viewer.
+    extended = false,
+    size = 172,
+    weight = 700,
+    blursize = 0,
+    scanlines = 0,
+    antialias = true,
+    underline = false,
+    italic = false,
+    strikeout = false,
+    symbol = false,
+    rotary = false,
+    shadow = false,
+    additive = false,
+    outline = false,
+} )
 
+surface.CreateFont( "font2", {
+    font = "Consolas", -- Use the font-name which is shown to you by your operating system Font Viewer.
+    extended = false,
+    size = 120,
+    weight = 600,
+    blursize = 0,
+    scanlines = 0,
+    antialias = true,
+    underline = false,
+    italic = false,
+    strikeout = false,
+    symbol = false,
+    rotary = false,
+    shadow = false,
+    additive = false,
+    outline = false,
+} )
+
+surface.CreateFont( "font_tektur", {
+    font = "Tektur", -- Use the font-name which is shown to you by your operating system Font Viewer.
+    extended = true,
+    size = 120,
+    weight = 600,
+    blursize = 0,
+    scanlines = 0,
+    antialias = true,
+    underline = false,
+    italic = false,
+    strikeout = false,
+    symbol = false,
+    rotary = false,
+    shadow = false,
+    additive = false,
+    outline = false,
+} )
+
+surface.CreateFont( "font_tektur_normal", {
+    font = "Tektur", -- Use the font-name which is shown to you by your operating system Font Viewer.
+    extended = true,
+    size = 120,
+    weight = 100,
+    blursize = 0,
+    scanlines = 0,
+    antialias = true,
+    underline = false,
+    italic = false,
+    strikeout = false,
+    symbol = false,
+    rotary = false,
+    shadow = false,
+    additive = false,
+    outline = false,
+} )
+
+surface.CreateFont( "font_tektur_dframe_title", {
+    font = "Tektur", -- Use the font-name which is shown to you by your operating system Font Viewer.
+    extended = true,
+    size = 25,
+    weight = 600,
+    blursize = 0,
+    scanlines = 0,
+    antialias = true,
+    underline = false,
+    italic = false,
+    strikeout = false,
+    symbol = false,
+    rotary = false,
+    shadow = false,
+    additive = false,
+    outline = false,
+} )
+
+surface.CreateFont( "font_tektur_dframe", {
+    font = "Tektur", -- Use the font-name which is shown to you by your operating system Font Viewer.
+    extended = true,
+    size = 20,
+    weight = 400,
+    blursize = 0,
+    scanlines = 0,
+    antialias = true,
+    underline = false,
+    italic = false,
+    strikeout = false,
+    symbol = false,
+    rotary = false,
+    shadow = false,
+    additive = false,
+    outline = false,
+} )
+
+surface.CreateFont( "font_tektur2", {
+    font = "Tektur", -- Use the font-name which is shown to you by your operating system Font Viewer.
+    extended = true,
+    size = 160,
+    weight = 650,
+    blursize = 0,
+    scanlines = 0,
+    antialias = true,
+    underline = false,
+    italic = false,
+    strikeout = false,
+    symbol = false,
+    rotary = false,
+    shadow = false,
+    additive = false,
+    outline = false,
+} )
+
+surface.CreateFont( "font2_sub", {
+    font = "Consolas", -- Use the font-name which is shown to you by your operating system Font Viewer.
+    extended = false,
+    size = 60,
+    weight = 600,
+    blursize = 0,
+    scanlines = 0,
+    antialias = true,
+    underline = false,
+    italic = false,
+    strikeout = false,
+    symbol = false,
+    rotary = false,
+    shadow = false,
+    additive = false,
+    outline = false,
+} )
+
+surface.CreateFont( "font3", {
+    font = "Arial", -- Use the font-name which is shown to you by your operating system Font Viewer.
+    extended = false,
+    size = 152,
+    weight = 600,
+    blursize = 0,
+    scanlines = 0,
+    antialias = true,
+    underline = false,
+    italic = false,
+    strikeout = false,
+    symbol = false,
+    rotary = false,
+    shadow = false,
+    additive = false,
+    outline = false,
+} )
 
 function Helix_YUI_GetSize(text, font)
     surface.SetFont(font)

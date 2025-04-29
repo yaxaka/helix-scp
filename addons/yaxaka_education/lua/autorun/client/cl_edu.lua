@@ -38,23 +38,23 @@ function drawedu()
 
 	end
 
-	Helix_YUI_CreateText("Text1", newsbox, "Header", "Добро пожаловать", 50, 20)
-	Helix_YUI_CreateText("Text2", newsbox, "Education", "Настоятельно рекомендуем установить версию garry’s mod на x86-64 - Chromium + 64-bit binaries систему", 50, 150)
+	Helix_YUI_CreateText("Text1", newsbox, "Header", "Добро пожаловать", 50*yu_scale, 20*yu_scale)
+	Helix_YUI_CreateText("Text2", newsbox, "Education", "Настоятельно рекомендуем установить версию garry’s mod на x86-64 - Chromium + 64-bit binaries систему", 50*yu_scale, 150*yu_scale)
 	Helix_YUI_Button("ContinueEdu", sizew-444, sizeh-100, DermaPanel22, "Продолжить", "DermaLarge", "Edu1", 384, 55, back, true)
-	Helix_YUI_CreateText("Text3", newsbox, "Education", "Порядок действий приведён ниже", 50, 220)
+	Helix_YUI_CreateText("Text3", newsbox, "Education", "Порядок действий приведён ниже", 50*yu_scale, 220*yu_scale)
 
 	local nw, nh = newsbox:GetSize()
 
 	local edu1 = newsbox:Add("DImage")
-    edu1:SetSize(587*yu_scale, 282*yu_scale)
+    edu1:SetSize(587, 282)
     edu1:SetPos(50, nh/2-280/2)
     edu1:SetImage("edusteam1.png")
     local edu2 = newsbox:Add("DImage")
-    edu2:SetSize(515*yu_scale, 286*yu_scale)
+    edu2:SetSize(515, 286)
     edu2:SetPos(637*yu_scale, nh/2-280/2)
     edu2:SetImage("edusteam2.png")
     local edu3 = newsbox:Add("DImage")
-    edu3:SetSize(629*yu_scale, 287*yu_scale)
+    edu3:SetSize(629, 287)
     edu3:SetPos(1152*yu_scale, nh/2-280/2)
     edu3:SetImage("edusteam3.png")
 	
