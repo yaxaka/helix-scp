@@ -4,6 +4,7 @@ include("shared.lua")
 
 util.AddNetworkString("yr_bank")
 
+
 local selfent = nil
 
 function ENT:Initialize()
@@ -24,7 +25,8 @@ function ENT:Initialize()
 end
 
 net.Receive("yr_bank", function(l, ply)
-    if false then return end
+    if not ply:GetCharacter():IsScienceTeam() then return end
+
 
     local type = net.ReadBool()
 
@@ -33,6 +35,7 @@ net.Receive("yr_bank", function(l, ply)
     else
         local str = net.ReadString()
         if #str >= 20 then return end
+        if yr_LoadElement(str) == nil then return end
 
         selfent:SetItem(str)
     end

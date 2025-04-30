@@ -24,6 +24,7 @@ hook.Add( "StartCommand", "myAddonName/Load", function( ply, cmd )
 		load_queue[ ply ] = nil
 
 		yas_refreshply(ply)
+		yr_refreshply(ply)
 	end
 end )
 

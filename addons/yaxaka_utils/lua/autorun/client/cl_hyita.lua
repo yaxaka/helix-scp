@@ -245,7 +245,7 @@ surface.CreateFont( "font_tektur_dframe", {
     font = "Tektur", -- Use the font-name which is shown to you by your operating system Font Viewer.
     extended = true,
     size = 20,
-    weight = 400,
+    weight = 500,
     blursize = 0,
     scanlines = 0,
     antialias = true,

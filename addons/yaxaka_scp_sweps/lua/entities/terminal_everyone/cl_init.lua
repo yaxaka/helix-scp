@@ -21,11 +21,29 @@ local dna_editlogo = Material("terminal/dna_edit.png", "noclamp smooth")
 
 yq_active_task = "Undefined"
 yq_progress = 1 -- 53max
+yr_bank_ent = nil
 
+local first_obr = 'nil'
+local second_obr = 'nil2'
+
+local fobr = nil
+local sobr = nil
 
 
 ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
+function ENT:Initialize()
+    timer.Create("yr_skasearchforents", 3, 0, function()
+        if not self:IsValid() then timer.Remove("yr_skasearchforents") return end
+        for k,v in pairs(ents.FindInSphere(self:GetPos(), 200)) do
+            local clas = v:GetClass()
+            if clas == "yr_bank" then
+                self:SetBank(true)
+                yr_bank_ent = v
+            end
+        end
+    end)
+end
 
 function ENT:DrawTranslucent()
     self:DrawModel()
@@ -64,31 +82,31 @@ function ENT:DrawTranslucent()
         local green = Color(0, 255, 0)
         local red = Color(255, 0, 0)
 
-        if bank_obr then
+        if self:GetBank() then
             bank_obr_clr = green
         else
             bank_obr_clr = red
         end
 
-        if res_bot then
+        if self:GetResearchBot() then
             res_bot_clr = green
         else
             res_bot_clr = red
         end
 
-        if sintezator then
+        if self:GetSintezator() then
             sintezator_clr = green
         else
             sintezator_clr = red
         end
 
-        if chem_lab then
+        if self:GetChemLab() then
             chem_lab_clr = green
         else
             chem_lab_clr = red
         end
 
-        if dna_redactor then
+        if self:GetDNARedactor() then
             dna_redactor_clr = green
         else
             dna_redactor_clr = red
@@ -273,7 +291,7 @@ function ENT:DrawTranslucent()
 
             surface.SetFont("font_tektur2")
             surface.SetTextPos(195*res, 193*res)
-            surface.SetTextColor(chem_lab_clr)
+            surface.SetTextColor(bank_obr_clr)
             surface.DrawText("⚫")
 
             surface.SetTextColor(0, 0, 0)
@@ -406,6 +424,7 @@ function ENT:DrawTranslucent()
             local other = imgui.xButtonImage(other_icon, 487.4 * res, 286.8 * res, 17 * res, 17 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
 
 
+
             if dna then self:SetPage(4) end
             if expressed then self:SetPage(2) end
             if chem then self:SetPage(5) end
@@ -471,6 +490,8 @@ function ENT:DrawTranslucent()
 
             local expressed = imgui.xButtonImage(exlogo, 509.5 * res, 285.5 * res, 21 * res, 21 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
             local other = imgui.xButtonImage(other_icon, 487.4 * res, 286.8 * res, 17 * res, 17 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
+
+            if sintez then self:SetPage(51) end
 
             if dna then self:SetPage(4) end
             if expressed then self:SetPage(2) end
@@ -668,12 +689,119 @@ function ENT:DrawTranslucent()
             if proba then self:SetPage(6) end
             if raport then self:SetPage(7) end
 
+        elseif page == 51 then -- chem_sintez
+            surface.SetFont("font2_sub")
+            surface.SetTextPos(178*res, 24*res)
+            surface.DrawText("/RESEARCH_JOB")
+
+            local nick = LocalPlayer():Nick()
+
+            surface.SetFont("font_tektur")
+            local w, h = surface.GetTextSize(nick)
+
+
+            surface.SetTextPos(40*res, 79*res)
+            surface.SetTextColor(0, 0, 0)
+            surface.DrawText(nick)
+
+            surface.SetDrawColor(0, 0, 0)
+            surface.DrawOutlinedRect(33*res, 102*res, 500*res, 182*res, 2*res)
+            surface.DrawOutlinedRect(33*res, 78*res, w+15*res, 26*res, 2*res)
+            surface.DrawOutlinedRect(33*res, 282*res, 15+88.65*res, 26*res, 2*res)
+            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+165*res, 26*res, 2*res)
+            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+279*res, 26*res, 2*res)
+            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+305*res, 26*res, 2*res)
+            surface.DrawOutlinedRect(507*res, 282*res, 26*res, 26*res, 2*res)
+            surface.DrawOutlinedRect(483*res, 282*res, 26*res, 26*res, 2*res)
+
+            surface.SetFont("font_tektur_normal")
+            surface.SetTextPos(77*res, 282*res)
+            surface.DrawText("ДНК")
+            surface.SetTextPos(151*res, 282*res)
+            surface.DrawText("Химия")
+            surface.SetTextPos(242*res, 282*res)
+            surface.DrawText("Образцы")
+
+            surface.SetMaterial(dnalogo)
+            surface.DrawTexturedRect(34*res+7*res, 288.8*res, 30*res, 12*res)
+            surface.SetMaterial(chemlogo)
+            surface.DrawTexturedRect(34*res+res+93*res, 285.5*res, 22*res, 19*res)
+            surface.SetMaterial(probalogo)
+            surface.DrawTexturedRect(34*res+res+89.5*res+97*res, 286*res, 18*res, 18*res)
+            surface.SetMaterial(raportlogo)
+            surface.DrawTexturedRect(34*res+res+89.5*res+93*res+118*res, 286*res, 18*res, 18*res)
+
+
+            surface.SetDrawColor(color_white)
+            surface.DrawOutlinedRect(34*res+res+89*res, 283.5*res, 93*res, 23*res, 1*res)
+            surface.SetDrawColor(0, 0, 0)
+
+            local proba = imgui.xButton(34*res+res+89.5*res+93*res, 283.5*res, 113*res, 23*res, 6, Color(0, 0, 0, 0), color_white, Color(255, 0, 0))
+            local raport = imgui.xButton(34*res+res+89.5*res+93*res+115*res, 283.5*res, 24*res, 23*res, 6, Color(0, 0, 0, 0), color_white, Color(255, 0, 0))
+            local dna = imgui.xButton(34*res, 283.5*res, 89.5*res, 23*res, 6, Color(0, 0, 0, 0), color_white, Color(255, 0, 0))
+
+            local first = imgui.xButtonImageUnder(-100, 5*res, fobr or "Загрузить", "font_tektur_normal", mix_empty_icon, 80*res, 140*res, 60*res, 80*res, 5, Color(0, 0, 0), color_white, Color(128, 128, 128))
+            local second = imgui.xButtonImageUnder(-100, 5*res, sobr or "Загрузить", "font_tektur_normal", mix_empty_icon, 220*res, 140*res, 60*res, 80*res, 5, Color(0, 0, 0), color_white, Color(128, 128, 128))
+            local start = imgui.xButtonTerminal("Начать синтез", "font_tektur_normal", 340*res, 150*res, 10, Color(0, 0, 0), Color(255, 255, 255), Color(128, 128, 128))
+            local reset = imgui.xButtonTerminal("Сбросить", "font_tektur_normal", 340*res, 200*res, 10, Color(0, 0, 0), Color(255, 255, 255), Color(128, 128, 128))
+
+            local expressed = imgui.xButtonImage(exlogo, 509.5 * res, 285.5 * res, 21 * res, 21 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
+            local other = imgui.xButtonImage(other_icon, 487.4 * res, 286.8 * res, 17 * res, 17 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
+
+
+            if first then
+                if not self:GetBank() or not yr_bank_ent:IsValid() or yr_bank_ent:GetItem() == "Не выбрано" then
+                    LocalPlayer():Notify("Образец не выбран в банке!")
+                else
+                    if first_obr == second_obr then
+                        LocalPlayer():Notify("Вы выбрали два одинаковых образца!")
+                    else
+                        first_obr = yr_bank_ent:GetItem()
+                        fobr = yr_bank_ent:GetItem()
+                        print(first_obr .. fobr)
+                        LocalPlayer():Notify("Образец загружен")
+                    end
+                end
+            end
+
+            if second then
+                if not self:GetBank() or not yr_bank_ent:IsValid() or yr_bank_ent:GetItem() == "Не выбрано" then
+                    LocalPlayer():Notify("Образец не выбран в банке!")
+                else
+                    if second_obr == first_obr then
+                        LocalPlayer():Notify("Вы выбрали два одинаковых образца!")
+                    else
+                        second_obr = yr_bank_ent:GetItem()
+                        sobr = yr_bank_ent:GetItem()
+                        print(second_obr .. sobr)
+                        LocalPlayer():Notify("Образец загружен")
+                    end
+                end
+            end
+
+            if start then
+                print(first_obr)
+                print(second_obr)
+                if first_obr == 'nil' or second_obr == 'nil2' then
+                    LocalPlayer():Notify("Загрузите два образца перед началом работы!")
+                else
+                    call_sendnewgui()
+                end
+            end
+
+            if dna then self:SetPage(4) end
+            if expressed then self:SetPage(2) end
+            if proba then self:SetPage(6) end
+            if raport then self:SetPage(7) end
+            if research then self:SetPage(8) end
+
         elseif page == 405 then
 
             draw.SimpleText("Loading", "font1", 565 * res / 2, 318 * res / 2 + 400, Color(0,0,0), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             surface.SetMaterial(paymat)
             surface.SetDrawColor(255, 255, 255)
             surface.DrawTexturedRect(201 * res, 70 * res, 164 * res, 110 * res)
+
         end
 
 
