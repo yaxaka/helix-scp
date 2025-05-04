@@ -29,6 +29,11 @@ function Player:SetRole(role)
 	yas_refreshply(self)
 end
 
+function Player:RemoveRole()
+	yas_SavePlayer(self, "User")
+	yas_refreshply(self)
+end
+
 function Player:Auth(flag)
 	local role = self:GetRole()
 	local flags = yas_roles[role].flags

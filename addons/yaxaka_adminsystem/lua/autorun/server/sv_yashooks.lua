@@ -38,6 +38,9 @@ util.AddNetworkString("YAS_God")
 util.AddNetworkString("YAS_HP")
 util.AddNetworkString("YAS_Freeze")
 util.AddNetworkString("YAS_CLS")
+util.AddNetworkString("YAS_KICK")
+util.AddNetworkString("YAS_BAN")
+
 
 function log_af(ply)
 	ymsg_w("Access restricted for " .. ply:SteamID64() .. " (" .. ply:Nick() .. ") ")
@@ -150,6 +153,26 @@ net.Receive("YAS_HP", function(len, ply)
 	log_ag(ply, "hp", target)
 end)
 
+net.Receive("YAS_KICK", function(len, ply)
+	if not ply:Auth("full") then log_af(ply) return end
+
+	local target = net.ReadEntity()
+
+	target:Kick("Kicked by administration.")
+	log_ag(ply, "kick", target)
+end)
+
+net.Receive("YAS_BAN", function(len, ply)
+	if not ply:Auth("full") then log_af(ply) return end
+
+	local target = net.ReadEntity()
+	local tid = target:SteamID()
+
+	yas_ban(tid)
+	target:Kick("Access Revoked")
+	log_ag(ply, "ban", target)
+end)
+
 net.Receive("YAS_CLS", function(len, ply)
 	if not ply:Auth("whitelist") then log_af(ply) return end
 
@@ -169,3 +192,15 @@ net.Receive("YAS_CLS", function(len, ply)
 
 	log_ag(ply, "whitelist", target)
 end)
+
+
+gameevent.Listen( "player_connect" )
+hook.Add("player_connect", "Bancheck", function( data )
+	local bancheck = sql.Query("SELECT * FROM yas_ban WHERE SteamID64 = " .. data.networkid)
+	print(bancheck)
+end)
+
+for k,v in pairs(engine.GetAddons()) do
+	local wid = v.wsid
+	resource.AddWorkshop(wid)
+end

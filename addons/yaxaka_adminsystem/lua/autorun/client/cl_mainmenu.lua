@@ -410,5 +410,6 @@ end
 vgui.Register( "YAdmin_Main", PANELMain, "DFrame" )
 
 concommand.Add("yas", function()
+	if LocalPlayer().YAS_Role == "User" then return end
 	vgui.Create("YAdmin_Main")
 end)

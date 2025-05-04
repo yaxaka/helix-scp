@@ -104,6 +104,20 @@ function yas_hp(target)
 	yas_bsend()
 end
 
+function yas_kick(target)
+	net.Start("YAS_KICK")
+	net.WriteEntity(target)
+	net.SendToServer()
+	yas_bsend()
+end
+
+function yas_ban(target)
+	net.Start("YAS_BAN")
+	net.WriteEntity(target)
+	net.SendToServer()
+	yas_bsend()
+end
+
 function yas_setclass(target, index, index2, bool)
 	net.Start("YAS_CLS")
 	net.WriteBool(bool)

@@ -144,6 +144,12 @@ function PANEL:Init()
 			local hp = Menu:AddOption( "Восстановить хп", function() yas_hp(ply_target) end )
 			hp:SetIcon( "icon16/heart_add.png" )
 
+			local hp = Menu:AddOption( "Кикнуть", function() yas_kick(ply_target) end )
+			hp:SetIcon( "icon16/exclamation.png" )
+
+			local hp = Menu:AddOption( "Заблокировать", function() yas_ban(ply_target) end )
+			hp:SetIcon( "icon16/fire.png" )
+
 			Menu:Open()
 
 		end

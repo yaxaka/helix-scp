@@ -168,7 +168,7 @@ end
 
 
 
-function yr_mix1(id1, id2, newname, author)
+function yr_mix1(id1, id2)
     local el1 = yr_LoadElement(id1)
     local el2 = yr_LoadElement(id2)
     if el1 == nil or el2 == nil then return end
@@ -177,5 +177,6 @@ function yr_mix1(id1, id2, newname, author)
     local lapki2 = yr_lapki(id2)
     local new_element = yr_compare(lapki1, lapki2)
 
+    PrintTable(new_element)
     return new_element
 end

@@ -44,9 +44,9 @@ hook.Add("Shifrator", "Controller", function(item, ply)
 end)
 
 local function GetAreSlotsClear(currentArmorItems, newArmorName)
-	print(newArmorName)
-	print(JMod.ArmorTable)
 	local NewArmorInfo = JMod.ArmorTable[newArmorName]
+	print(JMod.ArmorTable)
+	print(newArmorName)
 	local RequiredSlots = NewArmorInfo.slots
 
 	for id, currentArmorData in pairs(currentArmorItems) do

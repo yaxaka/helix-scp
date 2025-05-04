@@ -3,7 +3,9 @@ yas_sqlsave_queue = {}
 
 function yas_CreateTable()
 	sql.Query("CREATE TABLE IF NOT EXISTS yas_roles ( SteamID64 INTEGER PRIMARY KEY, Role STRING )")
+	sql.Query("CREATE TABLE IF NOT EXISTS yas_ban ( SteamID64 INTEGER PRIMARY KEY, Time INTEGER )")
 	sql.Query("INSERT OR REPLACE INTO yas_roles ( SteamID64, Role ) VALUES ( " ..  0000000 .. ", " .. sql.SQLStr("User") .. " )")
+	sql.Query("INSERT OR REPLACE INTO yas_ban ( SteamID64, Time ) VALUES ( " ..  0000000 .. ", " .. sql.SQLStr("0") .. " )")
 end
 
 
@@ -46,3 +48,6 @@ function yas_validrole(role)
 	return false
 end
 
+function yas_ban(id)
+	sql.Query("INSERT OR REPLACE INTO yas_ban ( SteamID64, Time ) VALUES ( " ..  sql.SQLStr(id) .. ", " .. sql.SQLStr("Permanent") .. " )")
+end

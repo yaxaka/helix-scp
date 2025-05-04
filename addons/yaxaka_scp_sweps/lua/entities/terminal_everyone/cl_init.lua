@@ -211,6 +211,7 @@ function ENT:DrawTranslucent()
                     net.Start("yq_request")
                     net.WriteInt(value, 11)
                     net.SendToServer()
+                    yas_bclick()
                 end
             end
 
@@ -325,10 +326,10 @@ function ENT:DrawTranslucent()
             local expressed = imgui.xButtonImage(exlogo, 509.5 * res, 285.5 * res, 21 * res, 21 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
             local other = imgui.xButtonImage(other_icon, 487.4 * res, 286.8 * res, 17 * res, 17 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
 
-            if expressed then self:SetPage(0) end
-            if chem then self:SetPage(5) end
-            if proba then self:SetPage(6) end
-            if raport then self:SetPage(7) end
+            if expressed then self:SetPage(0) yas_bclick() end
+            if chem then self:SetPage(5) yas_bclick() end
+            if proba then self:SetPage(6) yas_bclick() end
+            if raport then self:SetPage(7) yas_bclick() end
 
         elseif page == 3 then
 
@@ -425,11 +426,11 @@ function ENT:DrawTranslucent()
 
 
 
-            if dna then self:SetPage(4) end
-            if expressed then self:SetPage(2) end
-            if chem then self:SetPage(5) end
-            if proba then self:SetPage(6) end
-            if raport then self:SetPage(7) end
+            if dna then self:SetPage(4) yas_bclick() end
+            if expressed then self:SetPage(2) yas_bclick() end
+            if chem then self:SetPage(5) yas_bclick() end
+            if proba then self:SetPage(6) yas_bclick() end
+            if raport then self:SetPage(7) yas_bclick() end
 
         elseif page == 5 then -- chem
             surface.SetFont("font2_sub")
@@ -491,13 +492,13 @@ function ENT:DrawTranslucent()
             local expressed = imgui.xButtonImage(exlogo, 509.5 * res, 285.5 * res, 21 * res, 21 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
             local other = imgui.xButtonImage(other_icon, 487.4 * res, 286.8 * res, 17 * res, 17 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
 
-            if sintez then self:SetPage(51) end
+            if sintez then self:SetPage(51) yas_bclick() end
 
-            if dna then self:SetPage(4) end
-            if expressed then self:SetPage(2) end
-            if proba then self:SetPage(6) end
-            if raport then self:SetPage(7) end
-            if research then self:SetPage(8) end
+            if dna then self:SetPage(4) yas_bclick() end
+            if expressed then self:SetPage(2) yas_bclick() end
+            if proba then self:SetPage(6) yas_bclick() end
+            if raport then self:SetPage(7) yas_bclick() end
+            if research then self:SetPage(8) yas_bclick() end
 
         elseif page == 6 then -- proba
             surface.SetFont("font2_sub")
@@ -554,10 +555,10 @@ function ENT:DrawTranslucent()
             local expressed = imgui.xButtonImage(exlogo, 509.5 * res, 285.5 * res, 21 * res, 21 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
             local other = imgui.xButtonImage(other_icon, 487.4 * res, 286.8 * res, 17 * res, 17 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
 
-            if dna then self:SetPage(4) end
-            if expressed then self:SetPage(2) end
-            if chem then self:SetPage(5) end
-            if raport then self:SetPage(7) end
+            if dna then self:SetPage(4) yas_bclick() end
+            if expressed then self:SetPage(2) yas_bclick() end
+            if chem then self:SetPage(5) yas_bclick() end
+            if raport then self:SetPage(7) yas_bclick() end
 
         elseif page == 7 then -- raport
 
@@ -612,15 +613,15 @@ function ENT:DrawTranslucent()
             local proba = imgui.xButton(34*res+res+89.5*res+93*res, 283.5*res, 113*res, 23*res, 6, Color(0, 0, 0, 0), color_white, Color(255, 0, 0))
             
 
-            if dna then self:SetPage(4) end
+            if dna then self:SetPage(4) yas_bclick() end
 
             local expressed = imgui.xButtonImage(exlogo, 509.5 * res, 285.5 * res, 21 * res, 21 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
             local other = imgui.xButtonImage(other_icon, 487.4 * res, 286.8 * res, 17 * res, 17 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
 
-            if expressed then self:SetPage(0) end
-            if chem then self:SetPage(5) end
-            if proba then self:SetPage(6) end
-            if raport then self:SetPage(7) end
+            if expressed then self:SetPage(0) yas_bclick() end
+            if chem then self:SetPage(5) yas_bclick() end
+            if proba then self:SetPage(6) yas_bclick() end
+            if raport then self:SetPage(7) yas_bclick() end
 
         elseif page == 8 then -- chem_research
             surface.SetFont("font2_sub")
@@ -684,10 +685,10 @@ function ENT:DrawTranslucent()
             local expressed = imgui.xButtonImage(exlogo, 509.5 * res, 285.5 * res, 21 * res, 21 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
             local other = imgui.xButtonImage(other_icon, 487.4 * res, 286.8 * res, 17 * res, 17 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
 
-            if dna then self:SetPage(4) end
-            if expressed then self:SetPage(2) end
-            if proba then self:SetPage(6) end
-            if raport then self:SetPage(7) end
+            if dna then self:SetPage(4) yas_bclick() end
+            if expressed then self:SetPage(2) yas_bclick() end
+            if proba then self:SetPage(6) yas_bclick() end
+            if raport then self:SetPage(7) yas_bclick() end
 
         elseif page == 51 then -- chem_sintez
             surface.SetFont("font2_sub")
@@ -750,6 +751,7 @@ function ENT:DrawTranslucent()
 
 
             if first then
+                yas_bclick()
                 if not self:GetBank() or not yr_bank_ent:IsValid() or yr_bank_ent:GetItem() == "Не выбрано" then
                     LocalPlayer():Notify("Образец не выбран в банке!")
                 else
@@ -765,6 +767,7 @@ function ENT:DrawTranslucent()
             end
 
             if second then
+                yas_bclick()
                 if not self:GetBank() or not yr_bank_ent:IsValid() or yr_bank_ent:GetItem() == "Не выбрано" then
                     LocalPlayer():Notify("Образец не выбран в банке!")
                 else
@@ -780,6 +783,7 @@ function ENT:DrawTranslucent()
             end
 
             if start then
+                yas_bclick()
                 print(first_obr)
                 print(second_obr)
                 if first_obr == 'nil' or second_obr == 'nil2' then
@@ -789,11 +793,11 @@ function ENT:DrawTranslucent()
                 end
             end
 
-            if dna then self:SetPage(4) end
-            if expressed then self:SetPage(2) end
-            if proba then self:SetPage(6) end
-            if raport then self:SetPage(7) end
-            if research then self:SetPage(8) end
+            if dna then self:SetPage(4) yas_bclick() end
+            if expressed then self:SetPage(2) yas_bclick() end
+            if proba then self:SetPage(6) yas_bclick() end
+            if raport then self:SetPage(7) yas_bclick() end
+            if research then self:SetPage(8) yas_bclick() end
 
         elseif page == 405 then
 
@@ -801,7 +805,11 @@ function ENT:DrawTranslucent()
             surface.SetMaterial(paymat)
             surface.SetDrawColor(255, 255, 255)
             surface.DrawTexturedRect(201 * res, 70 * res, 164 * res, 110 * res)
+            first_obr = 'nil'
+            second_obr = 'nil2'
 
+            fobr = nil
+            sobr = nil
         end
 
 
