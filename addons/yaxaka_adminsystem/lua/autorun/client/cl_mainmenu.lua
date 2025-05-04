@@ -52,7 +52,7 @@ surface.CreateFont( "Baumans", {
 	outline = false,
 } )
 
-
+local opened = nil
 local PANEL = {}
 
 function PANEL:Init()
@@ -115,6 +115,14 @@ function PANEL2:Paint( aWide, aTall )
 	surface.SetFont("HeaderAdminNick")
 	surface.SetTextPos(94, 49)
 	surface.DrawText(LocalPlayer():Nick())
+	surface.SetTextPos(124, 49)
+	local group = LocalPlayer().YAS_Role
+	if group == "Superadmin" then
+		surface.SetTextColor(Color(255, 0, 0))
+	elseif group == "Moderator" then
+		surface.SetTextColor(Color(0, 43, 255))
+	end
+	surface.DrawText(group)
 end
 
 
@@ -132,6 +140,7 @@ end
 function PANEL3:DoClick()
 	yas_bclick()
 	local parent = self:GetParent()
+	opened = nil
 	parent:Close()
 end
 
@@ -238,6 +247,7 @@ end
 vgui.Register( "YButton", PANEL4, "DButton" )
 
 
+
 local PANELMain = {}
 
 function PANELMain:Init()
@@ -246,6 +256,7 @@ function PANELMain:Init()
     	SingleDFrame:Remove()
     end
 
+    opened = self
   	local sw = ScrW()
     local sh = ScrH()
 
@@ -390,6 +401,8 @@ function PANELMain:Init()
 	self.Database.HoverColor = Color(148, 40, 150, 255)
 end
 
+
+
 function PANELMain:Think()
 	if self.animat then
   		self:Center()
@@ -405,11 +418,25 @@ function PANELMain:Paint( aWide, aTall )
 	surface.SetFont("HeaderAdminNick")
 	surface.SetTextPos(94, 49)
 	surface.DrawText(LocalPlayer():Nick())
+	surface.SetTextPos(384, 10)
+	local group = LocalPlayer().YAS_Role
+	if group == "Superadmin" then
+		surface.SetTextColor(Color(255, 0, 0))
+	elseif group == "Moderator" then
+		surface.SetTextColor(Color(0, 43, 255))
+	end
+	surface.DrawText(group)
 end
 
 vgui.Register( "YAdmin_Main", PANELMain, "DFrame" )
 
 concommand.Add("yas", function()
 	if LocalPlayer().YAS_Role == "User" then return end
-	vgui.Create("YAdmin_Main")
+
+	if opened ~= nil then
+		opened:Close()
+		opened = nil
+	elseif opened == nil then
+		vgui.Create("YAdmin_Main")
+	end
 end)

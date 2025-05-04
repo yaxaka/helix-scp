@@ -138,7 +138,7 @@ net.Receive("YAS_God", function(len, ply)
 
 	if type == 1 then
 		target:GodEnable()
-	else
+	elseif type == 2 then
 		target:GodDisable()
 	end
 	log_ag(ply, "god", target)
@@ -196,8 +196,10 @@ end)
 
 gameevent.Listen( "player_connect" )
 hook.Add("player_connect", "Bancheck", function( data )
-	local bancheck = sql.Query("SELECT * FROM yas_ban WHERE SteamID64 = " .. data.networkid)
-	print(bancheck)
+	local a = yas_checkban(data.networkid)
+	if a ~= nil then
+		game.KickID(data.userid, "Access Revoked. Contact administration or discord(yaxaka)")
+	end
 end)
 
 for k,v in pairs(engine.GetAddons()) do

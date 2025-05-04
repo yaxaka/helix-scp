@@ -29,11 +29,18 @@ function PANEL:Init()
 	for k,v in pairs(player.GetAll()) do
 		local steamid = v:SteamID()
 		local nick = v:Nick()
-		local team_color = (ix.faction.Get(v:Team()).color)
-		local classid = ix.class.Get(v:GetCharacter():GetClass())
+		local team_color = Color(255, 255, 255)
+		local classid = nil
+
+		if v:GetCharacter() ~= nil then
+			classid = ix.class.Get(v:GetCharacter():GetClass())
+		end
+
 		local class = "nil"
 		if classid ~= nil then
 			class = classid.name
+		else
+			class = "Персонаж не выбран"
 		end
 		
 
@@ -171,14 +178,14 @@ function PANEL:Init()
 		self.Steamid:SetText("(" .. steamid .. ")")
 		self.Steamid:SetSize(steamidw, steamidh)
 		self.Steamid:Dock(TOP)
-		self.Steamid:DockMargin(nickw+15, -26, 0, 0)
+		self.Steamid:DockMargin(nickw+20, -26, 0, 0)
 
 		self.class = self:Add("YLabel", self.Back)
 		self.class:SetFont("HudHintTextLarge")
 		self.class:SetText(class)
 		self.class:SetSize(classw, classh)
 		self.class:Dock(TOP)
-		self.class:DockMargin(nickw+steamidw+classw/2+10, -13, 0, 0)
+		self.class:DockMargin(nickw+steamidw+classw+10, -13, 0, 0)
 
 		self.Back.Paint = function(self, w, h)
 			if self:IsHovered() then
