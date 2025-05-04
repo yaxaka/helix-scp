@@ -62,7 +62,7 @@ ITEM.functions.EquipOff = {
 	OnCanRun = function(item)
 		local equip = item:GetData("equip")
 		local client = item.player
-		if (equip == true) && not (IsValid(item)) && (IsValid(client)) then
+		if (equip == true) && not (IsValid(item.entity)) && (IsValid(client)) then
 			return true
 		else
 			return false
@@ -70,11 +70,16 @@ ITEM.functions.EquipOff = {
 	end
 }
 
-
-
 ITEM:Hook("drop", function(item)
-	--item:SetCollisionGroup(1)
-	print("t")
+	local equip = item:GetData("equip")
+	local client = item.player
+
+	if not equip && IsValid(client) then
+		return true
+	else
+		client:Notify("Вы не можете выбросить надетый предмет!")
+		return false
+	end
 end)
 
 
