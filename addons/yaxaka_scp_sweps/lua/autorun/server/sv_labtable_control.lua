@@ -12,10 +12,11 @@ yr_CreateTable()
 
 function yr_localtable()
     local a = sql.Query("SELECT * FROM yr_science")
+    chemlab_table = {}
 
     for k,v in pairs(a) do
         chemlab_table[v.ID] = v
-        file.Write("yr_lapki_data/" .. v.ID .. ".txt", util.TableToJSON(v))
+        
     end
 
 end
@@ -44,6 +45,17 @@ end
 
 function yr_LoadElement(id)
     return chemlab_table[id]
+end
+
+function yr_DeleteElement(id)
+    local el = sql.Query("SELECT * FROM yr_science WHERE ID = " .. sql.SQLStr(id))
+    if el ~= nil && el ~= false then
+        sql.Query("DELETE FROM yr_science WHERE ID = " .. sql.SQLStr(id))
+        file.Delete(string.lower(id) .. ".txt", "DATA")
+        yr_localtable()
+        yr_refresh()
+        ymsg_d("[YR] " .. id .. " element was deleted")
+    end
 end
 
 function yr_refreshply(ply)
