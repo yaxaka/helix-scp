@@ -37,8 +37,14 @@ yr_chemtags_funcs = {
 
 util.AddNetworkString("yr_requestmix")
 
+util.AddNetworkString("yr_bank")
+util.AddNetworkString("yr_newobr")
+util.AddNetworkString("yr_research")
+
+
 net.Receive("yr_requestmix", function(l, ply)
 	if not ply:GetCharacter():IsScienceTeam() then return end
+	if yr_bankent == nil then return end
 
 	local fel = net.ReadString()
 	local sel = net.ReadString()
@@ -47,4 +53,72 @@ net.Receive("yr_requestmix", function(l, ply)
 	if yr_LoadElement(fel) == nil or yr_LoadElement(sel) == nil then return end
 
 	yr_mix1(fel, sel, newname, ply:GetCharacter():GetName())
+end)
+
+net.Receive("yr_bank", function(l, ply)
+    if not ply:GetCharacter():IsScienceTeam() then return end
+    if yr_bankent == nil then return end
+
+
+    local type = net.ReadBool()
+
+    if type == true then
+        yr_bankent:SetItem("Не выбрано")
+    else
+        local str = net.ReadString()
+        if #str >= 20 then return end
+        if yr_LoadElement(str) == nil then return end
+
+        yr_bankent:SetItem(str)
+    end
+end)
+
+net.Receive("yr_newobr", function(l, ply)
+    if not ply:GetCharacter():IsScienceTeam() then return end
+    if yr_bankent == nil then return end
+
+    local name = net.ReadString()
+    local checkutf8 = stringname_check(name, ply)
+    local len = #(name:gsub('[\128-\191]',''))
+
+    if not checkutf8 then return end
+
+    if len >= 10 then
+        ply:Notify("Слишком длинное название")
+        return
+    else
+        local el1 = net.ReadString()
+        local el2 = net.ReadString()
+
+        local a = yr_mix1(el1, el2, ply, name)
+        if a == false then
+            ply:Notify("Ошибка смешивания")
+        end
+    end
+   
+end)
+
+net.Receive("yr_research", function(l, ply)
+    if not ply:GetCharacter():IsScienceTeam() then return end
+    if yr_bankent == nil then return end
+
+    local item = yr_bankent:GetItem()
+
+    if item == "Не выбрано" then return end
+
+    local l = yr_lapki(item)
+
+    if type(l) == type({}) then
+    	PrintTable(l.lapki)
+    	local l1 = l.lapki.lapka1.name
+    	local l2 = l.lapki.lapka2.name
+    	local l3 = l.lapki.lapka3.name
+
+    	net.Start("yr_research")
+    	net.WriteString(l1)
+    	net.WriteString(l2)
+    	net.WriteString(l3)
+    	net.Send(ply)
+
+    end
 end)

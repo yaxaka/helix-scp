@@ -29,6 +29,12 @@ local second_obr = 'nil2'
 local fobr = nil
 local sobr = nil
 
+local l1 = "Неизвестно"
+local l1 = "Неизвестно"
+local l1 = "Неизвестно"
+
+
+local selfent = nil
 
 ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
@@ -40,10 +46,21 @@ function ENT:Initialize()
             if clas == "yr_bank" then
                 self:SetBank(true)
                 yr_bank_ent = v
+                selfent = self
             end
         end
     end)
 end
+
+net.Receive("yr_research", function()
+    l1 = net.ReadString()
+    l2 = net.ReadString()
+    l3 = net.ReadString()
+    selfent:SetPage(410)
+    print(l1)
+    print(l2)
+    print(l3)
+end)
 
 function ENT:DrawTranslucent()
     self:DrawModel()
@@ -671,6 +688,29 @@ function ENT:DrawTranslucent()
             surface.DrawTexturedRect(34*res+res+89.5*res+93*res+118*res, 286*res, 18*res, 18*res)
 
 
+            surface.SetTextColor(0, 0, 0)
+            surface.SetFont("font_tektur")
+            surface.SetTextPos(220*res, 170*res)
+
+            if yr_bank_ent == nil or yr_bank_ent == NULL then
+                surface.DrawText("")
+            else
+
+                local bankitem = yr_bank_ent:GetItem()
+
+
+                if bankitem == "Не выбрано" then
+                    surface.DrawText("Не выбрано")
+                else
+                    surface.DrawText(bankitem)
+                    local researchbutton = imgui.xButtonTerminal("Исследовать", "font_tektur_normal", 210*res, 200*res, 10, Color(0, 0, 0), Color(255, 255, 255), Color(128, 128, 128))
+
+                    if researchbutton then
+                        net.Start("yr_research")
+                        net.SendToServer()
+                    end
+                end
+            end
 
 
             surface.SetDrawColor(color_white)
@@ -831,6 +871,72 @@ function ENT:DrawTranslucent()
 
             fobr = nil
             sobr = nil
+
+        elseif page == 410 then
+            surface.SetFont("font2_sub")
+            surface.SetTextPos(178*res, 24*res)
+            surface.DrawText("/RESEARCH_JOB")
+
+            local nick = LocalPlayer():Nick()
+
+            surface.SetFont("font_tektur")
+            local w, h = surface.GetTextSize(nick)
+
+
+            surface.SetTextPos(40*res, 79*res)
+            surface.SetTextColor(0, 0, 0)
+            surface.DrawText(nick)
+
+            surface.SetDrawColor(0, 0, 0)
+            surface.DrawOutlinedRect(33*res, 102*res, 500*res, 182*res, 2*res)
+            surface.DrawOutlinedRect(33*res, 78*res, w+15*res, 26*res, 2*res)
+            surface.DrawOutlinedRect(33*res, 282*res, 15+88.65*res, 26*res, 2*res)
+            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+165*res, 26*res, 2*res)
+            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+279*res, 26*res, 2*res)
+            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+305*res, 26*res, 2*res)
+            surface.DrawOutlinedRect(507*res, 282*res, 26*res, 26*res, 2*res)
+            surface.DrawOutlinedRect(483*res, 282*res, 26*res, 26*res, 2*res)
+
+            surface.SetFont("font_tektur_normal")
+            surface.SetTextPos(77*res, 282*res)
+            surface.DrawText("ДНК")
+            surface.SetTextPos(151*res, 282*res)
+            surface.DrawText("Химия")
+            surface.SetTextPos(242*res, 282*res)
+            surface.DrawText("Образцы")
+            surface.SetTextPos(60*res, 108*res)
+
+            surface.SetMaterial(dnalogo)
+            surface.DrawTexturedRect(34*res+7*res, 288.8*res, 30*res, 12*res)
+            surface.SetMaterial(chemlogo)
+            surface.DrawTexturedRect(34*res+res+93*res, 285.5*res, 22*res, 19*res)
+            surface.SetMaterial(probalogo)
+            surface.DrawTexturedRect(34*res+res+89.5*res+97*res, 286*res, 18*res, 18*res)
+            surface.SetMaterial(raportlogo)
+            surface.DrawTexturedRect(34*res+res+89.5*res+93*res+118*res, 286*res, 18*res, 18*res)
+
+
+            surface.SetTextColor(0, 0, 0)
+            surface.SetFont("font_tektur")
+            surface.SetTextPos(220*res, 170*res)
+
+
+            surface.SetDrawColor(color_white)
+            surface.DrawOutlinedRect(34*res+res+89*res, 283.5*res, 93*res, 23*res, 1*res)
+            surface.SetDrawColor(0, 0, 0)
+
+            local proba = imgui.xButton(34*res+res+89.5*res+93*res, 283.5*res, 113*res, 23*res, 6, Color(0, 0, 0, 0), color_white, Color(255, 0, 0))
+            local raport = imgui.xButton(34*res+res+89.5*res+93*res+115*res, 283.5*res, 24*res, 23*res, 6, Color(0, 0, 0, 0), color_white, Color(255, 0, 0))
+            local dna = imgui.xButton(34*res, 283.5*res, 89.5*res, 23*res, 6, Color(0, 0, 0, 0), color_white, Color(255, 0, 0))
+
+
+            local expressed = imgui.xButtonImage(exlogo, 509.5 * res, 285.5 * res, 21 * res, 21 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
+            local other = imgui.xButtonImage(other_icon, 487.4 * res, 286.8 * res, 17 * res, 17 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
+
+            if dna then self:SetPage(4) yas_bclick() end
+            if expressed then self:SetPage(2) yas_bclick() end
+            if proba then self:SetPage(6) yas_bclick() end
+            if raport then self:SetPage(7) yas_bclick() end
 
         end
 
