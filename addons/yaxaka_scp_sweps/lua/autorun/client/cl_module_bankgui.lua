@@ -98,9 +98,9 @@ function call_bankgui()
 end
 
 
-function call_sendnewgui()
+function call_sendnewgui(el1, el2, ent)
 	local DFrame = vgui.Create("DFrame") 
-	DFrame:SetSize(100, 200) 
+	DFrame:SetSize(200, 170) 
 	DFrame:SetTitle("")
 	DFrame:Center()
 	DFrame:MakePopup()
@@ -110,6 +110,36 @@ function call_sendnewgui()
 		surface.DrawRect(0, 0, w, h)
 		surface.SetDrawColor(0, 0, 0)
 		surface.DrawOutlinedRect(10, 10, w-20, h-20, 2)
+		surface.SetFont("font_tektur_dframe_title")
+		surface.SetTextColor(0, 0, 0)
+		surface.SetTextPos(70, 30)
+		surface.DrawText("Name")
+	end
+
+
+	local name = vgui.Create("DTextEntry", DFrame)
+	name:SetPos(30, 70)
+	name:SetSize(140, 25)
+	name:SetFont("font_tektur_dframe")
+	name:SetPlaceholderText("Введите название")
+
+	local send = vgui.Create("DButton", DFrame)
+	send:SetPos(30, 110)
+	send:SetSize(140, 25)
+	send:SetFont("font_tektur_dframe")
+	send:SetText("Отправить")
+	send.DoClick = function()
+		net.Start("yr_newobr")
+		net.WriteString(name:GetValue())
+		net.WriteString(el1)
+		net.WriteString(el2)
+		net.SendToServer()
+		yas_bclick()
+		DFrame:Close()
+		ent:SetPage(406)
+		timer.Create(ent:EntIndex() .. "_setpagebank", 5, 1, function()
+			ent:SetPage(2)
+		end)
 	end
 
 end

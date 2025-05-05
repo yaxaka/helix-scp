@@ -3,7 +3,7 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 
 util.AddNetworkString("yr_bank")
-
+util.AddNetworkString("yr_newobr")
 
 local selfent = nil
 
@@ -39,6 +39,30 @@ net.Receive("yr_bank", function(l, ply)
 
         selfent:SetItem(str)
     end
+end)
+
+net.Receive("yr_newobr", function(l, ply)
+    if not ply:GetCharacter():IsScienceTeam() then return end
+
+    local name = net.ReadString()
+    local checkutf8 = stringname_check(name, ply)
+    local len = #(name:gsub('[\128-\191]',''))
+
+    if not checkutf8 then return end
+
+    if len >= 10 then
+        ply:Notify("Слишком длинное название")
+        return
+    else
+        local el1 = net.ReadString()
+        local el2 = net.ReadString()
+
+        local a = yr_mix1(el1, el2, ply, name)
+        if a == false then
+            ply:Notify("Ошибка смешивания")
+        end
+    end
+   
 end)
 
 function ENT:Use( activator )

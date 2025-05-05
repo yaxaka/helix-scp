@@ -789,8 +789,19 @@ function ENT:DrawTranslucent()
                 if first_obr == 'nil' or second_obr == 'nil2' then
                     LocalPlayer():Notify("Загрузите два образца перед началом работы!")
                 else
-                    call_sendnewgui()
+                    if first_obr ~= second_obr then
+                        call_sendnewgui(first_obr, second_obr, self)
+                    else
+                        LocalPlayer():Notify("Вы выбрали два одинаковых образца!")
+                    end
                 end
+            end
+
+            if reset then
+                first_obr = 'nil'
+                second_obr = 'nil2'
+                fobr = nil
+                sobr = nil
             end
 
             if dna then self:SetPage(4) yas_bclick() end
@@ -810,6 +821,17 @@ function ENT:DrawTranslucent()
 
             fobr = nil
             sobr = nil
+        elseif page == 406 then
+
+            surface.SetMaterial(chemlogo)
+            surface.SetDrawColor(0, 255, 0)
+            surface.DrawTexturedRect(201 * res, 70 * res, 164 * res, 110 * res)
+            first_obr = 'nil'
+            second_obr = 'nil2'
+
+            fobr = nil
+            sobr = nil
+
         end
 
 

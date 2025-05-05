@@ -168,15 +168,26 @@ end
 
 
 
-function yr_mix1(id1, id2)
+function yr_mix1(id1, id2, ply, name)
     local el1 = yr_LoadElement(id1)
     local el2 = yr_LoadElement(id2)
-    if el1 == nil or el2 == nil then return end
+    if el1 == nil or el2 == nil then return false end
 
     local lapki1 = yr_lapki(id1)
     local lapki2 = yr_lapki(id2)
     local new_element = yr_compare(lapki1, lapki2)
 
     PrintTable(new_element)
-    return new_element
+
+    if type(new_element) == type({}) && IsValid(ply) && ply:IsPlayer() then
+
+        local parents = el1.ID .. "-to-" .. el2.ID
+        local author = ply:GetCharacter():GetName()
+
+        yr_SaveElement("ply", parents, author, name, new_element)
+
+        return new_element
+    else
+        return false
+    end
 end
