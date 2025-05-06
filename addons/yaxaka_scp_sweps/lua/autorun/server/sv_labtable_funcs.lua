@@ -110,6 +110,7 @@ net.Receive("yr_research", function(l, ply)
     local l1 = 'nil'
     local l2 = 'nil'
     local l3 = 'nil'
+    local parents = yr_LoadElement(item).Parents
 
     if type(l) == type({}) then
         if l.lapka1 == nil then
@@ -127,6 +128,7 @@ net.Receive("yr_research", function(l, ply)
     	net.WriteString(l2)
     	net.WriteString(l3)
         net.WriteString(item)
+        net.WriteString(parents)
     	net.Send(ply)
 
     end

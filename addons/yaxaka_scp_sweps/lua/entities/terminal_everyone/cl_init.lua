@@ -33,7 +33,7 @@ local l1 = "Неизвестно"
 local l1 = "Неизвестно"
 local l1 = "Неизвестно"
 local lname = "0000_AAAA"
-
+local lp = "nil"
 
 local selfent = nil
 
@@ -58,10 +58,9 @@ net.Receive("yr_research", function()
     l2 = net.ReadString()
     l3 = net.ReadString()
     lname = net.ReadString()
+    lp = net.ReadString()
     selfent:SetPage(410)
-    print(l1)
-    print(l2)
-    print(l3)
+
 end)
 
 function ENT:DrawTranslucent()
@@ -149,6 +148,49 @@ function ENT:DrawTranslucent()
 
         surface.SetMaterial(loginlogo)
         surface.DrawTexturedRect(518 * res, 17 * res, 22 * res, 22 * res)
+
+        function drawbase_frame()
+            surface.SetFont("font2_sub")
+            surface.SetTextPos(178*res, 24*res)
+            surface.DrawText("/RESEARCH_JOB")
+
+            local nick = LocalPlayer():Nick()
+
+            surface.SetFont("font_tektur")
+            local w, h = surface.GetTextSize(nick)
+
+
+            surface.SetTextPos(40*res, 79*res)
+            surface.SetTextColor(0, 0, 0)
+            surface.DrawText(nick)
+
+            surface.SetDrawColor(0, 0, 0)
+            surface.DrawOutlinedRect(33*res, 102*res, 500*res, 182*res, 2*res)
+            surface.DrawOutlinedRect(33*res, 78*res, w+15*res, 26*res, 2*res)
+            surface.DrawOutlinedRect(33*res, 282*res, 15+88.65*res, 26*res, 2*res)
+            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+165*res, 26*res, 2*res)
+            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+279*res, 26*res, 2*res)
+            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+305*res, 26*res, 2*res)
+            surface.DrawOutlinedRect(507*res, 282*res, 26*res, 26*res, 2*res)
+            surface.DrawOutlinedRect(483*res, 282*res, 26*res, 26*res, 2*res)
+
+            surface.SetFont("font_tektur_normal")
+            surface.SetTextPos(77*res, 282*res)
+            surface.DrawText("ДНК")
+            surface.SetTextPos(151*res, 282*res)
+            surface.DrawText("Химия")
+            surface.SetTextPos(242*res, 282*res)
+            surface.DrawText("Образцы")
+
+            surface.SetMaterial(dnalogo)
+            surface.DrawTexturedRect(34*res+7*res, 288.8*res, 30*res, 12*res)
+            surface.SetMaterial(chemlogo)
+            surface.DrawTexturedRect(34*res+res+93*res, 285.5*res, 22*res, 19*res)
+            surface.SetMaterial(probalogo)
+            surface.DrawTexturedRect(34*res+res+89.5*res+97*res, 286*res, 18*res, 18*res)
+            surface.SetMaterial(raportlogo)
+            surface.DrawTexturedRect(34*res+res+89.5*res+93*res+118*res, 286*res, 18*res, 18*res)
+        end
 
 
         if page == 0 then
@@ -239,47 +281,7 @@ function ENT:DrawTranslucent()
             end
 
         elseif page == 2 then
-
-            surface.SetFont("font2_sub")
-            surface.SetTextPos(178*res, 24*res)
-            surface.DrawText("/RESEARCH_JOB")
-
-            local nick = LocalPlayer():Nick()
-
-            surface.SetFont("font_tektur")
-            local w, h = surface.GetTextSize(nick)
-
-
-            surface.SetTextPos(40*res, 79*res)
-            surface.SetTextColor(0, 0, 0)
-            surface.DrawText(nick)
-
-            surface.SetDrawColor(0, 0, 0)
-            surface.DrawOutlinedRect(33*res, 102*res, 500*res, 182*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 78*res, w+15*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+88.65*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+165*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+279*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+305*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(507*res, 282*res, 26*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(483*res, 282*res, 26*res, 26*res, 2*res)
-
-            surface.SetFont("font_tektur_normal")
-            surface.SetTextPos(77*res, 282*res)
-            surface.DrawText("ДНК")
-            surface.SetTextPos(151*res, 282*res)
-            surface.DrawText("Химия")
-            surface.SetTextPos(242*res, 282*res)
-            surface.DrawText("Образцы")
-
-            surface.SetMaterial(dnalogo)
-            surface.DrawTexturedRect(34*res+7*res, 288.8*res, 30*res, 12*res)
-            surface.SetMaterial(chemlogo)
-            surface.DrawTexturedRect(34*res+res+93*res, 285.5*res, 22*res, 19*res)
-            surface.SetMaterial(probalogo)
-            surface.DrawTexturedRect(34*res+res+89.5*res+97*res, 286*res, 18*res, 18*res)
-            surface.SetMaterial(raportlogo)
-            surface.DrawTexturedRect(34*res+res+89.5*res+93*res+118*res, 286*res, 18*res, 18*res)
+            drawbase_frame()
 
             surface.SetTextPos(50*res, 119*res)
             surface.SetFont("font_tektur2")
@@ -386,46 +388,8 @@ function ENT:DrawTranslucent()
             end
 
         elseif page == 4 then -- dna
-            surface.SetFont("font2_sub")
-            surface.SetTextPos(178*res, 24*res)
-            surface.DrawText("/RESEARCH_JOB")
 
-            local nick = LocalPlayer():Nick()
-
-            surface.SetFont("font_tektur")
-            local w, h = surface.GetTextSize(nick)
-
-
-            surface.SetTextPos(40*res, 79*res)
-            surface.SetTextColor(0, 0, 0)
-            surface.DrawText(nick)
-
-            surface.SetDrawColor(0, 0, 0)
-            surface.DrawOutlinedRect(33*res, 102*res, 500*res, 182*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 78*res, w+15*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+88.65*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+165*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+279*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+305*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(507*res, 282*res, 26*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(483*res, 282*res, 26*res, 26*res, 2*res)
-
-            surface.SetFont("font_tektur_normal")
-            surface.SetTextPos(77*res, 282*res)
-            surface.DrawText("ДНК")
-            surface.SetTextPos(151*res, 282*res)
-            surface.DrawText("Химия")
-            surface.SetTextPos(242*res, 282*res)
-            surface.DrawText("Образцы")
-
-            surface.SetMaterial(dnalogo)
-            surface.DrawTexturedRect(34*res+7*res, 288.8*res, 30*res, 12*res)
-            surface.SetMaterial(chemlogo)
-            surface.DrawTexturedRect(34*res+res+93*res, 285.5*res, 22*res, 19*res)
-            surface.SetMaterial(probalogo)
-            surface.DrawTexturedRect(34*res+res+89.5*res+97*res, 286*res, 18*res, 18*res)
-            surface.SetMaterial(raportlogo)
-            surface.DrawTexturedRect(34*res+res+89.5*res+93*res+118*res, 286*res, 18*res, 18*res)
+            drawbase_frame()
 
 
             surface.SetDrawColor(color_white)
@@ -452,47 +416,8 @@ function ENT:DrawTranslucent()
             if raport then self:SetPage(7) yas_bclick() end
 
         elseif page == 5 then -- chem
-            surface.SetFont("font2_sub")
-            surface.SetTextPos(178*res, 24*res)
-            surface.DrawText("/RESEARCH_JOB")
 
-            local nick = LocalPlayer():Nick()
-
-            surface.SetFont("font_tektur")
-            local w, h = surface.GetTextSize(nick)
-
-
-            surface.SetTextPos(40*res, 79*res)
-            surface.SetTextColor(0, 0, 0)
-            surface.DrawText(nick)
-
-            surface.SetDrawColor(0, 0, 0)
-            surface.DrawOutlinedRect(33*res, 102*res, 500*res, 182*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 78*res, w+15*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+88.65*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+165*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+279*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+305*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(507*res, 282*res, 26*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(483*res, 282*res, 26*res, 26*res, 2*res)
-
-            surface.SetFont("font_tektur_normal")
-            surface.SetTextPos(77*res, 282*res)
-            surface.DrawText("ДНК")
-            surface.SetTextPos(151*res, 282*res)
-            surface.DrawText("Химия")
-            surface.SetTextPos(242*res, 282*res)
-            surface.DrawText("Образцы")
-
-            surface.SetMaterial(dnalogo)
-            surface.DrawTexturedRect(34*res+7*res, 288.8*res, 30*res, 12*res)
-            surface.SetMaterial(chemlogo)
-            surface.DrawTexturedRect(34*res+res+93*res, 285.5*res, 22*res, 19*res)
-            surface.SetMaterial(probalogo)
-            surface.DrawTexturedRect(34*res+res+89.5*res+97*res, 286*res, 18*res, 18*res)
-            surface.SetMaterial(raportlogo)
-            surface.DrawTexturedRect(34*res+res+89.5*res+93*res+118*res, 286*res, 18*res, 18*res)
-
+            drawbase_frame()
 
             surface.SetDrawColor(color_white)
             surface.DrawOutlinedRect(34*res+res+89*res, 283.5*res, 93*res, 23*res, 1*res)
@@ -520,46 +445,8 @@ function ENT:DrawTranslucent()
             if research then self:SetPage(8) yas_bclick() end
 
         elseif page == 6 then -- proba
-            surface.SetFont("font2_sub")
-            surface.SetTextPos(178*res, 24*res)
-            surface.DrawText("/RESEARCH_JOB")
 
-            local nick = LocalPlayer():Nick()
-
-            surface.SetFont("font_tektur")
-            local w, h = surface.GetTextSize(nick)
-
-
-            surface.SetTextPos(40*res, 79*res)
-            surface.SetTextColor(0, 0, 0)
-            surface.DrawText(nick)
-
-            surface.SetDrawColor(0, 0, 0)
-            surface.DrawOutlinedRect(33*res, 102*res, 500*res, 182*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 78*res, w+15*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+88.65*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+165*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+279*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+305*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(507*res, 282*res, 26*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(483*res, 282*res, 26*res, 26*res, 2*res)
-
-            surface.SetFont("font_tektur_normal")
-            surface.SetTextPos(77*res, 282*res)
-            surface.DrawText("ДНК")
-            surface.SetTextPos(151*res, 282*res)
-            surface.DrawText("Химия")
-            surface.SetTextPos(242*res, 282*res)
-            surface.DrawText("Образцы")
-
-            surface.SetMaterial(dnalogo)
-            surface.DrawTexturedRect(34*res+7*res, 288.8*res, 30*res, 12*res)
-            surface.SetMaterial(chemlogo)
-            surface.DrawTexturedRect(34*res+res+93*res, 285.5*res, 22*res, 19*res)
-            surface.SetMaterial(probalogo)
-            surface.DrawTexturedRect(34*res+res+89.5*res+97*res, 286*res, 18*res, 18*res)
-            surface.SetMaterial(raportlogo)
-            surface.DrawTexturedRect(34*res+res+89.5*res+93*res+118*res, 286*res, 18*res, 18*res)
+            drawbase_frame()
 
 
             surface.SetDrawColor(color_white)
@@ -581,46 +468,7 @@ function ENT:DrawTranslucent()
 
         elseif page == 7 then -- raport
 
-            surface.SetFont("font2_sub")
-            surface.SetTextPos(178*res, 24*res)
-            surface.DrawText("/RESEARCH_JOB")
-
-            local nick = LocalPlayer():Nick()
-
-            surface.SetFont("font_tektur")
-            local w, h = surface.GetTextSize(nick)
-
-
-            surface.SetTextPos(40*res, 79*res)
-            surface.SetTextColor(0, 0, 0)
-            surface.DrawText(nick)
-
-            surface.SetDrawColor(0, 0, 0)
-            surface.DrawOutlinedRect(33*res, 102*res, 500*res, 182*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 78*res, w+15*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+88.65*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+165*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+279*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+305*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(507*res, 282*res, 26*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(483*res, 282*res, 26*res, 26*res, 2*res)
-
-            surface.SetFont("font_tektur_normal")
-            surface.SetTextPos(77*res, 282*res)
-            surface.DrawText("ДНК")
-            surface.SetTextPos(151*res, 282*res)
-            surface.DrawText("Химия")
-            surface.SetTextPos(242*res, 282*res)
-            surface.DrawText("Образцы")
-
-            surface.SetMaterial(dnalogo)
-            surface.DrawTexturedRect(34*res+7*res, 288.8*res, 30*res, 12*res)
-            surface.SetMaterial(chemlogo)
-            surface.DrawTexturedRect(34*res+res+93*res, 285.5*res, 22*res, 19*res)
-            surface.SetMaterial(probalogo)
-            surface.DrawTexturedRect(34*res+res+89.5*res+97*res, 286*res, 18*res, 18*res)
-            surface.SetMaterial(raportlogo)
-            surface.DrawTexturedRect(34*res+res+89.5*res+93*res+118*res, 286*res, 18*res, 18*res)
+            drawbase_frame()
 
 
             surface.SetDrawColor(color_white)
@@ -643,51 +491,8 @@ function ENT:DrawTranslucent()
             if raport then self:SetPage(7) yas_bclick() end
 
         elseif page == 8 then -- chem_research
-            surface.SetFont("font2_sub")
-            surface.SetTextPos(178*res, 24*res)
-            surface.DrawText("/RESEARCH_JOB")
 
-            local nick = LocalPlayer():Nick()
-
-            surface.SetFont("font_tektur")
-            local w, h = surface.GetTextSize(nick)
-
-
-            surface.SetTextPos(40*res, 79*res)
-            surface.SetTextColor(0, 0, 0)
-            surface.DrawText(nick)
-
-            surface.SetDrawColor(0, 0, 0)
-            surface.DrawOutlinedRect(33*res, 102*res, 500*res, 182*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 78*res, w+15*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+88.65*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+165*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+279*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+305*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(507*res, 282*res, 26*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(483*res, 282*res, 26*res, 26*res, 2*res)
-
-            surface.SetFont("font_tektur_normal")
-            surface.SetTextPos(77*res, 282*res)
-            surface.DrawText("ДНК")
-            surface.SetTextPos(151*res, 282*res)
-            surface.DrawText("Химия")
-            surface.SetTextPos(242*res, 282*res)
-            surface.DrawText("Образцы")
-            surface.SetTextPos(60*res, 108*res)
-            surface.DrawText("Статус банка образцов: ")
-            surface.SetTextColor(bank_obr_clr)
-            surface.SetTextPos(285*res, 107*res)
-            surface.DrawText("⚫")
-
-            surface.SetMaterial(dnalogo)
-            surface.DrawTexturedRect(34*res+7*res, 288.8*res, 30*res, 12*res)
-            surface.SetMaterial(chemlogo)
-            surface.DrawTexturedRect(34*res+res+93*res, 285.5*res, 22*res, 19*res)
-            surface.SetMaterial(probalogo)
-            surface.DrawTexturedRect(34*res+res+89.5*res+97*res, 286*res, 18*res, 18*res)
-            surface.SetMaterial(raportlogo)
-            surface.DrawTexturedRect(34*res+res+89.5*res+93*res+118*res, 286*res, 18*res, 18*res)
+            drawbase_frame()
 
 
             surface.SetTextColor(0, 0, 0)
@@ -733,46 +538,8 @@ function ENT:DrawTranslucent()
             if raport then self:SetPage(7) yas_bclick() end
 
         elseif page == 51 then -- chem_sintez
-            surface.SetFont("font2_sub")
-            surface.SetTextPos(178*res, 24*res)
-            surface.DrawText("/RESEARCH_JOB")
 
-            local nick = LocalPlayer():Nick()
-
-            surface.SetFont("font_tektur")
-            local w, h = surface.GetTextSize(nick)
-
-
-            surface.SetTextPos(40*res, 79*res)
-            surface.SetTextColor(0, 0, 0)
-            surface.DrawText(nick)
-
-            surface.SetDrawColor(0, 0, 0)
-            surface.DrawOutlinedRect(33*res, 102*res, 500*res, 182*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 78*res, w+15*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+88.65*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+165*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+279*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+305*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(507*res, 282*res, 26*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(483*res, 282*res, 26*res, 26*res, 2*res)
-
-            surface.SetFont("font_tektur_normal")
-            surface.SetTextPos(77*res, 282*res)
-            surface.DrawText("ДНК")
-            surface.SetTextPos(151*res, 282*res)
-            surface.DrawText("Химия")
-            surface.SetTextPos(242*res, 282*res)
-            surface.DrawText("Образцы")
-
-            surface.SetMaterial(dnalogo)
-            surface.DrawTexturedRect(34*res+7*res, 288.8*res, 30*res, 12*res)
-            surface.SetMaterial(chemlogo)
-            surface.DrawTexturedRect(34*res+res+93*res, 285.5*res, 22*res, 19*res)
-            surface.SetMaterial(probalogo)
-            surface.DrawTexturedRect(34*res+res+89.5*res+97*res, 286*res, 18*res, 18*res)
-            surface.SetMaterial(raportlogo)
-            surface.DrawTexturedRect(34*res+res+89.5*res+93*res+118*res, 286*res, 18*res, 18*res)
+            drawbase_frame()
 
 
             surface.SetDrawColor(color_white)
@@ -875,47 +642,8 @@ function ENT:DrawTranslucent()
             sobr = nil
 
         elseif page == 410 then
-            surface.SetFont("font2_sub")
-            surface.SetTextPos(178*res, 24*res)
-            surface.DrawText("/RESEARCH_JOB")
-
-            local nick = LocalPlayer():Nick()
-
-            surface.SetFont("font_tektur")
-            local w, h = surface.GetTextSize(nick)
-
-
-            surface.SetTextPos(40*res, 79*res)
-            surface.SetTextColor(0, 0, 0)
-            surface.DrawText(nick)
-
-            surface.SetDrawColor(0, 0, 0)
-            surface.DrawOutlinedRect(33*res, 102*res, 500*res, 182*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 78*res, w+15*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+88.65*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+165*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+279*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 282*res, 15+87.65+305*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(507*res, 282*res, 26*res, 26*res, 2*res)
-            surface.DrawOutlinedRect(483*res, 282*res, 26*res, 26*res, 2*res)
-
-            surface.SetFont("font_tektur_normal")
-            surface.SetTextPos(77*res, 282*res)
-            surface.DrawText("ДНК")
-            surface.SetTextPos(151*res, 282*res)
-            surface.DrawText("Химия")
-            surface.SetTextPos(242*res, 282*res)
-            surface.DrawText("Образцы")
-            surface.SetTextPos(60*res, 108*res)
-
-            surface.SetMaterial(dnalogo)
-            surface.DrawTexturedRect(34*res+7*res, 288.8*res, 30*res, 12*res)
-            surface.SetMaterial(chemlogo)
-            surface.DrawTexturedRect(34*res+res+93*res, 285.5*res, 22*res, 19*res)
-            surface.SetMaterial(probalogo)
-            surface.DrawTexturedRect(34*res+res+89.5*res+97*res, 286*res, 18*res, 18*res)
-            surface.SetMaterial(raportlogo)
-            surface.DrawTexturedRect(34*res+res+89.5*res+93*res+118*res, 286*res, 18*res, 18*res)
+            
+            drawbase_frame()
 
 
             surface.SetTextColor(0, 0, 0)
@@ -945,16 +673,24 @@ function ENT:DrawTranslucent()
             if l1button then
                 --lateranim
                 lpl:Notify(l1)
+                yas_bclick()
             end
 
             if l2button then
                 --lateranim
                 lpl:Notify(l2)
+                yas_bclick()
             end
 
             if l3button then
                 --lateranim
                 lpl:Notify(l3)
+                yas_bclick()
+            end
+
+            if lparents then
+                lpl:Notify(lp)
+                yas_bclick()
             end
 
             local proba = imgui.xButton(34*res+res+89.5*res+93*res, 283.5*res, 113*res, 23*res, 6, Color(0, 0, 0, 0), color_white, Color(255, 0, 0))

@@ -189,7 +189,6 @@ function yr_mix1(id1, id2, ply, name)
     local lapki2 = yr_lapki(id2)
     local new_element = yr_compare(lapki1, lapki2)
 
-    PrintTable(new_element)
 
     if type(new_element) == type({}) && IsValid(ply) && ply:IsPlayer() then
 
