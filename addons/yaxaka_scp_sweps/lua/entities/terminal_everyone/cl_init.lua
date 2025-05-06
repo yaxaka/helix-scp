@@ -32,6 +32,7 @@ local sobr = nil
 local l1 = "Неизвестно"
 local l1 = "Неизвестно"
 local l1 = "Неизвестно"
+local lname = "0000_AAAA"
 
 
 local selfent = nil
@@ -56,6 +57,7 @@ net.Receive("yr_research", function()
     l1 = net.ReadString()
     l2 = net.ReadString()
     l3 = net.ReadString()
+    lname = net.ReadString()
     selfent:SetPage(410)
     print(l1)
     print(l2)
@@ -924,6 +926,36 @@ function ENT:DrawTranslucent()
             surface.SetDrawColor(color_white)
             surface.DrawOutlinedRect(34*res+res+89*res, 283.5*res, 93*res, 23*res, 1*res)
             surface.SetDrawColor(0, 0, 0)
+
+            surface.SetFont("font_tektur2")
+            surface.SetTextPos(202*res, 175*res)
+            surface.DrawText(lname)
+            surface.DrawRect(350*res, 190*res, 20*res, 2*res)
+            surface.DrawRect(175*res, 190*res, 20*res, 2*res)
+            surface.DrawRect(275*res, 213*res, 2*res, 20*res)
+            surface.DrawRect(275*res, 154*res, 2*res, 20*res)
+
+            local l1button = imgui.xButtonTerminal("L-1", "font_tektur_normal", 130*res, 175*res, 10, Color(0, 0, 0), Color(255, 255, 255), Color(128, 128, 128))
+            local l2button = imgui.xButtonTerminal("L-2", "font_tektur_normal", 380*res, 175*res, 10, Color(0, 0, 0), Color(255, 255, 255), Color(128, 128, 128))
+            local l3button = imgui.xButtonTerminal("L-3", "font_tektur_normal", 255*res, 240*res, 10, Color(0, 0, 0), Color(255, 255, 255), Color(128, 128, 128))
+            local lparents = imgui.xButtonTerminal("Происхождение", "font_tektur_normal", 193*res, 115*res, 10, Color(0, 0, 0), Color(255, 255, 255), Color(128, 128, 128))
+
+            local lpl = LocalPlayer()
+
+            if l1button then
+                --lateranim
+                lpl:Notify(l1)
+            end
+
+            if l2button then
+                --lateranim
+                lpl:Notify(l2)
+            end
+
+            if l3button then
+                --lateranim
+                lpl:Notify(l3)
+            end
 
             local proba = imgui.xButton(34*res+res+89.5*res+93*res, 283.5*res, 113*res, 23*res, 6, Color(0, 0, 0, 0), color_white, Color(255, 0, 0))
             local raport = imgui.xButton(34*res+res+89.5*res+93*res+115*res, 283.5*res, 24*res, 23*res, 6, Color(0, 0, 0, 0), color_white, Color(255, 0, 0))

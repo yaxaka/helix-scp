@@ -107,17 +107,26 @@ net.Receive("yr_research", function(l, ply)
     if item == "Не выбрано" then return end
 
     local l = yr_lapki(item)
+    local l1 = 'nil'
+    local l2 = 'nil'
+    local l3 = 'nil'
 
     if type(l) == type({}) then
-    	PrintTable(l.lapki)
-    	local l1 = l.lapki.lapka1.name
-    	local l2 = l.lapki.lapka2.name
-    	local l3 = l.lapki.lapka3.name
+        if l.lapka1 == nil then
+            l1 = l.lapki.lapka1.name
+            l2 = l.lapki.lapka2.name
+            l3 = l.lapki.lapka3.name
+        else
+    	   l1 = l.lapka1.name
+    	   l2 = l.lapka2.name
+    	   l3 = l.lapka3.name
+        end
 
     	net.Start("yr_research")
     	net.WriteString(l1)
     	net.WriteString(l2)
     	net.WriteString(l3)
+        net.WriteString(item)
     	net.Send(ply)
 
     end
