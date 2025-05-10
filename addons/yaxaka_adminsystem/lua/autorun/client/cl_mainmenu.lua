@@ -96,12 +96,13 @@ local PANEL2 = {}
 
 
 function PANEL2:Init()
+	self:Center()
+	self:SetKeyboardInputEnabled(true)
 	self:SetSize(800, 600)
 	self:MakePopup()
 	self:SetMouseInputEnabled(true)
 	self:ShowCloseButton(false)
 	self:SetTitle("")
-	self:Center()
 end
 
 

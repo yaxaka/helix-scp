@@ -185,7 +185,8 @@ function PANEL:Init()
 		self.class:SetText(class)
 		self.class:SetSize(classw, classh)
 		self.class:Dock(TOP)
-		self.class:DockMargin(nickw+steamidw+classw+10, -13, 0, 0)
+		print(classw)
+		self.class:DockMargin(nickw+20+160, -13, 0, 0)
 
 		self.Back.Paint = function(self, w, h)
 			if self:IsHovered() then
