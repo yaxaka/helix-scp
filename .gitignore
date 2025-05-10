@@ -1,2 +1,8 @@
 helix/sftp-config.json
 *.json
+*.vtf
+*.vmt
+*.vtx
+*.vvd
+*.phy
+*.mdl

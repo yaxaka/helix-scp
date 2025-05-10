@@ -45,7 +45,7 @@ function ENT:Initialize()
         for k,v in pairs(ents.FindInSphere(self:GetPos(), 200)) do
             local clas = v:GetClass()
             if clas == "yr_bank" then
-                self:SetBank(true)
+                self:SetNW2Bool("Bank", true)
                 yr_bank_ent = v
                 selfent = self
             end
@@ -59,7 +59,7 @@ net.Receive("yr_research", function()
     l3 = net.ReadString()
     lname = net.ReadString()
     lp = net.ReadString()
-    selfent:SetPage(410)
+    selfent:SetNW2Int("Page", 410)
 
 end)
 
