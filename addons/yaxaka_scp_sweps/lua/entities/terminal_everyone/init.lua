@@ -17,6 +17,17 @@ function ENT:Initialize()
     end
 end
 
+function ENT:SetupDataTables()
+    self:SetNW2Bool( "InUse", false )
+    self:SetNW2Int( "Page", 0 )
+    self:SetNW2Bool( "Bank", false )
+    self:SetNW2Bool( "ResearchBot", false )
+    self:SetNW2Bool( "Sintezator", false )
+    self:SetNW2Bool( "ChemLab", false )
+    self:SetNW2Bool( "DNARedactor", false )
+    self:SetNW2Bool( "HaveObrazec", false )
+end
+
 
 
 function ENT:Think()

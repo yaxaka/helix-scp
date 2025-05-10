@@ -31,5 +31,3 @@ function PLAYER:RemoveSCP()
 	self.SCPName = nil
 	self.SCP = false
 end
-
-

@@ -86,11 +86,11 @@ function ENT:DrawTranslucent()
         surface.DrawRect( 0, 0, 565 * res, 318 * res )
         imgui.xCursor(0, 0, 565 * res, 318 * res)
 
-        local bank_obr = self:GetBank()
-        local res_bot = self:GetResearchBot()
-        local sintezator = self:GetSintezator()
-        local chem_lab = self:GetChemLab()
-        local dna_redactor = self:GetDNARedactor()
+        local bank_obr = self:GetNW2Bool("Bank")
+        local res_bot = self:GetNW2Bool("ResearchBot")
+        local sintezator = self:GetNW2Bool("Sintezator")
+        local chem_lab = self:GetNW2Bool("ChemLab")
+        local dna_redactor = self:GetNW2Bool("DNARedactor")
 
         local bank_obr_clr = nil
         local res_bot_clr = nil
@@ -100,31 +100,31 @@ function ENT:DrawTranslucent()
         local green = Color(0, 255, 0)
         local red = Color(255, 0, 0)
 
-        if self:GetBank() then
+        if self:GetNW2Bool("Bank") then
             bank_obr_clr = green
         else
             bank_obr_clr = red
         end
 
-        if self:GetResearchBot() then
+        if self:GetNW2Bool("ResearchBot") then
             res_bot_clr = green
         else
             res_bot_clr = red
         end
 
-        if self:GetSintezator() then
+        if self:GetNW2Bool("Sintezator") then
             sintezator_clr = green
         else
             sintezator_clr = red
         end
 
-        if self:GetChemLab() then
+        if self:GetNW2Bool("ChemLab") then
             chem_lab_clr = green
         else
             chem_lab_clr = red
         end
 
-        if self:GetDNARedactor() then
+        if self:GetNW2Bool("DNARedactor") then
             dna_redactor_clr = green
         else
             dna_redactor_clr = red
@@ -137,7 +137,7 @@ function ENT:DrawTranslucent()
         surface.SetTextColor(0, 0, 0)
         surface.SetTextPos(58 * res, 17 * res)
         surface.DrawText("RAT-Terminal")
-        local page = self:GetPage()
+        local page = self:GetNW2Int("Page")
 
         if page == 0 or page == 405 then
             surface.SetDrawColor(255, 0, 0)
@@ -201,16 +201,16 @@ function ENT:DrawTranslucent()
 
             if loginpressed then
                 self:EmitSound("terminal_beep.wav")
-                self:SetPage(405)
+                self:SetNW2Int("Page", 405)
                 timer.Create(self:EntIndex() .. "_beepwait", 1, 1, function()
                     local fact = (ix.faction.Get(LocalPlayer():Team()).name)
                     print(fact)
                     if fact == "МОГ Эпсилон-11" then
-                        self:SetPage(1)
+                        self:SetNW2Int("Page", 1)
                     elseif fact == "Научный персонал" then
-                        self:SetPage(2)
+                        self:SetNW2Int("Page", 2)
                     else
-                        self:SetPage(0)
+                        self:SetNW2Int("Page", 0)
                         self:EmitSound("buttons/combine_button1.wav")
                     end
                 end)
@@ -266,7 +266,7 @@ function ENT:DrawTranslucent()
                 DComboBox:AddChoice( "Охрана одной зоны", "Охрана" )
                 DComboBox:AddChoice( "Патрулирование", "Патрулирование" )
                 DComboBox.OnSelect = function(index, value, data)
-                    self:SetPage(3)
+                    self:SetNW2Int("Page", 3)
                     yq_active_task = data
                     frame:Close()
                     net.Start("yq_request")
@@ -277,7 +277,7 @@ function ENT:DrawTranslucent()
             end
 
             if expressed then
-                self:SetPage(0)
+                self:SetNW2Int("Page", 0)
             end
 
         elseif page == 2 then
@@ -342,15 +342,15 @@ function ENT:DrawTranslucent()
             local raport = imgui.xButton(34*res+res+89.5*res+93*res+115*res, 283.5*res, 24*res, 23*res, 6, Color(0, 0, 0, 0), color_white, Color(255, 0, 0))
             
 
-            if dna then self:SetPage(4) end
+            if dna then self:SetNW2Int("Page", 4) end
 
             local expressed = imgui.xButtonImage(exlogo, 509.5 * res, 285.5 * res, 21 * res, 21 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
             local other = imgui.xButtonImage(other_icon, 487.4 * res, 286.8 * res, 17 * res, 17 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
 
-            if expressed then self:SetPage(0) yas_bclick() end
-            if chem then self:SetPage(5) yas_bclick() end
-            if proba then self:SetPage(6) yas_bclick() end
-            if raport then self:SetPage(7) yas_bclick() end
+            if expressed then self:SetNW2Int("Page", 0) yas_bclick() end
+            if chem then self:SetNW2Int("Page", 5) yas_bclick() end
+            if proba then self:SetNW2Int("Page", 6) yas_bclick() end
+            if raport then self:SetNW2Int("Page", 7) yas_bclick() end
 
         elseif page == 3 then
 
@@ -384,7 +384,7 @@ function ENT:DrawTranslucent()
             end
 
             if yq_active_task == "Undefined" then
-                self:SetPage(0)
+                self:SetNW2Int("Page", 0)
             end
 
         elseif page == 4 then -- dna
@@ -409,11 +409,11 @@ function ENT:DrawTranslucent()
 
 
 
-            if dna then self:SetPage(4) yas_bclick() end
-            if expressed then self:SetPage(2) yas_bclick() end
-            if chem then self:SetPage(5) yas_bclick() end
-            if proba then self:SetPage(6) yas_bclick() end
-            if raport then self:SetPage(7) yas_bclick() end
+            if dna then self:SetNW2Int("Page", 4) yas_bclick() end
+            if expressed then self:SetNW2Int("Page", 2) yas_bclick() end
+            if chem then self:SetNW2Int("Page", 5) yas_bclick() end
+            if proba then self:SetNW2Int("Page", 6) yas_bclick() end
+            if raport then self:SetNW2Int("Page", 7) yas_bclick() end
 
         elseif page == 5 then -- chem
 
@@ -436,13 +436,13 @@ function ENT:DrawTranslucent()
             local expressed = imgui.xButtonImage(exlogo, 509.5 * res, 285.5 * res, 21 * res, 21 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
             local other = imgui.xButtonImage(other_icon, 487.4 * res, 286.8 * res, 17 * res, 17 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
 
-            if sintez then self:SetPage(51) yas_bclick() end
+            if sintez then self:SetNW2Int("Page", 51) yas_bclick() end
 
-            if dna then self:SetPage(4) yas_bclick() end
-            if expressed then self:SetPage(2) yas_bclick() end
-            if proba then self:SetPage(6) yas_bclick() end
-            if raport then self:SetPage(7) yas_bclick() end
-            if research then self:SetPage(8) yas_bclick() end
+            if dna then self:SetNW2Int("Page", 4) yas_bclick() end
+            if expressed then self:SetNW2Int("Page", 2) yas_bclick() end
+            if proba then self:SetNW2Int("Page", 6) yas_bclick() end
+            if raport then self:SetNW2Int("Page", 7) yas_bclick() end
+            if research then self:SetNW2Int("Page", 8) yas_bclick() end
 
         elseif page == 6 then -- proba
 
@@ -461,10 +461,10 @@ function ENT:DrawTranslucent()
             local expressed = imgui.xButtonImage(exlogo, 509.5 * res, 285.5 * res, 21 * res, 21 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
             local other = imgui.xButtonImage(other_icon, 487.4 * res, 286.8 * res, 17 * res, 17 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
 
-            if dna then self:SetPage(4) yas_bclick() end
-            if expressed then self:SetPage(2) yas_bclick() end
-            if chem then self:SetPage(5) yas_bclick() end
-            if raport then self:SetPage(7) yas_bclick() end
+            if dna then self:SetNW2Int("Page", 4) yas_bclick() end
+            if expressed then self:SetNW2Int("Page", 2) yas_bclick() end
+            if chem then self:SetNW2Int("Page", 5) yas_bclick() end
+            if raport then self:SetNW2Int("Page", 7) yas_bclick() end
 
         elseif page == 7 then -- raport
 
@@ -480,15 +480,15 @@ function ENT:DrawTranslucent()
             local proba = imgui.xButton(34*res+res+89.5*res+93*res, 283.5*res, 113*res, 23*res, 6, Color(0, 0, 0, 0), color_white, Color(255, 0, 0))
             
 
-            if dna then self:SetPage(4) yas_bclick() end
+            if dna then self:SetNW2Int("Page", 4) yas_bclick() end
 
             local expressed = imgui.xButtonImage(exlogo, 509.5 * res, 285.5 * res, 21 * res, 21 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
             local other = imgui.xButtonImage(other_icon, 487.4 * res, 286.8 * res, 17 * res, 17 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
 
-            if expressed then self:SetPage(0) yas_bclick() end
-            if chem then self:SetPage(5) yas_bclick() end
-            if proba then self:SetPage(6) yas_bclick() end
-            if raport then self:SetPage(7) yas_bclick() end
+            if expressed then self:SetNW2Int("Page", 0) yas_bclick() end
+            if chem then self:SetNW2Int("Page", 5) yas_bclick() end
+            if proba then self:SetNW2Int("Page", 6) yas_bclick() end
+            if raport then self:SetNW2Int("Page", 7) yas_bclick() end
 
         elseif page == 8 then -- chem_research
 
@@ -532,10 +532,10 @@ function ENT:DrawTranslucent()
             local expressed = imgui.xButtonImage(exlogo, 509.5 * res, 285.5 * res, 21 * res, 21 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
             local other = imgui.xButtonImage(other_icon, 487.4 * res, 286.8 * res, 17 * res, 17 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
 
-            if dna then self:SetPage(4) yas_bclick() end
-            if expressed then self:SetPage(2) yas_bclick() end
-            if proba then self:SetPage(6) yas_bclick() end
-            if raport then self:SetPage(7) yas_bclick() end
+            if dna then self:SetNW2Int("Page", 4) yas_bclick() end
+            if expressed then self:SetNW2Int("Page", 2) yas_bclick() end
+            if proba then self:SetNW2Int("Page", 6) yas_bclick() end
+            if raport then self:SetNW2Int("Page", 7) yas_bclick() end
 
         elseif page == 51 then -- chem_sintez
 
@@ -561,7 +561,7 @@ function ENT:DrawTranslucent()
 
             if first then
                 yas_bclick()
-                if not self:GetBank() or not yr_bank_ent:IsValid() or yr_bank_ent:GetItem() == "Не выбрано" then
+                if not self:GetNW2Bool("Bank") or not yr_bank_ent:IsValid() or yr_bank_ent:GetItem() == "Не выбрано" then
                     LocalPlayer():Notify("Образец не выбран в банке!")
                 else
                     if first_obr == second_obr then
@@ -577,7 +577,7 @@ function ENT:DrawTranslucent()
 
             if second then
                 yas_bclick()
-                if not self:GetBank() or not yr_bank_ent:IsValid() or yr_bank_ent:GetItem() == "Не выбрано" then
+                if not self:GetNW2Bool("Bank") or not yr_bank_ent:IsValid() or yr_bank_ent:GetItem() == "Не выбрано" then
                     LocalPlayer():Notify("Образец не выбран в банке!")
                 else
                     if second_obr == first_obr then
@@ -613,11 +613,11 @@ function ENT:DrawTranslucent()
                 sobr = nil
             end
 
-            if dna then self:SetPage(4) yas_bclick() end
-            if expressed then self:SetPage(2) yas_bclick() end
-            if proba then self:SetPage(6) yas_bclick() end
-            if raport then self:SetPage(7) yas_bclick() end
-            if research then self:SetPage(8) yas_bclick() end
+            if dna then self:SetNW2Int("Page", 4) yas_bclick() end
+            if expressed then self:SetNW2Int("Page", 2) yas_bclick() end
+            if proba then self:SetNW2Int("Page", 6) yas_bclick() end
+            if raport then self:SetNW2Int("Page", 7) yas_bclick() end
+            if research then self:SetNW2Int("Page", 8) yas_bclick() end
 
         elseif page == 405 then
 
@@ -701,10 +701,10 @@ function ENT:DrawTranslucent()
             local expressed = imgui.xButtonImage(exlogo, 509.5 * res, 285.5 * res, 21 * res, 21 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
             local other = imgui.xButtonImage(other_icon, 487.4 * res, 286.8 * res, 17 * res, 17 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
 
-            if dna then self:SetPage(4) yas_bclick() end
-            if expressed then self:SetPage(2) yas_bclick() end
-            if proba then self:SetPage(6) yas_bclick() end
-            if raport then self:SetPage(7) yas_bclick() end
+            if dna then self:SetNW2Int("Page", 4) yas_bclick() end
+            if expressed then self:SetNW2Int("Page", 2) yas_bclick() end
+            if proba then self:SetNW2Int("Page", 6) yas_bclick() end
+            if raport then self:SetNW2Int("Page", 7) yas_bclick() end
 
         end
 
