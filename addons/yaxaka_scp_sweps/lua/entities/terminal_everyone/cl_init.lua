@@ -63,6 +63,18 @@ net.Receive("yr_research", function()
 
 end)
 
+net.Receive("Patronmanager", function()
+    local a = net.ReadBool()
+    local b = net.ReadString()
+    if a == true then
+        fobr = b
+        first_obr = b
+    elseif a == false then
+        sobr = b
+        second_obr = b
+    end
+end)
+
 function ENT:DrawTranslucent()
     self:DrawModel()
     local ang = self:GetAngles()
@@ -567,10 +579,10 @@ function ENT:DrawTranslucent()
                     if first_obr == second_obr then
                         LocalPlayer():Notify("Вы выбрали два одинаковых образца!")
                     else
-                        first_obr = yr_bank_ent:GetItem()
-                        fobr = yr_bank_ent:GetItem()
-                        print(first_obr .. fobr)
-                        LocalPlayer():Notify("Образец загружен")
+                        net.Start("Patronmanager")
+                        net.WriteInt(1, 5)
+                        net.WriteInt(1, 5)
+                        net.SendToServer()
                     end
                 end
             end
@@ -583,18 +595,16 @@ function ENT:DrawTranslucent()
                     if second_obr == first_obr then
                         LocalPlayer():Notify("Вы выбрали два одинаковых образца!")
                     else
-                        second_obr = yr_bank_ent:GetItem()
-                        sobr = yr_bank_ent:GetItem()
-                        print(second_obr .. sobr)
-                        LocalPlayer():Notify("Образец загружен")
+                        net.Start("Patronmanager")
+                        net.WriteInt(1, 5)
+                        net.WriteInt(2, 5)
+                        net.SendToServer()
                     end
                 end
             end
 
             if start then
                 yas_bclick()
-                print(first_obr)
-                print(second_obr)
                 if first_obr == 'nil' or second_obr == 'nil2' then
                     LocalPlayer():Notify("Загрузите два образца перед началом работы!")
                 else
@@ -611,6 +621,10 @@ function ENT:DrawTranslucent()
                 second_obr = 'nil2'
                 fobr = nil
                 sobr = nil
+                net.Start("Patronmanager")
+                net.WriteInt(2, 5)
+                net.WriteInt(1, 5)
+                net.SendToServer()
             end
 
             if dna then self:SetNW2Int("Page", 4) yas_bclick() end

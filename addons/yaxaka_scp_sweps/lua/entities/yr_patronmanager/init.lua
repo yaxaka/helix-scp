@@ -2,6 +2,7 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 
+ent_patronmanager = nil
 
 function ENT:Initialize()
     self:SetModel( "models/mechanics/solid_steel/box_beam_8.mdl" ) 
@@ -16,6 +17,12 @@ function ENT:Initialize()
     self.tube1 = nil
     self.tube2 = nil
     self.tube3 = nil
+    self.tubes = {
+        [1] = nil,
+        [2] = nil,
+        [3] = nil,
+    }
+    ent_patronmanager = self
 
     local phys = self:GetPhysicsObject() 
 
@@ -58,6 +65,10 @@ function ENT:Initialize()
     tube3:SetLocalAngles(Angle(0, 0, 0))
     tube3:Spawn()
     self.tube3 = tube3
+
+    self.tubes[1] = self.tube1
+    self.tubes[2] = self.tube2
+    self.tubes[3] = self.tube3
 end
 
 function ENT:SetupDataTables()
@@ -67,11 +78,25 @@ function ENT:SetupDataTables()
 end
 
 
+function ENT:MoveToTube(num)
+    yar_pumperanim_move(self, self.pump, num, self.tube1, self.tube2, self.tube3)
+end
 
-function ENT:Use( activator )
-    if self.animstate == 0 then
-        yar_pumperanim_move(self, self.pump, 1, self.tube1, self.tube2, self.tube3)
-    else
-        yar_pumperanim_move(self, self.pump, 0, self.tube1, self.tube2, self.tube3)
+
+function ENT:DownUp(num)
+    yar_pumperanim_downup(self, self.pump, num)
+end
+
+function ENT:FillTube(num)
+    self.tubes[num]:Pumping(1)
+end
+
+function ENT:DrainTube(num)
+    self.tubes[num]:Pumping(0)
+end
+
+function ENT:DrainAll()
+    for i=1,3 do
+        self:DrainTube(i)
     end
 end

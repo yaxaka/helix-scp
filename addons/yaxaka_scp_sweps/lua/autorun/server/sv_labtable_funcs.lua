@@ -40,7 +40,38 @@ util.AddNetworkString("yr_requestmix")
 util.AddNetworkString("yr_bank")
 util.AddNetworkString("yr_newobr")
 util.AddNetworkString("yr_research")
+util.AddNetworkString("Patronmanager")
 
+net.Receive("Patronmanager", function(l, ply)
+    if not ply:GetCharacter():IsScienceTeam() then return end
+    if yr_bankent == nil then return end
+
+    local type = net.ReadInt(5)
+    local type2 = net.ReadInt(5)
+
+    if type == 1 then
+        net.Start("Patronmanager")
+        if type2 == 1 then
+            net.WriteBool(true)
+        elseif type2 == 2 then
+            net.WriteBool(false)
+        end
+
+        net.WriteString(yr_bankent:GetItem())
+        net.Send(ply)
+
+        ent_patronmanager:MoveToTube(type2)
+
+    end
+
+    if type == 2 then
+        ent_patronmanager:DownUp(0)
+        timer.Create("DelayDownupTube_" .. ent_patronmanager:EntIndex(), 2, 1, function()
+            ent_patronmanager:MoveToTube(0)
+            ent_patronmanager:DrainAll()
+        end)
+    end
+end)
 
 net.Receive("yr_requestmix", function(l, ply)
 	if not ply:GetCharacter():IsScienceTeam() then return end

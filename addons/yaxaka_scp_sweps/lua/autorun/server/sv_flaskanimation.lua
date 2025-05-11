@@ -26,6 +26,14 @@ local vector1 = Vector(0.000000, 0.000000, 0.850000)
 local vector2 = Vector(0.050000, 1.000000, 1.000000)
 
 
+local function updatepump(ent, posy)
+	ent:SetLocalPos(Vector(0, posy, 5))
+end
+
+local function updatepump2(ent, posy, posz)
+	ent:SetLocalPos(Vector(0, posy, posz))
+end
+
 hook.Add("YarTubeAnim", "Controller", function(parent, ent, newstate)
 	if IsValid(parent) && IsValid(ent) && newstate ~= nil then
 		if newstate == 1 then
@@ -80,15 +88,6 @@ hook.Add("YarTubeAnim", "Controller", function(parent, ent, newstate)
 	end
 end)
 
-
-local function updatepump(ent, posy)
-	ent:SetLocalPos(Vector(0, posy, 5))
-end
-
-local function updatepump2(ent, posz)
-	ent:SetLocalPos(Vector(0, 0, posz))
-end
-
 function yar_pumperanim_downup(parent, ent, num)
 	local moveposition = {
 		[0] = 5,
@@ -96,7 +95,7 @@ function yar_pumperanim_downup(parent, ent, num)
 		[2] = 6.1,
 	}
 
-	local tt = ent:GetLocalPos().z
+	local tt = ent:GetLocalPos()
 
 	if IsValid(parent) && IsValid(ent) && num ~= nil then
 
@@ -104,9 +103,9 @@ function yar_pumperanim_downup(parent, ent, num)
 		ent.inmoving = true
 		hook.Add("Think", hookname, function()
 			if IsValid(parent) && IsValid(ent) then
-				if tt ~= moveposition[num] then
-					tt = math.Approach( tt, moveposition[num], 0.1 )
-        			updatepump2(ent, tt)
+				if tt.z ~= moveposition[num] then
+					tt.z = math.Approach( tt.z, moveposition[num], 0.1 )
+        			updatepump2(ent, tt.y, tt.z)
         		else
         			ent.inmoving = false
         			parent.animstate = num
@@ -148,7 +147,12 @@ function yar_pumperanim_move(parent, ent, num, tube1, tube2, tube3)
         			ent.inmoving = false
         			parent.animstate = num
         			hook.Remove("Think", hookname)
-        			yar_pumperanim_downup(parent, ent, 1)
+        			if num ~= 0 then
+        				parent:DownUp(1)
+        				timer.Create(hookname, 2.5, 1, function()
+        					parent:FillTube(num)
+        				end)
+        			end
 				end
 			end
 		end)	
