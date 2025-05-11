@@ -21,7 +21,9 @@ function yr_localtable()
 
 end
 
+
 yr_localtable()
+
 
 function yr_SaveElement(tags, parents, author, name, lapki)
     if tags ~= nil && name ~= nil then
@@ -135,46 +137,94 @@ function yr_compare(lapki1, lapki2)
         [3] = 0,
     }
 
+
     for a,b in pairs(lapki1) do
+        print(a)
+        if a == "lapka1" then
+            power_lapki[1] = b.power
+            new_lapki['lapka1'] = b
+        end
+
+        if a == "lapka2" then
+            power_lapki[2] = b.power
+            new_lapki['lapka2'] = b
+        end
+
+        if a == "lapka3" then
+            power_lapki[3] = b.power
+            new_lapki['lapka3'] = b
+        end  
+
         for k,v in pairs(b) do
+            print(k)
             if k == "lapka1" then
                 power_lapki[1] = v.power
                 new_lapki['lapka1'] = v
             end
+
             if k == "lapka2" then
                 power_lapki[2] = v.power
                 new_lapki['lapka2'] = v
             end
+
             if k == "lapka3" then
                 power_lapki[3] = v.power
                 new_lapki['lapka3'] = v
             end
+
         end
     end
 
     for a,b in pairs(lapki2) do
+        print(a)
+        if a == "lapka1" then
+            if b.power > power_lapki[1] then
+                power_lapki[1] = b.power
+                new_lapki['lapka1'] = b
+            end
+        end
+
+        if a == "lapka2" then
+            if b.power > power_lapki[2] then
+                power_lapki[2] = b.power
+                new_lapki['lapka2'] = b
+            end
+        end
+
+        if a == "lapka3" then
+            if b.power > power_lapki[3] then
+                power_lapki[3] = b.power
+                new_lapki['lapka3'] = b
+            end
+        end
+
         for k,v in pairs(b) do
+            print(k)
             if k == "lapka1" then
                 if v.power > power_lapki[1] then
                     power_lapki[1] = v.power
                     new_lapki['lapka1'] = v
                 end
             end
+
             if k == "lapka2" then
                 if v.power > power_lapki[2] then
                     power_lapki[2] = v.power
                     new_lapki['lapka2'] = v
                 end
             end
+
             if k == "lapka3" then
                 if v.power > power_lapki[3] then
                     power_lapki[3] = v.power
                     new_lapki['lapka3'] = v
                 end
             end
+
         end
     end
 
+    PrintTable(new_lapki)
     return new_lapki
 end
 
@@ -188,7 +238,6 @@ function yr_mix1(id1, id2, ply, name)
     local lapki1 = yr_lapki(id1)
     local lapki2 = yr_lapki(id2)
     local new_element = yr_compare(lapki1, lapki2)
-
 
     if type(new_element) == type({}) && IsValid(ply) && ply:IsPlayer() then
 

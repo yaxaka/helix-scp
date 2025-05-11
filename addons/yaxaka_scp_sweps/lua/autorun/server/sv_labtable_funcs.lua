@@ -112,8 +112,9 @@ net.Receive("yr_research", function(l, ply)
     local l3 = 'nil'
     local parents = yr_LoadElement(item).Parents
 
+
     if type(l) == type({}) then
-        if l.lapka1 == nil then
+        if l.lapki ~= nil then
             l1 = l.lapki.lapka1.name
             l2 = l.lapki.lapka2.name
             l3 = l.lapki.lapka3.name

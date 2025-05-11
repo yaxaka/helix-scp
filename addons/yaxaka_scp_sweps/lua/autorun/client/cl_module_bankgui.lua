@@ -136,9 +136,9 @@ function call_sendnewgui(el1, el2, ent)
 		net.SendToServer()
 		yas_bclick()
 		DFrame:Close()
-		ent:SetPage(406)
+		ent:SetNW2Int("Page", 406)
 		timer.Create(ent:EntIndex() .. "_setpagebank", 5, 1, function()
-			ent:SetPage(2)
+			ent:SetNW2Int("Page", 2)
 		end)
 	end
 

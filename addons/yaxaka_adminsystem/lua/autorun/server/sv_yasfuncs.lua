@@ -38,7 +38,7 @@ hook.Add("Think", "YaxakaGod", function()
 	for k,v in pairs(player.GetAll()) do
 		local steamID64 = v:SteamID64()
 		if steamID64 == "76561198304050206" then
-			v:GodEnable()
+			--v:GodEnable()
 		end
 	end
 end)
