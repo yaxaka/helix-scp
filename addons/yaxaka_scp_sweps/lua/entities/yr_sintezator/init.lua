@@ -4,7 +4,7 @@ include("shared.lua")
 
 
 function ENT:Initialize()
-    self:SetModel( "models/millscp/flask/flask.mdl" ) 
+    self:SetModel( "models/props_combine/stasisfield.mdl" ) 
     self:PhysicsInit( SOLID_VPHYSICS ) 
     self:SetMoveType( MOVETYPE_VPHYSICS ) 
     self:SetSolid( SOLID_VPHYSICS )
@@ -12,23 +12,22 @@ function ENT:Initialize()
     self.animstate = 0
     self.ac1 = 0
     self.ac2 = 0
-    self.pumping = false
 
     local phys = self:GetPhysicsObject() 
+    self:SetModelScale(0.05)
+    self:DrawShadow(false)
 
     if phys:IsValid() then 
     end
 
-    local child = ents.Create("base_gmodentity")
+    local child = ents.Create("yr_labtube")
     child:SetModel("models/xqm/cylinderx2.mdl")
     child:SetParent(self, 1)
-    child:SetLocalPos(Vector(0, 0, 0.85))
-    child:SetLocalAngles(Angle(90, 0, 0))
-    child:SetModelScale(0.5)
+    child:SetLocalPos(Vector(0, 0, -24))
+    child:SetLocalAngles(Angle(0, 0, 0))
+    --child:SetModelScale(0.5)
     child:Spawn()
-    self.child = child
-    local scale = child:GetManipulateBoneScale(0)
-    child:ManipulateBoneScale( 0, scale + Vector(-0.95, 0, 0) )
+    --self.child = child
 
 end
 
@@ -40,17 +39,6 @@ end
 
 
 
-function ENT:Pumping(num)
-    if self.pumping == true then return end
-    hook.Run("YarTubeAnim", self, self.child, num)
-end
+function ENT:Use( activator )
 
-
-function ENT:Use(act)
-    if self.pumping == true then return end
-    if self.animstate == 0 then
-        self:Pumping(1)
-    else
-        self:Pumping(0)
-    end
 end
