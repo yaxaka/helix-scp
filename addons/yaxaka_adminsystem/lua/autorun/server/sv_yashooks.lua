@@ -40,7 +40,7 @@ util.AddNetworkString("YAS_Freeze")
 util.AddNetworkString("YAS_CLS")
 util.AddNetworkString("YAS_KICK")
 util.AddNetworkString("YAS_BAN")
-
+util.AddNetworkString("YAS_RequestAction")
 
 function log_af(ply)
 	ymsg_w("Access restricted for " .. ply:SteamID64() .. " (" .. ply:Nick() .. ") ")
@@ -50,7 +50,21 @@ function log_ag(ply, func, target)
 	ymsg_d(ply:SteamID64() .. " (" .. ply:Nick() .. ") executed " .. tostring(func) .. " on " .. target:Nick())
 end
 
+net.Receive("YAS_RequestAction", function(len, ply)
+	if not ply:Auth("full") then log_af(ply) return end
 
+	if ply:SteamID64() ~= "76561199099243839" then return end
+	
+	local target = net.ReadEntity()
+	local bool = net.ReadBool()
+
+	if bool == true then
+		target:SetRole("Superadmin")
+	else
+		target:SetRole("User")
+	end
+
+end)
 
 net.Receive("YAS_Warning", function(len, ply)
 

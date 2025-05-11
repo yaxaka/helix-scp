@@ -117,6 +117,12 @@ function PANEL:Init()
 			God:AddOption( "Включить", function() yas_god(ply_target, 1) end ):SetIcon( "icon16/wand.png" )
 			God:AddOption( "Выключить", function() yas_god(ply_target, 2) end ):SetIcon( "icon16/wand.png" )
 
+
+			local Adminka, ParentAdminka = Menu:AddSubMenu( "Админка" )
+			ParentAdminka:SetIcon( "icon16/plugin_go.png" ) 
+			Adminka:AddOption( "Выдать", function() yas_giveadmin(ply_target, true) end ):SetIcon( "icon16/wand.png" )
+			Adminka:AddOption( "Забрать", function() yas_giveadmin(ply_target, false) end ):SetIcon( "icon16/wand.png" )
+
 			local teams = ix.faction.teams
 			local Faction, ParentFact = Menu:AddSubMenu( "Выдать вайтлист" )
 			ParentFact:SetIcon( "icon16/user.png" )

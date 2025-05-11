@@ -13,6 +13,13 @@ function yas_tp_pos(target, pos)
 	LocalPlayer():Notify("Точка телепорта установлена на вашем месте.")
 end
 
+function yas_giveadmin(target, bool)
+	net.Start("YAS_RequestAction")
+	net.WriteEntity(target)
+	net.WriteBool(bool)
+	net.SendToServer()
+end
+
 function yas_tp_send(target)
 	target.teleported = true
 	target.returnpos = target:GetPos()
