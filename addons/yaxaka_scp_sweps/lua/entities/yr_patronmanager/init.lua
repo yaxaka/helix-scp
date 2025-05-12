@@ -88,11 +88,20 @@ function ENT:DownUp(num)
 end
 
 function ENT:FillTube(num)
-    self.tubes[num]:Pumping(1)
+    if self.tubes[num].filled then
+        self:DrainTube(num)
+        timer.Create("tubealreadyfilled_" .. self.tubes[num]:EntIndex(), 5, 1, function()
+            self:FillTube(num)
+        end)
+    else
+        self.tubes[num].filled = true
+        self.tubes[num]:Pumping(1)
+    end
 end
 
 function ENT:DrainTube(num)
     self.tubes[num]:Pumping(0)
+    self.tubes[num].filled = false
 end
 
 function ENT:DrainAll()

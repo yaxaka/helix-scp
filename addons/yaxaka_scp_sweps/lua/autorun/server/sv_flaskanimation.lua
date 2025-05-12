@@ -51,6 +51,7 @@ hook.Add("YarTubeAnim", "Controller", function(parent, ent, newstate)
         				ent:ManipulateBoneScale( 0, scale + Vector(parent.ac1, 0, 0) )
         				ent:SetLocalPos(pos + Vector(0, 0, parent.ac2))
         			else
+        				parent.filled = true
         				parent.pumping = false
         				parent.animstate = 1
         				hook.Remove("Think", hookname)
@@ -133,29 +134,35 @@ function yar_pumperanim_move(parent, ent, num, tube1, tube2, tube3)
 	}
 
 	local tt = ent:GetLocalPos().y
+	local tz = ent:GetLocalPos().z
 
 	if IsValid(parent) && IsValid(ent) && num ~= nil then
 
 		local hookname = "YarPumperMove1_" .. parent:EntIndex()
 		ent.inmoving = true
-		hook.Add("Think", hookname, function()
-			if IsValid(parent) && IsValid(ent) then
-				if tt ~= moveposition[num] then
-					tt = math.Approach( tt, moveposition[num], 0.4 )
-        			updatepump(ent, tt)
-        		else
-        			ent.inmoving = false
-        			parent.animstate = num
-        			hook.Remove("Think", hookname)
-        			if num ~= 0 then
-        				parent:DownUp(1)
-        				timer.Create(hookname, 2.5, 1, function()
-        					parent:FillTube(num)
-        				end)
-        			end
+		if tz ~= 5 then
+			parent:DownUp(0)
+		end
+		timer.Create(hookname .. "_DelayUp", 2.5, 1, function()
+			hook.Add("Think", hookname, function()
+				if IsValid(parent) && IsValid(ent) then
+					if tt ~= moveposition[num] then
+						local tz = ent:GetLocalPos().z
+						tt = math.Approach( tt, moveposition[num], 0.4 )
+        				updatepump2(ent, tt, tz)
+        			else
+        				ent.inmoving = false
+        				parent.animstate = num
+        				hook.Remove("Think", hookname)
+        				if num ~= 0 then
+        					parent:DownUp(1)
+        					timer.Create(hookname, 2.5, 1, function()
+        						parent:FillTube(num)
+        					end)
+        				end
+					end
 				end
-			end
+			end)
 		end)	
-
 	end
 end

@@ -124,7 +124,9 @@ net.Receive("yr_newobr", function(l, ply)
         local a = yr_mix1(el1, el2, ply, name)
         if a == false then
             ply:Notify("Ошибка смешивания")
+            return
         end
+        
     end
    
 end)

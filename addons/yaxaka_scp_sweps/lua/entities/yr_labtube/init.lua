@@ -13,6 +13,7 @@ function ENT:Initialize()
     self.ac1 = 0
     self.ac2 = 0
     self.pumping = false
+    self.filled = false
 
     local phys = self:GetPhysicsObject() 
 

@@ -229,6 +229,15 @@ function yr_compare(lapki1, lapki2)
 end
 
 
+local function resetpatron()
+    if ent_patronmanager == nil then return end
+    ent_patronmanager:DownUp(0)
+    timer.Create("DelayDownupTube_" .. ent_patronmanager:EntIndex(), 2, 1, function()
+        ent_patronmanager:MoveToTube(0)
+        ent_patronmanager:DrainAll()
+    end)
+end
+
 
 function yr_mix1(id1, id2, ply, name)
     local el1 = yr_LoadElement(id1)
@@ -246,6 +255,7 @@ function yr_mix1(id1, id2, ply, name)
 
         yr_SaveElement("ply", parents, author, name, new_element)
 
+        resetpatron()
         return new_element
     else
         return false

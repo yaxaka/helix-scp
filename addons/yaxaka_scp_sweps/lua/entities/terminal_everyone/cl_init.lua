@@ -579,10 +579,14 @@ function ENT:DrawTranslucent()
                     if first_obr == second_obr then
                         LocalPlayer():Notify("Вы выбрали два одинаковых образца!")
                     else
+                        self:SetNW2Int("Page", 400)
                         net.Start("Patronmanager")
                         net.WriteInt(1, 5)
                         net.WriteInt(1, 5)
                         net.SendToServer()
+                        timer.Create("DelayAfterPage400-1", 15, 1, function()
+                            self:SetNW2Int("Page", 51)
+                        end)
                     end
                 end
             end
@@ -595,10 +599,14 @@ function ENT:DrawTranslucent()
                     if second_obr == first_obr then
                         LocalPlayer():Notify("Вы выбрали два одинаковых образца!")
                     else
+                        self:SetNW2Int("Page", 400)
                         net.Start("Patronmanager")
                         net.WriteInt(1, 5)
                         net.WriteInt(2, 5)
                         net.SendToServer()
+                        timer.Create("DelayAfterPage400-2", 15, 1, function()
+                            self:SetNW2Int("Page", 51)
+                        end)
                     end
                 end
             end
@@ -654,6 +662,13 @@ function ENT:DrawTranslucent()
 
             fobr = nil
             sobr = nil
+
+        elseif page == 400 then
+
+            draw.SimpleText("Loading", "font1", 565 * res / 2, 318 * res / 2 + 490, Color(0,0,0), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            surface.SetMaterial(sintez_icon)
+            surface.SetDrawColor(255, 255, 255)
+            surface.DrawTexturedRect(201 * res, 50 * res, 164 * res, 150 * res)
 
         elseif page == 410 then
             
