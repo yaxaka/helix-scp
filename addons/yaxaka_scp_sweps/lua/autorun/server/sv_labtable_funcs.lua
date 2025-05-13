@@ -45,6 +45,7 @@ util.AddNetworkString("Patronmanager")
 net.Receive("Patronmanager", function(l, ply)
     if not ply:GetCharacter():IsScienceTeam() then return end
     if yr_bankent == nil then return end
+    if ent_patronmanager == nil then return end
 
     local type = net.ReadInt(5)
     local type2 = net.ReadInt(5)
@@ -126,7 +127,7 @@ net.Receive("yr_newobr", function(l, ply)
             ply:Notify("Ошибка смешивания")
             return
         end
-        
+
     end
    
 end)

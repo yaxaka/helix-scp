@@ -2,9 +2,9 @@ sound.Add( {
 	name = "lab_pump1",
 	channel = CHAN_STATIC,
 	volume = 1.0,
-	level = 50,
+	level = 60,
 	pitch = {195, 110},
-	sound = "waterpump_1.wav"
+	sound = "machinery/waterpump_1.wav"
 } )
 
 
@@ -12,13 +12,57 @@ sound.Add( {
 	name = "lab_pump2",
 	channel = CHAN_STATIC,
 	volume = 1.0,
-	level = 60,
+	level = 65,
 	pitch = {195, 110},
-	sound = "waterpump_2.wav"
+	sound = "machinery/waterpump_2.wav"
+} )
+
+sound.Add( {
+	name = "hydravl_start",
+	channel = CHAN_STATIC,
+	volume = 1.0,
+	level = 65,
+	sound = "machinery/hydravl_start.wav"
+} )
+
+sound.Add( {
+	name = "hydravl_stop",
+	channel = CHAN_STATIC,
+	volume = 1.0,
+	level = 65,
+	sound = "machinery/hydravl_stop.wav"
+} )
+
+sound.Add( {
+	name = "hydravl_move",
+	channel = CHAN_STATIC,
+	volume = 1.0,
+	level = 65,
+	sound = "machinery/hydravl_move.wav"
+} )
+
+sound.Add( {
+	name = "easter_egg_rofl",
+	channel = CHAN_STATIC,
+	volume = 1.0,
+	level = 65,
+	sound = "yas/easteregg1.wav"
 } )
 
 local function emitsoundpump(ent)
 	local a = CreateSound(ent, "lab_pump1")
+	return a
+end
+
+local function hydravl(ent, type)
+	local a = nil
+	if type == 1 then
+		a = CreateSound(ent, "hydravl_start")
+	elseif type == 2 then
+		a = CreateSound(ent, "hydravl_stop")
+	elseif type == 3 then
+		a = CreateSound(ent, "hydravl_move")
+	end
 	return a
 end
 
@@ -139,11 +183,14 @@ function yar_pumperanim_move(parent, ent, num, tube1, tube2, tube3)
 	if IsValid(parent) && IsValid(ent) && num ~= nil then
 
 		local hookname = "YarPumperMove1_" .. parent:EntIndex()
+		local movesound = hydravl(ent, 3)
 		ent.inmoving = true
 		if tz ~= 5 then
 			parent:DownUp(0)
 		end
+		ent:EmitSound("hydravl_start")
 		timer.Create(hookname .. "_DelayUp", 2.5, 1, function()
+			movesound:Play()
 			hook.Add("Think", hookname, function()
 				if IsValid(parent) && IsValid(ent) then
 					if tt ~= moveposition[num] then
@@ -151,6 +198,8 @@ function yar_pumperanim_move(parent, ent, num, tube1, tube2, tube3)
 						tt = math.Approach( tt, moveposition[num], 0.4 )
         				updatepump2(ent, tt, tz)
         			else
+        				movesound:Stop()
+        				ent:EmitSound("hydravl_stop")
         				ent.inmoving = false
         				parent.animstate = num
         				hook.Remove("Think", hookname)
