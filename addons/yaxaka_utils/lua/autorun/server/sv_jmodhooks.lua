@@ -265,6 +265,17 @@ local function removejmoditems(client)
 	for k, v in pairs(a) do
 		JmodRemoveArmorByIDHelix(client, k, false)
 	end
+
+	local inv = client:GetCharacter():GetInventory()
+	local a = inv:GetItemsByBase("base_jmodarmor")
+
+	for k,v in pairs(a) do
+	local equipped = v.data.equip
+		if equipped then
+			local item = inv:GetItemByID(v.id)
+			item:SetData("equip", false)
+		end
+	end
 end
 
 hook.Add("PlayerJoinedClass", "removejmoditems2", function(client, class, oldclass)
