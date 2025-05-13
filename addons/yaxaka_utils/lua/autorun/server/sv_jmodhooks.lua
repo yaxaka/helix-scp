@@ -260,3 +260,17 @@ hook.Add("PlayerDeath", "DeleteInv", function(ply)
 	end
 end)	
 
+local function removejmoditems(client)
+	local a = client.EZarmor.items
+	for k, v in pairs(a) do
+		JmodRemoveArmorByIDHelix(client, k, false)
+	end
+end
+
+hook.Add("PlayerJoinedClass", "removejmoditems2", function(client, class, oldclass)
+	removejmoditems(client)
+end)
+
+hook.Add("CharacterLoaded", "removejmoditems2", function(char)
+	removejmoditems(char:GetPlayer())
+end)

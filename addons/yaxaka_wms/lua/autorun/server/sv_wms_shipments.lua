@@ -29,18 +29,22 @@ function ywms_shipment_status(num)
 end
 
 function ywms_shipment_start(storage, uid, count)
-	local estimate_time = os.time() + count * 30
-	local timer_name = ywms_shipment_thread[storage].title .. "_shipmentprocess"
+	local estimate_time = os.time() + count * 2
+	local eta = estimate_time - os.time()
+	local timer_name = storage .. "_shipmentprocess"
 
 	ywms_shipment_thread[storage].status = "Доставка в пути"
 	ywms_shipment_thread[storage].time = estimate_time
 	ywms_shipment_thread[storage].uid = uid
 
-	ymsg_d("Shipment of " .. uid .. " started. ETA: " .. estimate_time - os.time())
-
-	timer.Create(timer_name, estimate_time - os.time(), 1, function()
+	timer.Create(timer_name, eta, 1, function()
 		ywms_EditCount(uid, count)
+		ywms_shipment_thread[storage].status = "Нет поставок"
+		ywms_shipment_thread[storage].time = 0
+		ywms_shipment_thread[storage].uid = nil
 	end)
+
+	ymsg_d("Shipment of " .. uid .. " started. ETA: " .. eta)
 end
 
 function ywms_shipment_requestnew(storage, uid, count, user)
