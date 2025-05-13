@@ -49,6 +49,14 @@ sound.Add( {
 	sound = "yas/easteregg1.wav"
 } )
 
+sound.Add( {
+	name = "sintezator_work",
+	channel = CHAN_STATIC,
+	volume = 1.0,
+	level = 80,
+	sound = "machinery/compressor.wav"
+} )
+
 local function emitsoundpump(ent)
 	local a = CreateSound(ent, "lab_pump1")
 	return a

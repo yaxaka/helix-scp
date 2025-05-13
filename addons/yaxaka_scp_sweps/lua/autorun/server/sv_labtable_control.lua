@@ -240,6 +240,7 @@ end
 
 
 function yr_mix1(id1, id2, ply, name)
+    ent_sintezator:StartWork()
     local el1 = yr_LoadElement(id1)
     local el2 = yr_LoadElement(id2)
     if el1 == nil or el2 == nil then return false end
@@ -252,6 +253,7 @@ function yr_mix1(id1, id2, ply, name)
 
         local parents = el1.ID .. "-to-" .. el2.ID
         local author = ply:GetCharacter():GetName()
+
 
         yr_SaveElement("ply", parents, author, name, new_element)
 

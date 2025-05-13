@@ -2,9 +2,10 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 
+ent_sintezator = nil
 
 function ENT:Initialize()
-    self:SetModel( "models/props_combine/stasisfield.mdl" ) 
+    self:SetModel( "models/props_c17/substation_transformer01a.mdl" ) 
     self:PhysicsInit( SOLID_VPHYSICS ) 
     self:SetMoveType( MOVETYPE_VPHYSICS ) 
     self:SetSolid( SOLID_VPHYSICS )
@@ -14,20 +15,30 @@ function ENT:Initialize()
     self.ac2 = 0
 
     local phys = self:GetPhysicsObject() 
-    self:SetModelScale(0.05)
+    self:SetModelScale(0.4)
     self:DrawShadow(false)
 
     if phys:IsValid() then 
     end
 
-    local child = ents.Create("yr_labtube")
-    child:SetModel("models/xqm/cylinderx2.mdl")
-    child:SetParent(self, 1)
-    child:SetLocalPos(Vector(0, 0, -24))
-    child:SetLocalAngles(Angle(0, 0, 0))
-    --child:SetModelScale(0.5)
+    ent_sintezator = self
+
+    local child = ents.Create("gmod_button")
+    child:SetModel("models/props_wasteland/horizontalcoolingtank04.mdl")
+    child:SetParent(self, 0)
+    child:SetLocalPos(Vector(0, 75, -16))
+    child:SetLocalAngles(Angle(0, 90, 0))
+    child:SetModelScale(0.3)
     child:Spawn()
-    --self.child = child
+    child:SetSolid(SOLID_NONE) 
+    self.child = child
+
+    local patronman = ents.Create("yr_patronmanager")
+    patronman:SetParent(self, 0)
+    patronman:SetLocalPos(Vector(0, 0, 60))
+    patronman:SetLocalAngles(Angle(0, 0, 0))
+    patronman:Spawn()
+    patronman:SetSolid(SOLID_NONE) 
 
 end
 
@@ -37,7 +48,13 @@ function ENT:SetupDataTables()
     self:SetNW2Int( "AnimState", self.animstate )
 end
 
-
+function ENT:StartWork()
+    local sound = CreateSound(self, "sintezator_work")
+    sound:Play()
+    timer.Create("sintezator_work_delay", 5, 1, function()
+        sound:Stop()
+    end)
+end
 
 function ENT:Use( activator )
 

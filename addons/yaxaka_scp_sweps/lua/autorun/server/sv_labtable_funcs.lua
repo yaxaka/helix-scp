@@ -67,9 +67,9 @@ net.Receive("Patronmanager", function(l, ply)
 
     if type == 2 then
         ent_patronmanager:DownUp(0)
+        ent_patronmanager:DrainAll()
         timer.Create("DelayDownupTube_" .. ent_patronmanager:EntIndex(), 2, 1, function()
             ent_patronmanager:MoveToTube(0)
-            ent_patronmanager:DrainAll()
         end)
     end
 end)
@@ -83,6 +83,9 @@ net.Receive("yr_requestmix", function(l, ply)
 	local newname = net.ReadString()
 
 	if yr_LoadElement(fel) == nil or yr_LoadElement(sel) == nil then return end
+    if ent_sintezator == nil then return end
+
+    ent_sintezator:StartWork()
 
 	yr_mix1(fel, sel, newname, ply:GetCharacter():GetName())
 end)
