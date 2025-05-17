@@ -97,7 +97,6 @@ local PANEL2 = {}
 
 function PANEL2:Init()
 	self:Center()
-	self:SetKeyboardInputEnabled(true)
 	self:SetSize(800, 600)
 	self:MakePopup()
 	self:SetMouseInputEnabled(true)
@@ -252,10 +251,12 @@ vgui.Register( "YButton", PANEL4, "DButton" )
 local PANELMain = {}
 
 function PANELMain:Init()
-
 	if IsValid(SingleDFrame) then
     	SingleDFrame:Remove()
     end
+
+    local bkey = input.LookupBinding("yas", true)
+	self.bind = input.GetKeyCode(bkey)
 
     opened = self
   	local sw = ScrW()
@@ -263,7 +264,7 @@ function PANELMain:Init()
 
 	local sizew, sizeh = 1, 1
 	self:SetSize(sizew, sizeh)
-	--self:Center()
+	self:Center()
 	self:MakePopup()
     self:SetTitle("")
     self:ShowCloseButton(false) 
@@ -429,15 +430,25 @@ function PANELMain:Paint( aWide, aTall )
 	surface.DrawText(group)
 end
 
+function PANELMain:OnKeyCodePressed(key)
+	local yas = input.LookupKeyBinding(key)
+
+	if yas == "yas" then
+		self:Close()
+		opened = nil
+	end
+end
+
 vgui.Register( "YAdmin_Main", PANELMain, "DFrame" )
+
 
 concommand.Add("yas", function()
 	if LocalPlayer().YAS_Role == "User" then return end
-
-	if opened ~= nil then
+	if opened then
 		opened:Close()
 		opened = nil
-	elseif opened == nil then
+	else
 		vgui.Create("YAdmin_Main")
-	end
+	end	
 end)
+
