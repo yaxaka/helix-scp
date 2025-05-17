@@ -3,12 +3,17 @@ local Player = FindMetaTable("Player")
 
 
 function Player:GetRole()
-	local role = yas_LoadPlayer(self)
-	if role == nil or false then
-		return nil
+	local lrole = yas_plyroles_table[self:SteamID64()]
+	if lrole == nil then
+		print("case1")
+		local role = yas_LoadPlayer(self)
+		if role == nil or false then
+			return nil
+		else
+			return role, yas_roles[role].color
+		end
 	else
-		local color = yas_roles[role].color
-		return role, color
+		return lrole, yas_roles[lrole].color
 	end
 end
 
@@ -39,6 +44,7 @@ function Player:Auth(flag)
 	local flags = yas_roles[role].flags
 
 	if flags == nil then return false end
+	if role == "User" then return false end
 
 	local have_flag = string.find(flags, flag)
 	local full_access = string.find(flags, "full")

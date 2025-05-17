@@ -1,8 +1,9 @@
 function yas_sendwarn(text_type, priority, target)
-	net.Start("YAS_Warning")
+	net.Start("YAS_Main")
+	net.WriteString("warn")
+	net.WriteEntity(target)
 	net.WriteInt(text_type, 5)
 	net.WriteInt(priority, 5)
-	net.WriteEntity(target)
 	net.SendToServer()
 	LocalPlayer():Notify("Предупреждение отправлено игроку.")
 	yas_bsend()
@@ -23,7 +24,8 @@ end
 function yas_tp_send(target)
 	target.teleported = true
 	target.returnpos = target:GetPos()
-	net.Start("YAS_TP")
+	net.Start("YAS_Main")
+	net.WriteString("tp")
 	net.WriteEntity(target)
 	net.WriteVector(target.yas_tp_pos)
 	net.SendToServer()
@@ -33,7 +35,8 @@ function yas_tp_send(target)
 end
 
 function yas_tp_send(target)
-	net.Start("YAS_TP")
+	net.Start("YAS_Main")
+	net.WriteString("tp")
 	net.WriteEntity(target)
 	net.WriteVector(target.returnpos)
 	net.SendToServer()
@@ -73,7 +76,8 @@ end
 
 
 function yas_netmute(type, target)
-	net.Start("YAS_Mutes")
+	net.Start("YAS_Main")
+	net.WriteString("mute")
 	net.WriteInt(type, 4)
 	net.WriteEntity(target)
 	net.SendToServer()
@@ -81,7 +85,8 @@ function yas_netmute(type, target)
 end
 
 function yas_pm(target, text)
-	net.Start("YAS_PM")
+	net.Start("YAS_Main")
+	net.WriteString("pm")
 	net.WriteEntity(target)
 	net.WriteString(text)
 	net.SendToServer()
@@ -89,7 +94,8 @@ function yas_pm(target, text)
 end
 
 function yas_freeze(target, type)
-	net.Start("YAS_Freeze")
+	net.Start("YAS_Main")
+	net.WriteString("freeze")
 	net.WriteEntity(target)
 	net.WriteInt(type, 4)
 	net.SendToServer()
@@ -97,7 +103,8 @@ function yas_freeze(target, type)
 end
 
 function yas_god(target, type)
-	net.Start("YAS_God")
+	net.Start("YAS_Main")
+	net.WriteString("god")
 	net.WriteEntity(target)
 	net.WriteInt(type, 4)
 	net.SendToServer()
@@ -105,28 +112,32 @@ function yas_god(target, type)
 end
 
 function yas_hp(target)
-	net.Start("YAS_HP")
+	net.Start("YAS_Main")
+	net.WriteString("hp")
 	net.WriteEntity(target)
 	net.SendToServer()
 	yas_bsend()
 end
 
 function yas_kick(target)
-	net.Start("YAS_KICK")
+	net.Start("YAS_Main")
+	net.WriteString("kick")
 	net.WriteEntity(target)
 	net.SendToServer()
 	yas_bsend()
 end
 
 function yas_ban(target)
-	net.Start("YAS_BAN")
+	net.Start("YAS_Main")
+	net.WriteString("ban")
 	net.WriteEntity(target)
 	net.SendToServer()
 	yas_bsend()
 end
 
 function yas_setclass(target, index, index2, bool)
-	net.Start("YAS_CLS")
+	net.Start("YAS_Main")
+	net.WriteString("whitelist")
 	net.WriteBool(bool)
 	net.WriteEntity(target)
 	net.WriteString(index)

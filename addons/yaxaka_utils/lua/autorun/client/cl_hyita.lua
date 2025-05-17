@@ -692,8 +692,8 @@ function yui_calc1(animval_x, new_width, targetx, defx, defw)
     end
 
     if animval_x >= reached_x && new_width > 0 then
-        new_width = new_width - 1
         animval_x = animval_x + 1
+        new_width = new_width - 1
     elseif animval_x == defx && new_width < defw then
         new_width = new_width + 1
     end
