@@ -682,3 +682,27 @@ hook.Add("HUDPaint", "ShifrPomehi", function()
     end
 
 end)
+
+
+function yui_calc1(animval_x, new_width, targetx, defx, defw)
+    local reached_x = targetx
+
+    if reached_x > animval_x && new_width == defw then
+        animval_x = animval_x + 1
+    end
+
+    if animval_x >= reached_x && new_width > 0 then
+        new_width = new_width - 1
+        animval_x = animval_x + 1
+    elseif animval_x == defx && new_width < defw then
+        new_width = new_width + 1
+    end
+
+    if new_width == 0 then
+        animval_x = defx
+    end
+
+    return animval_x, new_width
+end
+
+
