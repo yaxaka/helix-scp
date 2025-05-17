@@ -6,3 +6,8 @@ net.Receive("YAS_Setup", function()
 	print(role)
 	print(flags)
 end)
+
+
+concommand.Add("fieldtest", function()
+	vgui.Create("YAdmin_WriteField")
+end)

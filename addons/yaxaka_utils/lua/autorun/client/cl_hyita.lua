@@ -135,6 +135,24 @@ surface.CreateFont( "Header2", {
 	outline = true,
 } )
 
+surface.CreateFont( "Inter default", {
+    font = "Inter", -- Use the font-name which is shown to you by your operating system Font Viewer.
+    extended = true,
+    size = 25,
+    weight = 300,
+    blursize = 0,
+    scanlines = 1,
+    antialias = true,
+    underline = false,
+    italic = false,
+    strikeout = false,
+    symbol = false,
+    rotary = false,
+    shadow = false,
+    additive = false,
+    outline = false,
+} )
+
 surface.CreateFont( "Community", {
 	font = "Overpass Mono", -- Use the font-name which is shown to you by your operating system Font Viewer.
 	extended = true,

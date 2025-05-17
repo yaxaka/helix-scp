@@ -16,11 +16,15 @@ surface.CreateFont( "NickFont", {
 	outline = true,
 } )
 
+local function create_entry(parent, func)
+	local a = vgui.Create("YAdmin_WriteField")
+	a.func = func
+end
 
 local PANEL = {}
 
 function PANEL:Init()
-	local parent = self:GetParent()
+	local frameparent = self:GetParent()
 	
 
 	self:SetPos(50, 141)
@@ -71,7 +75,7 @@ function PANEL:Init()
 			Parent:SetIcon( "icon16/exclamation.png" )
 			Warns:AddOption( "Телепорт в NonRP зону", function() yas_sendwarn(2, 1, ply_target) end ):SetIcon( "icon16/email_go.png" )
 			Warns:AddOption( "NonRP поведение", function() yas_sendwarn(1, 2, ply_target) end ):SetIcon( "icon16/email_go.png" )
-			Warns:AddOption( "Ручной ввод", function() yas_sendwarn(1, 1, ply_target) end ):SetIcon( "icon16/email_edit.png" )
+			Warns:AddOption( "Ручной ввод", function() create_entry(self, "warn") end ):SetIcon( "icon16/email_edit.png" )
 
 			Menu:AddSpacer()
 
@@ -104,7 +108,7 @@ function PANEL:Init()
 				Mute:AddOption( "Замутить чат", function() yas_chatmute(ply_target) end ):SetIcon( "icon16/sound_mute.png" )
 			end
 
-			local persmess = Menu:AddOption( "Отправить личное сообщение", function() yas_pm(ply_target, "Еее тест мессаге!!") end )
+			local persmess = Menu:AddOption( "Отправить личное сообщение", function() create_entry(self, "pm") end )
 			persmess:SetIcon( "icon16/application_edit.png" )
 
 			local Frez, ParentFrez = Menu:AddSubMenu( "Заморозка" )
@@ -157,11 +161,53 @@ function PANEL:Init()
 			local hp = Menu:AddOption( "Восстановить хп", function() yas_hp(ply_target) end )
 			hp:SetIcon( "icon16/heart_add.png" )
 
-			local hp = Menu:AddOption( "Кикнуть", function() yas_kick(ply_target) end )
-			hp:SetIcon( "icon16/exclamation.png" )
+			local hp2 = Menu:AddOption( "Кикнуть", function() yas_kick(ply_target) end )
+			hp2:SetIcon( "icon16/exclamation.png" )
 
-			local hp = Menu:AddOption( "Заблокировать", function() yas_ban(ply_target) end )
-			hp:SetIcon( "icon16/fire.png" )
+			local hp3 = Menu:AddOption( "Заблокировать", function() yas_ban(ply_target) end )
+			hp3:SetIcon( "icon16/fire.png" )
+
+			local charban = Menu:AddOption( "Заблокировать персонажа", function() yas_charban(ply_target) end )
+			charban:SetIcon( "icon16/group_delete.png" )
+
+			local CharGiveFlag = Menu:AddOption( "Выдать флаги", function() yas_charban(ply_target) end )
+			CharGiveFlag:SetIcon( "icon16/flag_green.png" )
+
+			local CharTakeFlag = Menu:AddOption( "Забрать флаги", function() yas_charban(ply_target) end )
+			CharTakeFlag:SetIcon( "icon16/flag_red.png" )
+
+			local CharGiveItem = Menu:AddOption( "Выдать предмет", function() yas_charban(ply_target) end )
+			CharGiveItem:SetIcon( "icon16/folder.png" )
+
+			local CharKick = Menu:AddOption( "Выгнать персонажа", function() yas_charban(ply_target) end )
+			CharKick:SetIcon( "icon16/link_delete.png" )
+
+			local CharSetClass = Menu:AddOption( "Сменить класс", function() yas_charban(ply_target) end )
+			CharSetClass:SetIcon( "icon16/database_edit.png" )
+
+			local CharSetModel = Menu:AddOption( "Сменить модель", function() yas_charban(ply_target) end )
+			CharSetModel:SetIcon( "icon16/user_suit.png" )
+
+			local CharSetName = Menu:AddOption( "Сменить имя", function() yas_charban(ply_target) end )
+			CharSetName:SetIcon( "icon16/tag_blue_edit.png" )
+
+			local CharSetSkin = Menu:AddOption( "Сменить бодигруппу", function() yas_charban(ply_target) end )
+			CharSetSkin:SetIcon( "icon16/paintbrush.png" )
+
+			local CharUnban = Menu:AddOption( "Разблокировать персонажа", function() yas_charban(ply_target) end )
+			CharUnban:SetIcon( "icon16/group_add.png" )
+
+
+			local PlyTransfer = Menu:AddOption( "Перевести в указаную фракцию", function() yas_charban(ply_target) end )
+			PlyTransfer:SetIcon( "icon16/user_go.png" )
+
+
+			local PlyUnwhitelist = Menu:AddOption( "Блокировка в указаной фракции", function() yas_charban(ply_target) end )
+			PlyUnwhitelist:SetIcon( "icon16/cross.png" )
+
+			local PlyWhitelist = Menu:AddOption( "Разблокировать в указаной фракции", function() yas_charban(ply_target) end )
+			PlyWhitelist:SetIcon( "icon16/accept.png" )
+
 
 			Menu:Open()
 

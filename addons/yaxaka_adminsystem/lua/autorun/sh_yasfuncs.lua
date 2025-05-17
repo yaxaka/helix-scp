@@ -1,9 +1,12 @@
-function yas_sendwarn(text_type, priority, target)
+function yas_sendwarn(text_type, priority, target, text)
 	net.Start("YAS_Main")
 	net.WriteString("warn")
 	net.WriteEntity(target)
 	net.WriteInt(text_type, 5)
 	net.WriteInt(priority, 5)
+	if text ~= nil && text ~= "" then
+		net.WriteString(text)
+	end
 	net.SendToServer()
 	LocalPlayer():Notify("Предупреждение отправлено игроку.")
 	yas_bsend()
@@ -90,7 +93,7 @@ function yas_pm(target, text)
 	net.WriteEntity(target)
 	net.WriteString(text)
 	net.SendToServer()
-	yas_bsend()
+	LocalPlayer():ChatNotify("Сообщение отправлено")
 end
 
 function yas_freeze(target, type)
@@ -142,6 +145,15 @@ function yas_setclass(target, index, index2, bool)
 	net.WriteEntity(target)
 	net.WriteString(index)
 	net.WriteString(index2)
+	net.SendToServer()
+	yas_bsend()
+end
+
+function yas_chargiveflag(target, flags)
+	net.Start("YAS_Main")
+	net.WriteString("giveflags")
+	net.WriteEntity(target)
+	net.WriteString(flags)
 	net.SendToServer()
 	yas_bsend()
 end

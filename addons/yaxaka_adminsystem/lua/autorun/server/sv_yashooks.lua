@@ -32,6 +32,7 @@ end )
 util.AddNetworkString("YAS_Setup")
 util.AddNetworkString("YAS_RequestAction")
 util.AddNetworkString("YAS_Main")
+util.AddNetworkString("YAS_Warning")
 
 function log_af(ply)
 	ymsg_w("Access restricted for " .. ply:SteamID64() .. " (" .. ply:Nick() .. ") ")
@@ -80,7 +81,7 @@ net.Receive("YAS_Main", function(len, ply)
 		elseif text_type == 2 then
 			net.WriteString(yas_config.text_nonrpzone)
 		else
-			net.WriteString("Undefined")
+			net.WriteString(net.ReadString())
 		end
 
 		net.Send(target)
@@ -94,7 +95,7 @@ net.Receive("YAS_Main", function(len, ply)
 		local text = net.ReadString()
 
 		target:ChatNotify("Администратор: " .. text)
-		log_ag2(ply, "pm", target:Nick() .. ", " .. text)
+		log_ag2(ply, "pm", target:Nick() .. ", message: " .. text)
 	end
 
 	if action == "tp" then
@@ -105,7 +106,7 @@ net.Receive("YAS_Main", function(len, ply)
 
 		target:Notify("Вы были телепортированы администрацией сервера.")
 		target:SetPos(pos)
-		log_ag(ply, "tp", target:Nick())
+		log_ag2(ply, "tp", target:Nick() .. ", message: " .. text)
 	end
 
 	if action == "mute" then

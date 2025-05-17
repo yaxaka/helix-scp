@@ -36,8 +36,8 @@ function ENT:DrawUI()
         surface.SetFont("font_tektur")
         surface.SetTextPos(410*res, 150*res)
 
-         --surface.DrawOutlinedRect(60*res, 150*res, 700*res, 90*res, 5*res)
-        --if self:GetNW2Bool("InUse") then
+        surface.DrawOutlinedRect(60*res, 150*res, 700*res, 90*res, 5*res)
+        if self:GetNW2Bool("InUse") then
             surface.DrawOutlinedRect(60*res, 150*res, 700*res, 90*res, 5*res)
 
             surface.DrawRect(self.at.xn*res, 170*res, self.at.wn*res, 50*res)
@@ -45,7 +45,7 @@ function ENT:DrawUI()
             surface.DrawRect(self.at3.xn*res, 170*res, self.at3.wn*res, 50*res)
             surface.DrawRect(self.at4.xn*res, 170*res, self.at4.wn*res, 50*res)
             surface.DrawRect(self.at5.xn*res, 170*res, self.at5.wn*res, 50*res)
-       --end
+        end
 
         imgui.End3D2D()
     end

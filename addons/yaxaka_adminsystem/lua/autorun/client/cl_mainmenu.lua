@@ -445,7 +445,7 @@ end
 
 function PANELMain:OnKeyCodePressed(key)
 	local yas = input.LookupKeyBinding(key)
-
+	if yas == nil then return end
 	if string.find(yas, "yas") then
 		self:Close()
 		opened = nil
@@ -453,6 +453,77 @@ function PANELMain:OnKeyCodePressed(key)
 end
 
 vgui.Register( "YAdmin_Main", PANELMain, "DFrame" )
+
+local PANEL_WriteField = {}
+
+function PANEL_WriteField:Init()
+	if IsValid(SingleDFrame) then
+    	SingleDFrame:Remove()
+    end
+  	local sw = ScrW()
+    local sh = ScrH()
+
+	local sizew, sizeh = 1, 1
+	self:SetSize(sizew, sizeh)
+	self:Center()
+	self:MakePopup()
+    self:SetTitle("")
+    self:ShowCloseButton(true) 
+    self:SetDraggable(false) 
+    local parent = self
+    self.animat = true
+
+    self:SizeTo(500, 150, 1.8, 0, .1, function()
+        self.animat = false
+    end)
+
+    local entry = self:Add("DTextEntry")
+	entry:SetSize(400, 25)
+	entry:SetPos(500/2-400/2, 150/2-30)
+	entry:SetFont("Inter default")
+	entry:SetPlaceholderText("Введите аргументы")
+
+    local send = self:Add("YButton")
+    send:SetSize(200, 30)
+    send:SetPos(500/2-200/2, 150/2+20)
+    send:SetFont("Inter default")
+    send:SetText("Отправить")
+    send.Color = Color(148, 40, 150, 200)
+	send.HoverColor = Color(148, 40, 150, 255)
+	send.DoClick = function()
+		local val = entry:GetValue()
+		if val == "" then return end
+		yas_bclick()
+		local func = parent.func
+
+		if func == "warn" then
+			yas_sendwarn(3, 1, ply_target, val)
+		end
+
+		if func == "pm" then
+			yas_pm(ply_target, val)
+		end
+
+		self:Close()
+	end
+
+end
+
+
+
+function PANEL_WriteField:Think()
+	if self.animat then
+  		self:Center()
+   	end
+end
+
+function PANEL_WriteField:Paint( aWide, aTall )
+	draw.RoundedBox(10, 0, 0, aWide, aTall, Color(41, 12, 78))
+
+end
+
+
+vgui.Register( "YAdmin_WriteField", PANEL_WriteField, "DFrame" )
 
 
 concommand.Add("yas", function()
