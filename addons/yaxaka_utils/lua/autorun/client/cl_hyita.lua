@@ -17,28 +17,48 @@ local color_textentry = Color(0, 37, 184)
 color_button_pressed = Color(0, 2, 94)
 
 scp_update_table = {
+    [9] = {
+        version = '0.0.1.2',
+        header = 'Cleanups',
+        desc = "Различные фиксы и исправления",
+    },
+    [8] = {
+        version = '0.0.1.1',
+        header = 'Научные лаборатории №1',
+        desc = "Добавлен визуал терминала для учёных, банк образцов, функция синтеза химических элементов и их исследование",
+    },
+    [7] = {
+        version = '0.0.1.0',
+        header = 'Терминалы и задания',
+        desc = "Добавлены новые терминалы с поддержкой нажатия в 3д пространстве, прототипы квестов",
+    },
+    [6] = {
+        version = '0.0.0.9',
+        header = 'SCP-096',
+        desc = "Добавлена полноценная работа шифратора и станции его зарядки",
+    },
     [5] = {
-        version = '0.0.8',
+        version = '0.0.0.8',
         header = 'Жуки повсюду!',
         desc = "Фикс различных багов, прототип функций шифратора",
     },
     [4] = {
-        version = '0.0.7',
+        version = '0.0.0.7',
         header = 'Набор юного тревожника',
         desc = "Добавлен органайзер таблов(таблетница). 3D модели в пути!",
     },
     [3] = {
-        version = '0.0.6',
+        version = '0.0.0.6',
         header = 'UI Update',
         desc = "Изменения в UI главного меню!",
     },
 	[2] = {
-		version = '0.0.5',
+		version = '0.0.0.5',
 		header = 'Weekend Summary SCP-035',
 		desc = "Добавлены новые SCP, улучшена механика и оптимизация 035, улучшена совместимость с JMOD",
 	},
 	[1] = {
-		version = '0.0.4',
+		version = '0.0.0.4',
 		header = 'Weekend Summary #1',
 		desc = "По итогам недели была завершена работа над следующими SCP: 096, 173, 131.",
 	},
@@ -295,6 +315,24 @@ surface.CreateFont( "font2_sub", {
     outline = false,
 } )
 
+surface.CreateFont( "font_version", {
+    font = "Consolas", -- Use the font-name which is shown to you by your operating system Font Viewer.
+    extended = false,
+    size = 20,
+    weight = 400,
+    blursize = 0,
+    scanlines = 0,
+    antialias = true,
+    underline = false,
+    italic = false,
+    strikeout = false,
+    symbol = false,
+    rotary = false,
+    shadow = false,
+    additive = false,
+    outline = false,
+} )
+
 surface.CreateFont( "font3", {
     font = "Arial", -- Use the font-name which is shown to you by your operating system Font Viewer.
     extended = false,
@@ -316,7 +354,7 @@ surface.CreateFont( "font3", {
 function Helix_YUI_GetSize(text, font)
     surface.SetFont(font)
     local w, h = surface.GetTextSize(text)
-    return w*font_scale, h*font_scale
+    return w, h
 end
 
 function Helix_YUI_CreateText(nname, parent, font, text, posx, posy)
@@ -684,18 +722,19 @@ hook.Add("HUDPaint", "ShifrPomehi", function()
 end)
 
 
-function yui_calc1(animval_x, new_width, targetx, defx, defw)
+function yui_calc1(animval_x, new_width, targetx, defx, defw, speed1)
     local reached_x = targetx
+    local speed = speed1 or 1
 
     if reached_x > animval_x && new_width == defw then
-        animval_x = animval_x + 1
+        animval_x = animval_x + speed
     end
 
     if animval_x >= reached_x && new_width > 0 then
-        animval_x = animval_x + 1
-        new_width = new_width - 1
+        animval_x = animval_x + speed
+        new_width = new_width - speed
     elseif animval_x == defx && new_width < defw then
-        new_width = new_width + 1
+        new_width = new_width + speed
     end
 
     if new_width == 0 then

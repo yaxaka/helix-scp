@@ -50,9 +50,12 @@ end
 
 function ENT:StartWork()
     local sound = CreateSound(self, "sintezator_work")
+    self:SetNW2Bool( "InUse", true )
     sound:Play()
-    timer.Create("sintezator_work_delay", 5, 1, function()
+    timer.Create("sintezator_work_delay", 20, 1, function()
+        if not IsValid(self) then return end
         sound:Stop()
+        self:SetNW2Bool( "InUse", false )
     end)
 end
 

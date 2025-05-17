@@ -44,7 +44,7 @@ function PANEL:Init()
 		end
 		
 
-
+		
 		local steamidw, steamidh = Helix_YUI_GetSize(nick, "DefaultFixed")
 		local nickw, nickh = Helix_YUI_GetSize(nick, "NickFont")
 		local classw, classh = Helix_YUI_GetSize(class, "HudHintTextLarge")

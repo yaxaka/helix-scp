@@ -91,6 +91,7 @@ function imgui.Start3D2D(pos, angles, scale, distanceHide, distanceFadeStart)
 	end
 
 	if gState.rendering == true then
+		imgui.End3D2D()
 		print(
 			"[IMGUI] Starting a new IMGUI context when previous one is still rendering" ..
 			"Shutting down rendering pipeline to prevent crashes.."

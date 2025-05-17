@@ -255,8 +255,21 @@ function PANELMain:Init()
     	SingleDFrame:Remove()
     end
 
-    local bkey = input.LookupBinding("yas", true)
-	self.bind = input.GetKeyCode(bkey)
+    local bkey = nil
+
+    for i=1,159 do
+    	local value = input.LookupKeyBinding(i)
+    	if value ~= nil then
+    		local strfind = string.find(value, "yas")
+    		if strfind then
+    			bkey = value
+    		end
+    	end
+    end
+
+    if bkey ~= nil then
+		self.bind = input.GetKeyCode(bkey)
+	end
 
     opened = self
   	local sw = ScrW()
@@ -433,7 +446,7 @@ end
 function PANELMain:OnKeyCodePressed(key)
 	local yas = input.LookupKeyBinding(key)
 
-	if yas == "yas" then
+	if string.find(yas, "yas") then
 		self:Close()
 		opened = nil
 	end

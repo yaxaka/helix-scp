@@ -20,7 +20,7 @@ function ENT:DrawUI()
     local circle = 0
 
 
-    if imgui.Start3D2D( pos, ang, 0.05 / res, 800, 700 ) then
+    if imgui.Start3D2D( pos, ang, 0.05 / res, 820, 300 ) then
         self.at.xn, self.at.wn = yui_calc1(self.at.xn, self.at.wn, self.at.t, self.at.x, self.at.w)
         self.at2.xn, self.at2.wn = yui_calc1(self.at2.xn, self.at2.wn, self.at2.t, self.at2.x, self.at2.w)
         self.at3.xn, self.at3.wn = yui_calc1(self.at3.xn, self.at3.wn, self.at3.t, self.at3.x, self.at3.w)
@@ -32,13 +32,20 @@ function ENT:DrawUI()
 
         surface.SetDrawColor( 0, 0, 0, 255 )
 
-        surface.DrawOutlinedRect(60*res, 150*res, 700*res, 90*res, 5*res)
+        surface.SetTextColor(0, 0, 0)
+        surface.SetFont("font_tektur")
+        surface.SetTextPos(410*res, 150*res)
 
-        surface.DrawRect(self.at.xn*res, 170*res, self.at.wn*res, 50*res)
-        surface.DrawRect(self.at2.xn*res, 170*res, self.at2.wn*res, 50*res)
-        surface.DrawRect(self.at3.xn*res, 170*res, self.at3.wn*res, 50*res)
-        surface.DrawRect(self.at4.xn*res, 170*res, self.at4.wn*res, 50*res)
-        surface.DrawRect(self.at5.xn*res, 170*res, self.at5.wn*res, 50*res)
+         --surface.DrawOutlinedRect(60*res, 150*res, 700*res, 90*res, 5*res)
+        --if self:GetNW2Bool("InUse") then
+            surface.DrawOutlinedRect(60*res, 150*res, 700*res, 90*res, 5*res)
+
+            surface.DrawRect(self.at.xn*res, 170*res, self.at.wn*res, 50*res)
+            surface.DrawRect(self.at2.xn*res, 170*res, self.at2.wn*res, 50*res)
+            surface.DrawRect(self.at3.xn*res, 170*res, self.at3.wn*res, 50*res)
+            surface.DrawRect(self.at4.xn*res, 170*res, self.at4.wn*res, 50*res)
+            surface.DrawRect(self.at5.xn*res, 170*res, self.at5.wn*res, 50*res)
+       --end
 
         imgui.End3D2D()
     end
