@@ -782,7 +782,7 @@ function GM:ShutDown()
 end
 
 function GM:GetGameDescription()
-	return "IX: "..(Schema and Schema.name or "Unknown")
+	return "MilitaryRP"
 end
 
 function GM:OnPlayerUseBusiness(client, item)

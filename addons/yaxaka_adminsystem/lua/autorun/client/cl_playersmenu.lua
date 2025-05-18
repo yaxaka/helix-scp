@@ -227,8 +227,15 @@ function PANEL:Init()
 				end
 			end
 
-			local CharSetClass = character_control:AddOption( "Сменить класс", function() yas_charban(ply_target) end )
-			CharSetClass:SetIcon( "icon16/database_edit.png" )
+			local CharSetClass,CSCParent = character_control:AddSubMenu( "Сменить класс" )
+			CSCParent:SetIcon( "icon16/database_edit.png" )
+
+			for k,v in pairs(ix.class.list) do
+				if v.faction == ply_target:Team() then
+					CharSetClass:AddOption( v.name, function() yas_setclass(ply_target, k) end )
+				end
+			end
+
 
 			local CharSetModel = character_control:AddOption( "Сменить модель", function() yas_charban(ply_target) end )
 			CharSetModel:SetIcon( "icon16/user_suit.png" )

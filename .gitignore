@@ -6,3 +6,6 @@ helix/sftp-config.json
 *.vvd
 *.phy
 *.mdl
+helix/LICENSE.txt
+helix/helix.txt
+helix/helix.example.yml

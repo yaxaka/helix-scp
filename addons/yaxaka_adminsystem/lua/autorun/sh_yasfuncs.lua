@@ -187,6 +187,14 @@ function yas_giveitem(target, count, item)
 	net.SendToServer()
 end
 
+function yas_setclass(target, class)
+	net.Start("YAS_Main")
+	net.WriteString("char_setclass")
+	net.WriteEntity(target)
+	net.WriteInt(class, 8)
+	net.SendToServer()
+end
+
 function yas_bclick()
 	surface.PlaySound("yas/yas_button2.wav")
 end

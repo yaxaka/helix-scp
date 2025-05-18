@@ -162,6 +162,22 @@ if (SERVER) then
 		return false
 	end
 
+	function charMeta:ForceJoinClass(class)
+		if (!class) then
+			self:KickClass()
+			return false
+		end
+
+		local oldClass = self:GetClass()
+		local client = self:GetPlayer()
+
+		
+		self:SetClass(class)
+		hook.Run("PlayerJoinedClass", client, class, oldClass)
+
+		return true
+	end
+
 	--- Kicks this character out of the class they are currently in.
 	-- @realm server
 	function charMeta:KickClass()

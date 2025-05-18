@@ -66,6 +66,7 @@ net.Receive("YAS_Main", function(len, ply)
 	if ply:GetRole() == "User" then return end
 
 	local action = net.ReadString()
+	if not ply:Auth(action) then log_af(ply) return end
 
 	if action == "load_characters" then
 		local a = net.ReadEntity()
@@ -78,7 +79,6 @@ net.Receive("YAS_Main", function(len, ply)
 	end
 
 	if action == "warn" then
-		if not ply:Auth("warn") then log_af(ply) return end
 		local target = net.ReadEntity()
 		local text_type = net.ReadInt(5)
 		local priority = net.ReadInt(5)
@@ -99,8 +99,6 @@ net.Receive("YAS_Main", function(len, ply)
 	end
 
 	if action == "pm" then
-		if not ply:Auth(action) then log_af(ply) return end
-
 		local target = net.ReadEntity()
 		local text = net.ReadString()
 
@@ -109,8 +107,6 @@ net.Receive("YAS_Main", function(len, ply)
 	end
 
 	if action == "tp" then
-		if not ply:Auth(action) then return end
-
 		local target = net.ReadEntity()
 		local pos = net.ReadVector()
 
@@ -120,8 +116,6 @@ net.Receive("YAS_Main", function(len, ply)
 	end
 
 	if action == "mute" then
-		if not ply:Auth(action) then log_af(ply) return end
-
 		local type = net.ReadInt(4)
 		local target = net.ReadEntity()
 
@@ -138,8 +132,6 @@ net.Receive("YAS_Main", function(len, ply)
 	end
 
 	if action == "freeze" then
-		if not ply:Auth(action) then log_af(ply) return end
-
 		local target = net.ReadEntity()
 		local type = net.ReadInt(4)
 
@@ -152,8 +144,6 @@ net.Receive("YAS_Main", function(len, ply)
 	end
 
 	if action == "god" then
-		if not ply:Auth(action) then log_af(ply) return end
-
 		local target = net.ReadEntity()
 		local type = net.ReadInt(4)
 
@@ -166,8 +156,6 @@ net.Receive("YAS_Main", function(len, ply)
 	end
 
 	if action == "hp" then
-		if not ply:Auth(action) then log_af(ply) return end
-
 		local target = net.ReadEntity()
 
 		target:SetHealth(target:GetMaxHealth())
@@ -175,8 +163,6 @@ net.Receive("YAS_Main", function(len, ply)
 	end
 
 	if action == "kick" then
-		if not ply:Auth("full") then log_af(ply) return end
-
 		local target = net.ReadEntity()
 
 		log_ag(ply, "kick", target:SteamID64())
@@ -184,8 +170,6 @@ net.Receive("YAS_Main", function(len, ply)
 	end
 
 	if action == "ban" then
-		if not ply:Auth("full") then log_af(ply) return end
-
 		local target = net.ReadEntity()
 		local tid = target:SteamID()
 
@@ -195,8 +179,6 @@ net.Receive("YAS_Main", function(len, ply)
 	end
 
 	if action == "whitelist" then
-		if not ply:Auth(action) then log_af(ply) return end
-
 		local bol = net.ReadBool()
 		local target = net.ReadEntity()
 		local class = tonumber(net.ReadString())
@@ -215,7 +197,6 @@ net.Receive("YAS_Main", function(len, ply)
 	end
 
 	if action == "char_ban" then
-		if not ply:Auth(action) then log_af(ply) return end
 		local name = net.ReadString()
 		local bool = net.ReadBool()
 		if bool then
@@ -236,7 +217,6 @@ net.Receive("YAS_Main", function(len, ply)
 	end
 
 	if action == "char_flags" then
-		if not ply:Auth(action) then log_af(ply) return end
 		local target = net.ReadEntity()
 		local flags = net.ReadString()
 		local bool = net.ReadBool()
@@ -249,13 +229,11 @@ net.Receive("YAS_Main", function(len, ply)
 	end
 
 	if action == "char_kick" then
-		if not ply:Auth(action) then log_af(ply) return end
 		local a = net.ReadEntity()
 		a:GetCharacter():Kick()
 	end
 
 	if action == "giveitem" then
-		if not ply:Auth(action) then log_af(ply) return end
 		local target = net.ReadEntity()
 		local count = net.ReadInt(9)
 		local item = net.ReadString()
@@ -272,6 +250,18 @@ net.Receive("YAS_Main", function(len, ply)
 			else
 				ply:Notify("Не удалось выдать предмет")
 			end
+		end
+	end
+
+	if action == "char_setclass" then
+		local target = net.ReadEntity()
+		local class = net.ReadInt(8)
+
+		local success = target:GetCharacter():ForceJoinClass(class)
+		if success then
+			ply:Notify("Персонаж успешно вступил в класс " .. class)
+		else
+			ply:Notify("Не удалось вступить в класс игроку")
 		end
 	end
 
