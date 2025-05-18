@@ -16,9 +16,10 @@ surface.CreateFont( "NickFont", {
 	outline = true,
 } )
 
-local function create_entry(parent, func)
+local function create_entry(parent, func, bool)
 	local a = vgui.Create("YAdmin_WriteField")
 	a.func = func
+	a.dbool = bool
 end
 
 local PANEL = {}
@@ -191,11 +192,11 @@ function PANEL:Init()
 				end
 			end
 
-			local CharGiveFlag = Menu:AddOption( "Выдать флаги", function() yas_charban(ply_target) end )
-			CharGiveFlag:SetIcon( "icon16/flag_green.png" )
+			local CharFlags, Flags = Menu:AddSubMenu( "Флаги" )
+			Flags:SetIcon( "icon16/flag_blue.png" )
+			CharFlags:AddOption( "Выдать флаги", function() create_entry(ply_target, "flags", true) end ):SetIcon( "icon16/flag_green.png" )
+			CharFlags:AddOption( "Забрать флаги", function() create_entry(ply_target, "flags", false) end ):SetIcon( "icon16/flag_red.png" )
 
-			local CharTakeFlag = Menu:AddOption( "Забрать флаги", function() yas_charban(ply_target) end )
-			CharTakeFlag:SetIcon( "icon16/flag_red.png" )
 
 			local CharGiveItem = Menu:AddOption( "Выдать предмет", function() yas_charban(ply_target) end )
 			CharGiveItem:SetIcon( "icon16/folder.png" )

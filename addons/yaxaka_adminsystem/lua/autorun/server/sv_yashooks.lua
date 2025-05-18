@@ -68,7 +68,9 @@ net.Receive("YAS_Main", function(len, ply)
 	local action = net.ReadString()
 
 	if action == "load_characters" then
-		local targetid = net.ReadEntity():SteamID64()
+		local a = net.ReadEntity()
+		if a == nil then return end
+		local targetid = a:SteamID64()
 		local tb = ix.char.cache[targetid]
 		net.Start("YAS_Main")
 		net.WriteTable(tb)
@@ -233,6 +235,18 @@ net.Receive("YAS_Main", function(len, ply)
 		end
 	end
 
+	if action == "flags" then
+		if not ply:Auth("char_flags") then log_af(ply) return end
+		local target = net.ReadEntity()
+		local flags = net.ReadString()
+		local bool = net.ReadBool()
+
+		if bool then
+			target:GetCharacter():GiveFlags(flags)
+		elseif not bool then
+			target:GetCharacter():TakeFlags(flags)
+		end
+	end
 
 end)
 

@@ -504,6 +504,10 @@ function PANEL_WriteField:Init()
 			yas_pm(ply_target, val)
 		end
 
+		if func == "flags" then
+			yas_flags(ply_target, val, parent.dbool)
+		end
+
 		self:Close()
 	end
 
