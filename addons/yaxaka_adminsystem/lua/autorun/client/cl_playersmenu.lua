@@ -62,11 +62,6 @@ function PANEL:Init()
 		self.Back.Target = v
 
 		function self.Back:DoClick()
-			net.Start("YAS_Main")
-			net.WriteString("load_characters")
-			net.WriteEntity(ply_target)
-			net.SendToServer()
-
 			local Menu = DermaMenu()
 			ply_target = self.Target
 			local selfpos = LocalPlayer():GetPos()
@@ -206,8 +201,31 @@ function PANEL:Init()
 			local CharKick = character_control:AddOption( "Выгнать персонажа", function() yas_charkick(ply_target) end )
 			CharKick:SetIcon( "icon16/link_delete.png" )
 
-			local CharGiveItem = character_control:AddOption( "Выдать предмет", function() yas_charban(ply_target) end )
+			local Itemlist, CharGiveItem = character_control:AddSubMenu( "Выдать предмет" )
 			CharGiveItem:SetIcon( "icon16/folder.png" )
+
+			local tbl22 = {}
+			for k,v in pairs(ix.item.list) do
+				local cat = v.category
+				if tbl22[v.category] == nil then
+					if cat ~= "JArmor" && cat ~= "misc" then
+						tbl22[v.category] = v.category
+					end
+				end
+			end
+
+			for k,v in pairs(tbl22) do
+				local Itemlist2, CharGiveItem2 = Itemlist:AddSubMenu( k )
+				CharGiveItem2:SetIcon("icon16/folder.png")
+				Itemlist2.category = v
+				print(Itemlist2.category)
+
+				for k,v in pairs(ix.item.list) do
+					if v.category == tbl22[Itemlist2.category] then
+						Itemlist2:AddOption( v.name, function() create_entry(ply_target, "giveitem", v.uniqueID) end ):SetIcon( "icon16/basket_go.png" )
+					end
+				end
+			end
 
 			local CharSetClass = character_control:AddOption( "Сменить класс", function() yas_charban(ply_target) end )
 			CharSetClass:SetIcon( "icon16/database_edit.png" )

@@ -508,6 +508,10 @@ function PANEL_WriteField:Init()
 			yas_flags(ply_target, val, parent.dbool)
 		end
 
+		if func == "giveitem" then
+			yas_giveitem(ply_target, val, parent.dbool)
+		end
+
 		self:Close()
 	end
 

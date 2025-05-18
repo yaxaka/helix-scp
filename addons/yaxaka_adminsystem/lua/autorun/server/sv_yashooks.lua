@@ -254,6 +254,27 @@ net.Receive("YAS_Main", function(len, ply)
 		a:GetCharacter():Kick()
 	end
 
+	if action == "giveitem" then
+		if not ply:Auth(action) then log_af(ply) return end
+		local target = net.ReadEntity()
+		local count = net.ReadInt(9)
+		local item = net.ReadString()
+		local find_item = ix.item.Get(item)
+
+		if find_item ~= nil then
+			local inventory = target:GetCharacter():GetInventory()
+			local a, b = inventory:Add(item, count)
+			if (a) then
+				log_ag2(ply, "giveitem", target:Nick() .. ", " .. find_item.name .. " count:" .. count)	
+				
+				ply:Notify("Предмет(" .. find_item.name .. ") успешно выдан в кол-ве: " .. count )
+				target:Notify("Администрацией был выдан вам предмет")
+			else
+				ply:Notify("Не удалось выдать предмет")
+			end
+		end
+	end
+
 end)
 
 
@@ -270,4 +291,6 @@ for k,v in pairs(engine.GetAddons()) do
 	local wid = v.wsid
 	resource.AddWorkshop(wid)
 end
+
+
 

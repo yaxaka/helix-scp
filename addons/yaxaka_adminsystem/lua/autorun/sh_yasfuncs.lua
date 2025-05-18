@@ -176,6 +176,17 @@ function yas_charkick(target)
 	net.SendToServer()
 end
 
+function yas_giveitem(target, count, item)
+	local count2 = tonumber(count)
+	if count2 > 254 then LocalPlayer:Notfiy("Слишком большое значение") return end
+	net.Start("YAS_Main")
+	net.WriteString("giveitem")
+	net.WriteEntity(target)
+	net.WriteInt(count2, 9)
+	net.WriteString(item)
+	net.SendToServer()
+end
+
 function yas_bclick()
 	surface.PlaySound("yas/yas_button2.wav")
 end
