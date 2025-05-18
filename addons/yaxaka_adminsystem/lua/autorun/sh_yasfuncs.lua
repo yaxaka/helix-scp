@@ -149,11 +149,13 @@ function yas_setclass(target, index, index2, bool)
 	yas_bsend()
 end
 
-function yas_chargiveflag(target, flags)
+
+
+function yas_charban(target, bool)
 	net.Start("YAS_Main")
-	net.WriteString("giveflags")
-	net.WriteEntity(target)
-	net.WriteString(flags)
+	net.WriteString("char_ban")
+	net.WriteString(target:GetName())
+	net.WriteBool(bool)
 	net.SendToServer()
 	yas_bsend()
 end

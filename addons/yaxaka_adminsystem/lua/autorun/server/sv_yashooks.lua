@@ -67,6 +67,14 @@ net.Receive("YAS_Main", function(len, ply)
 
 	local action = net.ReadString()
 
+	if action == "load_characters" then
+		local targetid = net.ReadEntity():SteamID64()
+		local tb = ix.char.cache[targetid]
+		net.Start("YAS_Main")
+		net.WriteTable(tb)
+		net.Send(ply)
+	end
+
 	if action == "warn" then
 		if not ply:Auth("warn") then log_af(ply) return end
 		local target = net.ReadEntity()
@@ -204,6 +212,27 @@ net.Receive("YAS_Main", function(len, ply)
 		log_ag2(ply, "whitelist", target:Nick() .. ", " .. class)
 	end
 
+	if action == "char_ban" then
+		if not ply:Auth("char_ban") then log_af(ply) return end
+		local name = net.ReadString()
+		local bool = net.ReadBool()
+		if bool then
+			local target = nil
+			for client, character in ix.util.GetCharacters() do
+				local charname = character:GetName()
+				if charname == name then
+					local command = ix.command.list[tostring("CharBan"):lower()]
+					command:OnRun(ply, character)
+					log_ag(ply, "char_ban", character)
+				end
+			end
+		elseif not bool then
+			local command = ix.command.list[tostring("CharUnban"):lower()]
+			command:OnRun(ply, name)
+			log_ag(ply, "char_unban", name)
+		end
+	end
+
 
 end)
 
@@ -221,3 +250,4 @@ for k,v in pairs(engine.GetAddons()) do
 	local wid = v.wsid
 	resource.AddWorkshop(wid)
 end
+

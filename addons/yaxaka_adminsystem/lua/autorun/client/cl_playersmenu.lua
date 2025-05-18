@@ -61,6 +61,11 @@ function PANEL:Init()
 		self.Back.Target = v
 
 		function self.Back:DoClick()
+			net.Start("YAS_Main")
+			net.WriteString("load_characters")
+			net.WriteEntity(ply_target)
+			net.SendToServer()
+
 			local Menu = DermaMenu()
 			ply_target = self.Target
 			local selfpos = LocalPlayer():GetPos()
@@ -127,8 +132,9 @@ function PANEL:Init()
 			Adminka:AddOption( "Выдать", function() yas_giveadmin(ply_target, true) end ):SetIcon( "icon16/wand.png" )
 			Adminka:AddOption( "Забрать", function() yas_giveadmin(ply_target, false) end ):SetIcon( "icon16/wand.png" )
 
+
 			local teams = ix.faction.teams
-			local Faction, ParentFact = Menu:AddSubMenu( "Выдать вайтлист" )
+--[[			local Faction, ParentFact = Menu:AddSubMenu( "Выдать вайтлист" )
 			ParentFact:SetIcon( "icon16/user.png" )
 			for k,v in pairs(ix.faction.teams) do
 				local name = v.name
@@ -156,7 +162,7 @@ function PANEL:Init()
 						Class:AddOption( b.name, function() yas_setclass(ply_target, b.index, indx, false) end ):SetIcon( "icon16/user_delete.png" )
 					end
 				end
-			end
+			end-]]
 
 			local hp = Menu:AddOption( "Восстановить хп", function() yas_hp(ply_target) end )
 			hp:SetIcon( "icon16/heart_add.png" )
@@ -167,8 +173,23 @@ function PANEL:Init()
 			local hp3 = Menu:AddOption( "Заблокировать", function() yas_ban(ply_target) end )
 			hp3:SetIcon( "icon16/fire.png" )
 
-			local charban = Menu:AddOption( "Заблокировать персонажа", function() yas_charban(ply_target) end )
-			charban:SetIcon( "icon16/group_delete.png" )
+			local charban, charbp = Menu:AddSubMenu( "Заблокировать персонажа" )
+			charbp:SetIcon( "icon16/group_delete.png" )
+			for k,v in pairs(ix.char.loaded) do
+				local ply = v:GetPlayer()
+				if ply == ply_target then
+					charban:AddOption(v:GetName(), function() yas_charban(v, true) end):SetIcon("icon16/user.png")
+				end
+			end
+
+			local CharUnban, charubp = Menu:AddSubMenu( "Разблокировать персонажа" )
+			charubp:SetIcon( "icon16/group_add.png" )
+			for k,v in pairs(ix.char.loaded) do
+				local ply = v:GetPlayer()
+				if ply == ply_target then
+					CharUnban:AddOption(v:GetName(), function() yas_charban(v, false) end):SetIcon("icon16/user.png")
+				end
+			end
 
 			local CharGiveFlag = Menu:AddOption( "Выдать флаги", function() yas_charban(ply_target) end )
 			CharGiveFlag:SetIcon( "icon16/flag_green.png" )
@@ -193,9 +214,6 @@ function PANEL:Init()
 
 			local CharSetSkin = Menu:AddOption( "Сменить бодигруппу", function() yas_charban(ply_target) end )
 			CharSetSkin:SetIcon( "icon16/paintbrush.png" )
-
-			local CharUnban = Menu:AddOption( "Разблокировать персонажа", function() yas_charban(ply_target) end )
-			CharUnban:SetIcon( "icon16/group_add.png" )
 
 
 			local PlyTransfer = Menu:AddOption( "Перевести в указаную фракцию", function() yas_charban(ply_target) end )
