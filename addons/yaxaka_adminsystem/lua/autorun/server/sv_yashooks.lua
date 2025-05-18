@@ -265,6 +265,44 @@ net.Receive("YAS_Main", function(len, ply)
 		end
 	end
 
+	if action == "char_whitelistfaction" then
+		local target = net.ReadEntity()
+		local faction = net.ReadInt(5)
+		local bool = net.ReadBool()
+		if ix.faction.Get(faction) ~= nil && bool ~= nil then
+			local result = target:SetWhitelisted(faction, bool)
+			if (result) then
+				ply:Notify("Статус вайтлиста изменён на " .. tostring(bool))
+			else
+				ply:Notify("Ошибка изменения статуса вайтлиста")
+			end
+		end
+	end
+
+	if action == "char_transferfaction" then
+		local target = net.ReadEntity()
+		local faction = net.ReadInt(5)
+		local tbl = ix.faction.Get(faction)
+		
+		if ix.faction.Get(faction) ~= nil then
+			ix.command.Run(ply, "PlyTransfer", {target:GetCharacter():GetName(), tbl.name})
+		else
+			ply:Notify("Не удалось перевести игрока")
+		end
+	end
+
+	if action == "char_setmodel" then
+		local target = net.ReadEntity()
+		local mdl = net.ReadString()
+		ix.command.Run(ply, "CharSetModel", {target:GetCharacter():GetName(), mdl})
+	end
+
+	if action == "char_setname" then
+		local target = net.ReadEntity()
+		local name = net.ReadString()
+		ix.command.Run(ply, "CharSetName", {target:GetCharacter():GetName(), name})
+	end
+
 end)
 
 

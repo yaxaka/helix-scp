@@ -1,3 +1,9 @@
+local function yas_startnet(action, target)
+	net.Start("YAS_Main")
+	net.WriteString(action)
+	net.WriteEntity(target)
+end
+
 function yas_sendwarn(text_type, priority, target, text)
 	net.Start("YAS_Main")
 	net.WriteString("warn")
@@ -51,7 +57,7 @@ end
 
 function yas_voicemute(target)
 	target.voice_muted = true
-	yas_netmute(1, target)
+	yas_netmute(1, target)yas_startnet(action, target)
 	LocalPlayer():Notify("Воис игрока замучен.")
 	yas_bsend()
 end
@@ -88,52 +94,40 @@ function yas_netmute(type, target)
 end
 
 function yas_pm(target, text)
-	net.Start("YAS_Main")
-	net.WriteString("pm")
-	net.WriteEntity(target)
+	yas_startnet("pm", target)
 	net.WriteString(text)
 	net.SendToServer()
 	LocalPlayer():ChatNotify("Сообщение отправлено")
 end
 
 function yas_freeze(target, type)
-	net.Start("YAS_Main")
-	net.WriteString("freeze")
-	net.WriteEntity(target)
+	yas_startnet("freeze", target)
 	net.WriteInt(type, 4)
 	net.SendToServer()
 	yas_bsend()
 end
 
 function yas_god(target, type)
-	net.Start("YAS_Main")
-	net.WriteString("god")
-	net.WriteEntity(target)
+	yas_startnet("god", target)
 	net.WriteInt(type, 4)
 	net.SendToServer()
 	yas_bsend()
 end
 
 function yas_hp(target)
-	net.Start("YAS_Main")
-	net.WriteString("hp")
-	net.WriteEntity(target)
+	yas_startnet("hp", target)
 	net.SendToServer()
 	yas_bsend()
 end
 
 function yas_kick(target)
-	net.Start("YAS_Main")
-	net.WriteString("kick")
-	net.WriteEntity(target)
+	yas_startnet("kick", target)
 	net.SendToServer()
 	yas_bsend()
 end
 
 function yas_ban(target)
-	net.Start("YAS_Main")
-	net.WriteString("ban")
-	net.WriteEntity(target)
+	yas_startnet("ban", target)
 	net.SendToServer()
 	yas_bsend()
 end
@@ -161,38 +155,60 @@ function yas_charban(target, bool)
 end
 
 function yas_flags(target, flags, bool)
-	net.Start("YAS_Main")
-	net.WriteString("char_flags")
-	net.WriteEntity(target)
+	yas_startnet("char_flags", target)
 	net.WriteString(flags)
 	net.WriteBool(bool)
 	net.SendToServer()
 end
 
 function yas_charkick(target)
-	net.Start("YAS_Main")
-	net.WriteString("char_kick")
-	net.WriteEntity(target)
+	yas_startnet("char_kick", target)
 	net.SendToServer()
 end
 
 function yas_giveitem(target, count, item)
 	local count2 = tonumber(count)
 	if count2 > 254 then LocalPlayer:Notfiy("Слишком большое значение") return end
-	net.Start("YAS_Main")
-	net.WriteString("giveitem")
-	net.WriteEntity(target)
+	yas_startnet("giveitem", target)
 	net.WriteInt(count2, 9)
 	net.WriteString(item)
 	net.SendToServer()
 end
 
 function yas_setclass(target, class)
-	net.Start("YAS_Main")
-	net.WriteString("char_setclass")
-	net.WriteEntity(target)
+	yas_startnet("char_setclass", target)
 	net.WriteInt(class, 8)
 	net.SendToServer()
+end
+
+
+function yas_factionwhitelist(target, faction, bool)
+	yas_startnet("char_whitelistfaction", target)
+	net.WriteInt(faction, 5)
+	net.WriteBool(bool)
+	net.SendToServer()
+end
+
+function yas_factionforce(target, faction)
+	yas_startnet("char_transferfaction", target)
+	net.WriteInt(faction, 5)
+	net.SendToServer()
+end
+
+function yas_changemodel(target, mdl)
+	yas_startnet("char_setmodel", target)
+	net.WriteString(mdl)
+	net.SendToServer()
+end
+
+function yas_changename(target, name)
+	yas_startnet("char_setname", target)
+	net.WriteString(name)
+	net.SendToServer()
+end
+
+function yas_changebodygr(target, info)
+
 end
 
 function yas_bclick()

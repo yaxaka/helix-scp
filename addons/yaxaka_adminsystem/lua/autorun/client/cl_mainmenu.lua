@@ -512,6 +512,14 @@ function PANEL_WriteField:Init()
 			yas_giveitem(ply_target, val, parent.dbool)
 		end
 
+		if func == "char_setmodel" then
+			yas_changemodel(ply_target, val)
+		end
+
+		if func == "char_setname" then
+			yas_changename(ply_target, val)
+		end
+
 		self:Close()
 	end
 

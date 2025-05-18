@@ -237,25 +237,29 @@ function PANEL:Init()
 			end
 
 
-			local CharSetModel = character_control:AddOption( "Сменить модель", function() yas_charban(ply_target) end )
+			local CharSetModel = character_control:AddOption( "Сменить модель", function() create_entry(ply_target, "char_setmodel") end )
 			CharSetModel:SetIcon( "icon16/user_suit.png" )
 
-			local CharSetName = character_control:AddOption( "Сменить имя", function() yas_charban(ply_target) end )
+			local CharSetName = character_control:AddOption( "Сменить имя", function() create_entry(ply_target, "char_setname") end )
 			CharSetName:SetIcon( "icon16/tag_blue_edit.png" )
 
-			local CharSetSkin = character_control:AddOption( "Сменить бодигруппу", function() yas_charban(ply_target) end )
+			local CharSetSkin = character_control:AddOption( "Сменить бодигруппу", function() create_entry(ply_target, "char_setbodygroup") end )
 			CharSetSkin:SetIcon( "icon16/paintbrush.png" )
 
+			local PlyTransfer, PTParent = character_control:AddSubMenu( "Перевести в указаную фракцию" )
+			PTParent:SetIcon( "icon16/user_go.png" )
 
-			local PlyTransfer = character_control:AddOption( "Перевести в указаную фракцию", function() yas_charban(ply_target) end )
-			PlyTransfer:SetIcon( "icon16/user_go.png" )
+			local PlyWhitelist, PWParent = character_control:AddSubMenu( "Выдать вайтлист указаной фракции" )
+			PWParent:SetIcon( "icon16/accept.png" )
 
+			local PlyUnwhitelist, PUWParent = character_control:AddSubMenu( "Забрать вайтлист указаной фракции" )
+			PUWParent:SetIcon( "icon16/cross.png" )
 
-			local PlyUnwhitelist = character_control:AddOption( "Блокировка в указаной фракции", function() yas_charban(ply_target) end )
-			PlyUnwhitelist:SetIcon( "icon16/cross.png" )
-
-			local PlyWhitelist = character_control:AddOption( "Разблокировать в указаной фракции", function() yas_charban(ply_target) end )
-			PlyWhitelist:SetIcon( "icon16/accept.png" )
+			for k,v in pairs(ix.faction.teams) do
+				PlyWhitelist:AddOption( v.name, function() yas_factionwhitelist(ply_target, v.index, true) end ):SetIcon("icon16/group_add.png")
+				PlyUnwhitelist:AddOption( v.name, function() yas_factionwhitelist(ply_target, v.index, false) end ):SetIcon("icon16/group_delete.png")
+				PlyTransfer:AddOption( v.name, function() yas_factionforce(ply_target, v.index) end ):SetIcon("icon16/group_go.png")
+			end
 
 
 			Menu:Open()
