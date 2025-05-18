@@ -162,10 +162,17 @@ end
 
 function yas_flags(target, flags, bool)
 	net.Start("YAS_Main")
-	net.WriteString("flags")
+	net.WriteString("char_flags")
 	net.WriteEntity(target)
 	net.WriteString(flags)
 	net.WriteBool(bool)
+	net.SendToServer()
+end
+
+function yas_charkick(target)
+	net.Start("YAS_Main")
+	net.WriteString("char_kick")
+	net.WriteEntity(target)
 	net.SendToServer()
 end
 

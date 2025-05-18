@@ -77,7 +77,10 @@ function PANEL:Init()
 
 			Menu:AddSpacer()
 
-			local Warns, Parent = Menu:AddSubMenu( "Предупреждения" )
+			local ply_control, pc = Menu:AddSubMenu( "Управление игроком" )
+			pc:SetIcon( "icon16/wrench.png" )
+
+			local Warns, Parent = ply_control:AddSubMenu( "Предупреждения" )
 			Parent:SetIcon( "icon16/exclamation.png" )
 			Warns:AddOption( "Телепорт в NonRP зону", function() yas_sendwarn(2, 1, ply_target) end ):SetIcon( "icon16/email_go.png" )
 			Warns:AddOption( "NonRP поведение", function() yas_sendwarn(1, 2, ply_target) end ):SetIcon( "icon16/email_go.png" )
@@ -85,7 +88,7 @@ function PANEL:Init()
 
 			Menu:AddSpacer()
 
-			local Teleport, Parent2 = Menu:AddSubMenu( "Телепорт" )
+			local Teleport, Parent2 = ply_control:AddSubMenu( "Телепорт" )
 			Parent2:SetIcon( "icon16/plugin_go.png" ) 
 			Teleport:AddOption( "Установить точку телепорта", function() yas_tp_pos(ply_target, selfpos) end ):SetIcon( "icon16/user_edit.png" )
 
@@ -99,7 +102,7 @@ function PANEL:Init()
 
 
 
-			local Mute, Parent3 = Menu:AddSubMenu( "Мут" )
+			local Mute, Parent3 = ply_control:AddSubMenu( "Мут" )
 			Parent3:SetIcon( "icon16/sound.png" ) 
 
 			if ply_target.voice_muted ~= nil then
@@ -114,21 +117,21 @@ function PANEL:Init()
 				Mute:AddOption( "Замутить чат", function() yas_chatmute(ply_target) end ):SetIcon( "icon16/sound_mute.png" )
 			end
 
-			local persmess = Menu:AddOption( "Отправить личное сообщение", function() create_entry(self, "pm") end )
+			local persmess = ply_control:AddOption( "Отправить личное сообщение", function() create_entry(self, "pm") end )
 			persmess:SetIcon( "icon16/application_edit.png" )
 
-			local Frez, ParentFrez = Menu:AddSubMenu( "Заморозка" )
+			local Frez, ParentFrez = ply_control:AddSubMenu( "Заморозка" )
 			ParentFrez:SetIcon( "icon16/plugin_go.png" ) 
 			Frez:AddOption( "Включить", function() yas_freeze(ply_target, 1) end ):SetIcon( "icon16/lightning_add.png" )
 			Frez:AddOption( "Выключить", function() yas_freeze(ply_target, 2) end ):SetIcon( "icon16/lightning_delete.png" )
 
-			local God, ParentGod = Menu:AddSubMenu( "Бессмертие" )
+			local God, ParentGod = ply_control:AddSubMenu( "Бессмертие" )
 			ParentGod:SetIcon( "icon16/plugin_go.png" ) 
 			God:AddOption( "Включить", function() yas_god(ply_target, 1) end ):SetIcon( "icon16/wand.png" )
 			God:AddOption( "Выключить", function() yas_god(ply_target, 2) end ):SetIcon( "icon16/wand.png" )
 
 
-			local Adminka, ParentAdminka = Menu:AddSubMenu( "Админка" )
+			local Adminka, ParentAdminka = ply_control:AddSubMenu( "Админка" )
 			ParentAdminka:SetIcon( "icon16/plugin_go.png" ) 
 			Adminka:AddOption( "Выдать", function() yas_giveadmin(ply_target, true) end ):SetIcon( "icon16/wand.png" )
 			Adminka:AddOption( "Забрать", function() yas_giveadmin(ply_target, false) end ):SetIcon( "icon16/wand.png" )
@@ -165,16 +168,19 @@ function PANEL:Init()
 				end
 			end-]]
 
-			local hp = Menu:AddOption( "Восстановить хп", function() yas_hp(ply_target) end )
+			local hp = ply_control:AddOption( "Восстановить хп", function() yas_hp(ply_target) end )
 			hp:SetIcon( "icon16/heart_add.png" )
 
-			local hp2 = Menu:AddOption( "Кикнуть", function() yas_kick(ply_target) end )
+			local hp2 = ply_control:AddOption( "Кикнуть", function() yas_kick(ply_target) end )
 			hp2:SetIcon( "icon16/exclamation.png" )
 
-			local hp3 = Menu:AddOption( "Заблокировать", function() yas_ban(ply_target) end )
+			local hp3 = ply_control:AddOption( "Заблокировать", function() yas_ban(ply_target) end )
 			hp3:SetIcon( "icon16/fire.png" )
 
-			local charban, charbp = Menu:AddSubMenu( "Заблокировать персонажа" )
+			local character_control, cc = Menu:AddSubMenu( "Управление персонажем" )
+			cc:SetIcon( "icon16/cog.png" )
+
+			local charban, charbp = character_control:AddSubMenu( "Заблокировать персонажа" )
 			charbp:SetIcon( "icon16/group_delete.png" )
 			for k,v in pairs(ix.char.loaded) do
 				local ply = v:GetPlayer()
@@ -183,7 +189,7 @@ function PANEL:Init()
 				end
 			end
 
-			local CharUnban, charubp = Menu:AddSubMenu( "Разблокировать персонажа" )
+			local CharUnban, charubp = character_control:AddSubMenu( "Разблокировать персонажа" )
 			charubp:SetIcon( "icon16/group_add.png" )
 			for k,v in pairs(ix.char.loaded) do
 				local ply = v:GetPlayer()
@@ -192,39 +198,38 @@ function PANEL:Init()
 				end
 			end
 
-			local CharFlags, Flags = Menu:AddSubMenu( "Флаги" )
+			local CharFlags, Flags = character_control:AddSubMenu( "Флаги" )
 			Flags:SetIcon( "icon16/flag_blue.png" )
 			CharFlags:AddOption( "Выдать флаги", function() create_entry(ply_target, "flags", true) end ):SetIcon( "icon16/flag_green.png" )
 			CharFlags:AddOption( "Забрать флаги", function() create_entry(ply_target, "flags", false) end ):SetIcon( "icon16/flag_red.png" )
 
-
-			local CharGiveItem = Menu:AddOption( "Выдать предмет", function() yas_charban(ply_target) end )
-			CharGiveItem:SetIcon( "icon16/folder.png" )
-
-			local CharKick = Menu:AddOption( "Выгнать персонажа", function() yas_charban(ply_target) end )
+			local CharKick = character_control:AddOption( "Выгнать персонажа", function() yas_charkick(ply_target) end )
 			CharKick:SetIcon( "icon16/link_delete.png" )
 
-			local CharSetClass = Menu:AddOption( "Сменить класс", function() yas_charban(ply_target) end )
+			local CharGiveItem = character_control:AddOption( "Выдать предмет", function() yas_charban(ply_target) end )
+			CharGiveItem:SetIcon( "icon16/folder.png" )
+
+			local CharSetClass = character_control:AddOption( "Сменить класс", function() yas_charban(ply_target) end )
 			CharSetClass:SetIcon( "icon16/database_edit.png" )
 
-			local CharSetModel = Menu:AddOption( "Сменить модель", function() yas_charban(ply_target) end )
+			local CharSetModel = character_control:AddOption( "Сменить модель", function() yas_charban(ply_target) end )
 			CharSetModel:SetIcon( "icon16/user_suit.png" )
 
-			local CharSetName = Menu:AddOption( "Сменить имя", function() yas_charban(ply_target) end )
+			local CharSetName = character_control:AddOption( "Сменить имя", function() yas_charban(ply_target) end )
 			CharSetName:SetIcon( "icon16/tag_blue_edit.png" )
 
-			local CharSetSkin = Menu:AddOption( "Сменить бодигруппу", function() yas_charban(ply_target) end )
+			local CharSetSkin = character_control:AddOption( "Сменить бодигруппу", function() yas_charban(ply_target) end )
 			CharSetSkin:SetIcon( "icon16/paintbrush.png" )
 
 
-			local PlyTransfer = Menu:AddOption( "Перевести в указаную фракцию", function() yas_charban(ply_target) end )
+			local PlyTransfer = character_control:AddOption( "Перевести в указаную фракцию", function() yas_charban(ply_target) end )
 			PlyTransfer:SetIcon( "icon16/user_go.png" )
 
 
-			local PlyUnwhitelist = Menu:AddOption( "Блокировка в указаной фракции", function() yas_charban(ply_target) end )
+			local PlyUnwhitelist = character_control:AddOption( "Блокировка в указаной фракции", function() yas_charban(ply_target) end )
 			PlyUnwhitelist:SetIcon( "icon16/cross.png" )
 
-			local PlyWhitelist = Menu:AddOption( "Разблокировать в указаной фракции", function() yas_charban(ply_target) end )
+			local PlyWhitelist = character_control:AddOption( "Разблокировать в указаной фракции", function() yas_charban(ply_target) end )
 			PlyWhitelist:SetIcon( "icon16/accept.png" )
 
 
