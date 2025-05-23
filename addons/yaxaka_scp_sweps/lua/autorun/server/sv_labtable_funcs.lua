@@ -1,7 +1,7 @@
 yr_chemtags_funcs = {
 	tachycardia = {
 		name = "Тахикардия",
-		require = "Player",
+        maxpower = 100,
         func = function(ply)
 
            	local hp = ply:Health()
@@ -21,18 +21,222 @@ yr_chemtags_funcs = {
 	},
 	endurance = {
 		name = "Выносливость",
-		require = "Player",
+        maxpower = 60,
 		func = function(ply)
-			local speed = ply:GetRunSpeed()
-			ply:SetRunSpeed(speed+200)
-			timer.Create(ply:SteamID64() .. "_yr_endurance1", 120, 1, function()
-				ply:SetRunSpeed(speed)
-			end)
+
 		end,
 	},
-
+    supressor1 = {
+        name = "Поглощение 1-й категории",
+        maxpower = 100,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    supressor2 = {
+        name = "Поглощение 2-й категории",
+        maxpower = 55,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    supressor3 = {
+        name = "Поглощение 3-й категории",
+        maxpower = 30,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    health_suppressor = {
+        name = "Снижение чувствительности к боли",
+        maxpower = 40,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    psyop1 = {
+        name = "Галлюциногенные эффекты зрения",
+        maxpower = 40,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    psyop2 = {
+        name = "Галлюциногенные эффекты слуха",
+        maxpower = 40,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    run1 = {
+        name = "Увеличение скорости передвижения 1-й категории",
+        maxpower = 30,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    run2 = {
+        name = "Увеличение скорости передвижения 2-й категории",
+        maxpower = 50,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    run3 = {
+        name = "Увеличение скорости передвижения 3-й категории",
+        maxpower = 70,
+        func = function(ply)
+            --T.F
+        end,
+    },    
+    heal1 = {
+        name = "Ускорение восстановления тканей 1-й категории",
+        maxpower = 30,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    heal2 = {
+        name = "Ускорение восстановления тканей 2-й категории",
+        maxpower = 45,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    heal3 = {
+        name = "Ускорение восстановления тканей 3-й категории",
+        maxpower = 55,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    weak = {
+        name = "Слабость мышц",
+        maxpower = 60,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    pressurelow = {
+        name = "Сниженное давление",
+        maxpower = 70,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    pressurehigh = {
+        name = "Повышенное давление",
+        maxpower = 70,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    bloodloss1 = {
+        name = "Вероятность внутреннего кровотечения",
+        maxpower = 40,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    fallover1 = {
+        name = "Вероятность потери сознания",
+        maxpower = 50,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    rvota = {
+        name = "Тошнота",
+        maxpower = 70,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    regen_stamina = {
+        name = "Восстановление запаса сил",
+        maxpower = 70,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    night_eyes = {
+        name = "Улучшенное зрение ночью",
+        maxpower = 30,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    gold_hands = {
+        name = "Улучшение концетрации",
+        maxpower = 30,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    wet_eyes = {
+        name = "Сильная секреция слёзных желез",
+        maxpower = 30,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    paralyze = {
+        name = "Паралич",
+        maxpower = 10,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    madmax = {
+        name = "Бешенство",
+        maxpower = 10,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    muscles1 = {
+        name = "Усиление мышц",
+        maxpower = 40,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    eduboss = {
+        name = "Повышенная обучаемость",
+        maxpower = 15,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    hear1 = {
+        name = "Улучшение слуха",
+        maxpower = 15,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    nobonecrack = {
+        name = "Устойчивость к переломам",
+        maxpower = 10,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    bloodstop1 = {
+        name = "Ускоренное свёртывание крови",
+        maxpower = 20,
+        func = function(ply)
+            --T.F
+        end,
+    },
+    nofire = {
+        name = "Сниженная секреция сальных желез",
+        maxpower = 20,
+        func = function(ply)
+            --T.F
+        end,
+    },
 }
-
 
 
 util.AddNetworkString("yr_requestmix")

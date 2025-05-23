@@ -3,9 +3,9 @@ chemlab_table = {}
 util.AddNetworkString("yr_refresh")
 
 function yr_CreateTable()
-    sql.Query("CREATE TABLE IF NOT EXISTS yr_science ( ID STRING PRIMARY KEY, Tags STRING, Parents STRING, Lapki STRING, Author STRING, Name STRING )")
+    sql.Query("CREATE TABLE IF NOT EXISTS yr_science ( ID STRING PRIMARY KEY, Weight INT, Parents STRING, Lapki STRING, Author STRING, Name STRING )")
 
-    sql.Query("INSERT OR REPLACE INTO yr_science ( ID, Tags, Parents, Lapki, Author, Name ) VALUES ( " ..  sql.SQLStr("0004_AAAA") .. ", " .. sql.SQLStr("ply") .. ", " .. sql.SQLStr("Nil") .. ", " .. sql.SQLStr("morphine.txt") .. ", " .. sql.SQLStr("Yaxaka") .. ", " .. sql.SQLStr("Морфин") .. " )")
+    --sql.Query("INSERT OR REPLACE INTO yr_science ( ID, Weight, Parents, Lapki, Author, Name ) VALUES ( " ..  sql.SQLStr("0001_AAAA") .. ", " .. 1 .. ", " .. sql.SQLStr("Nil") .. ", " .. sql.SQLStr("morphine.txt") .. ", " .. sql.SQLStr("Yaxaka") .. ", " .. sql.SQLStr("Морфин") .. " )")
 end
 
 yr_CreateTable()
@@ -25,14 +25,14 @@ end
 yr_localtable()
 
 
-function yr_SaveElement(tags, parents, author, name, lapki)
-    if tags ~= nil && name ~= nil then
+function yr_SaveElement(weight, parents, author, name, lapki)
+    if weight ~= nil && name ~= nil then
         local new_id = yr_generateid()
         local filename = new_id .. ".txt"
 
         file.Write("yr_lapki_data/" .. filename, util.TableToJSON(lapki))
 
-        sql.Query("INSERT OR REPLACE INTO yr_science ( ID, Tags, Parents, Lapki, Author, Name ) VALUES ( " ..  sql.SQLStr(new_id) .. ", " .. sql.SQLStr(tags) .. ", " .. sql.SQLStr(parents) .. ", " .. sql.SQLStr(filename) .. ", " .. sql.SQLStr(author) .. ", " .. sql.SQLStr(name) .. " )")
+        sql.Query("INSERT OR REPLACE INTO yr_science ( ID, Weight, Parents, Lapki, Author, Name ) VALUES ( " ..  sql.SQLStr(new_id) .. ", " .. weight .. ", " .. sql.SQLStr(parents) .. ", " .. sql.SQLStr(filename) .. ", " .. sql.SQLStr(author) .. ", " .. sql.SQLStr(name) .. " )")
         
         yr_localtable()
 
@@ -41,12 +41,21 @@ function yr_SaveElement(tags, parents, author, name, lapki)
         yr_refresh()
 
     else
+        print(weight)
+        print(parents)
+        print(author)
+        print(name)
+        PrintTable(lapki)
         ymsg_e("Cant save YR element")
     end
 end
 
 function yr_LoadElement(id)
     return chemlab_table[id]
+end
+
+function yr_GetWeight(id)
+    return chemlab_table[id].Weight
 end
 
 function yr_DeleteElement(id)
@@ -100,6 +109,46 @@ function yr_generateid()
     return word
 end
 
+function yr_pickrandomeffect()
+    local keyset = {}
+
+    for k in pairs(yr_chemtags_funcs) do
+        table.insert(keyset, k)
+    end
+
+    local random_elem1 = yr_chemtags_funcs[keyset[math.random(1, #keyset)]]
+    return random_elem1
+end
+
+function yr_generatenew(name)
+    local keyset = {}
+
+    for k in pairs(yr_chemtags_funcs) do
+        table.insert(keyset, k)
+    end
+
+    local random_elem1 = yr_chemtags_funcs[keyset[math.random(1, #keyset)]]
+    local random_elem2 = yr_chemtags_funcs[keyset[math.random(1,#keyset)]]
+    local random_elem3 = yr_chemtags_funcs[keyset[math.random(1,#keyset)]]
+
+    local new_lapki = {
+        lapka1 = {
+            name = random_elem1.name,
+            power = math.random(1, random_elem1.maxpower),
+        },
+        lapka2 = {
+            name = random_elem2.name,
+            power = math.random(1, random_elem2.maxpower),
+        },
+        lapka3 = {
+            name = random_elem3.name,
+            power = math.random(1, random_elem3.maxpower),
+        },
+    }
+
+    yr_SaveElement(1, "Nil", "None", name, new_lapki)
+end
+
 function yr_compress(tbl)
     local new_tbl = util.TableToJSON(tbl)
     local send = util.Compress(new_tbl)
@@ -137,9 +186,9 @@ function yr_compare(lapki1, lapki2)
         [3] = 0,
     }
 
+    local mutation_chance = math.random(1, 100)
 
     for a,b in pairs(lapki1) do
-        print(a)
         if a == "lapka1" then
             power_lapki[1] = b.power
             new_lapki['lapka1'] = b
@@ -156,7 +205,6 @@ function yr_compare(lapki1, lapki2)
         end  
 
         for k,v in pairs(b) do
-            print(k)
             if k == "lapka1" then
                 power_lapki[1] = v.power
                 new_lapki['lapka1'] = v
@@ -176,7 +224,6 @@ function yr_compare(lapki1, lapki2)
     end
 
     for a,b in pairs(lapki2) do
-        print(a)
         if a == "lapka1" then
             if b.power > power_lapki[1] then
                 power_lapki[1] = b.power
@@ -199,7 +246,6 @@ function yr_compare(lapki1, lapki2)
         end
 
         for k,v in pairs(b) do
-            print(k)
             if k == "lapka1" then
                 if v.power > power_lapki[1] then
                     power_lapki[1] = v.power
@@ -222,6 +268,11 @@ function yr_compare(lapki1, lapki2)
             end
 
         end
+    end
+
+    if mutation_chance >= 90 then
+        local which = math.random(1,3)
+        new_lapki[tostring('lapka' .. which)] = yr_pickrandomeffect()
     end
 
     PrintTable(new_lapki)
@@ -253,9 +304,9 @@ function yr_mix1(id1, id2, ply, name)
 
         local parents = el1.ID .. "-to-" .. el2.ID
         local author = ply:GetCharacter():GetName()
+        local weight = yr_GetWeight(el1.ID) + yr_GetWeight(el2.ID)
 
-
-        yr_SaveElement("ply", parents, author, name, new_element)
+        yr_SaveElement(weight, parents, author, name, new_element)
 
         resetpatron()
         return new_element
