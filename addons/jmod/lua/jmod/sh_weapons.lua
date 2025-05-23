@@ -823,8 +823,8 @@ if CLIENT then
 	end)
 elseif SERVER then
 	concommand.Add("jmod_ez_dropweapon", function(ply, cmd, args)
-		if not ply:Alive() then return end
 		if true then return end
+		if not ply:Alive() then return end
 		local Wep = ply:GetActiveWeapon()
 
 		if IsValid(Wep) and Wep.EZdroppable then
@@ -895,6 +895,8 @@ elseif SERVER then
 				end
 			end
 		end
+
+		--local MaxGAmmo = GetConVar("gmod_maxammo"):GetInt()
 
 		if isnumber(ent) and game.GetAmmoName(ent) then
 			-- it's an ammo type
