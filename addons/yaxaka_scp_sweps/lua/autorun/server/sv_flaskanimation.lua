@@ -91,6 +91,7 @@ hook.Add("YarTubeAnim", "Controller", function(parent, ent, newstate)
 		if newstate == 1 then
 			local hookname = "YarTubeUp_" .. parent:EntIndex()
 			local pumping = emitsoundpump(ent)
+			ent_sintezator:SetNW2Int( tostring("Fill" .. parent.num), 1 )
 			pumping:Play()
 			parent.pumping = true
 			hook.Add("Think", hookname, function()
@@ -103,6 +104,7 @@ hook.Add("YarTubeAnim", "Controller", function(parent, ent, newstate)
         				ent:ManipulateBoneScale( 0, scale + Vector(parent.ac1, 0, 0) )
         				ent:SetLocalPos(pos + Vector(0, 0, parent.ac2))
         			else
+        				ent_sintezator:SetNW2Int( tostring("Fill" .. parent.num), 2 )
         				parent.filled = true
         				parent.pumping = false
         				parent.animstate = 1
@@ -126,6 +128,7 @@ hook.Add("YarTubeAnim", "Controller", function(parent, ent, newstate)
 						ent:ManipulateBoneScale( 0, scale - Vector(parent.ac1, 0, 0) )
 						ent:SetLocalPos(pos - Vector(0, 0, parent.ac2))
         			else
+        				ent_sintezator:SetNW2Int( tostring("Fill" .. parent.num), 0 )
         				parent.pumping = false
         				parent.animstate = 0
         				parent.ac1 = 0

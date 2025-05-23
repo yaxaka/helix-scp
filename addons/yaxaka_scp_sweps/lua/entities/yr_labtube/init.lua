@@ -34,8 +34,6 @@ function ENT:Initialize()
 end
 
 function ENT:SetupDataTables()
-    self:SetNW2Bool( "InUse", false )
-    self:SetNW2String( "Item", "Пусто" )
     self:SetNW2Int( "AnimState", self.animstate )
 end
 
@@ -47,11 +45,3 @@ function ENT:Pumping(num)
 end
 
 
-function ENT:Use(act)
-    if self.pumping == true then return end
-    if self.animstate == 0 then
-        self:Pumping(1)
-    else
-        self:Pumping(0)
-    end
-end

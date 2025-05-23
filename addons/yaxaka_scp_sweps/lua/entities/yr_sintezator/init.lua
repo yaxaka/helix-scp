@@ -5,6 +5,7 @@ include("shared.lua")
 ent_sintezator = nil
 
 function ENT:Initialize()
+    self.wsound = CreateSound(self, "sintezator_work")
     self:SetModel( "models/props_c17/substation_transformer01a.mdl" ) 
     self:PhysicsInit( SOLID_VPHYSICS ) 
     self:SetMoveType( MOVETYPE_VPHYSICS ) 
@@ -44,21 +45,20 @@ end
 
 function ENT:SetupDataTables()
     self:SetNW2Bool( "InUse", false )
+    self:SetNW2Int( "Fill1", 0 )
+    self:SetNW2Int( "Fill2", 0 )
+    self:SetNW2Int( "Fill3", 0 )
     self:SetNW2String( "Item", "Пусто" )
+    self:SetNW2Int( "Timer", 0 )
     self:SetNW2Int( "AnimState", self.animstate )
 end
 
-function ENT:StartWork()
-    local sound = CreateSound(self, "sintezator_work")
-    self:SetNW2Bool( "InUse", true )
-    sound:Play()
-    timer.Create("sintezator_work_delay", 5, 1, function()
-        if not IsValid(self) then return end
-        sound:Stop()
+function ENT:StartWork(state)
+    if (state) then
+        self:SetNW2Bool( "InUse", true )
+        self.wsound:Play()
+    elseif not (state) then
         self:SetNW2Bool( "InUse", false )
-    end)
-end
-
-function ENT:Use( activator )
-
+        self.wsound:Stop()
+    end
 end

@@ -41,15 +41,24 @@ ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
 function ENT:Initialize()
     timer.Create("yr_skasearchforents", 3, 0, function()
+        self.yr_bank = false
+        self.yr_sintezator = false
+        self.yr_researchbot = false
+        self.yr_chemlab = false
+        self.yr_dnalab = false
         if not self:IsValid() then timer.Remove("yr_skasearchforents") return end
         for k,v in pairs(ents.FindInSphere(self:GetPos(), 200)) do
             local clas = v:GetClass()
             if clas == "yr_bank" then
-                self:SetNW2Bool("Bank", true)
+                self.yr_bank = true
                 yr_bank_ent = v
                 selfent = self
             end
+            if clas == "yr_sintezator" then
+                self.yr_sintezator = true
+            end
         end
+
     end)
 end
 
@@ -98,11 +107,11 @@ function ENT:DrawTranslucent()
         surface.DrawRect( 0, 0, 565 * res, 318 * res )
         imgui.xCursor(0, 0, 565 * res, 318 * res)
 
-        local bank_obr = self:GetNW2Bool("Bank")
-        local res_bot = self:GetNW2Bool("ResearchBot")
-        local sintezator = self:GetNW2Bool("Sintezator")
-        local chem_lab = self:GetNW2Bool("ChemLab")
-        local dna_redactor = self:GetNW2Bool("DNARedactor")
+        local bank_obr = self.yr_bank
+        local res_bot = self.yr_researchbot
+        local sintezator = self.yr_sintezator
+        local chem_lab = self.yr_chemlab
+        local dna_redactor = self.yr_dnalab
 
         local bank_obr_clr = nil
         local res_bot_clr = nil
@@ -112,31 +121,31 @@ function ENT:DrawTranslucent()
         local green = Color(0, 255, 0)
         local red = Color(255, 0, 0)
 
-        if self:GetNW2Bool("Bank") then
+        if bank_obr then
             bank_obr_clr = green
         else
             bank_obr_clr = red
         end
 
-        if self:GetNW2Bool("ResearchBot") then
+        if res_bot then
             res_bot_clr = green
         else
             res_bot_clr = red
         end
 
-        if self:GetNW2Bool("Sintezator") then
+        if sintezator then
             sintezator_clr = green
         else
             sintezator_clr = red
         end
 
-        if self:GetNW2Bool("ChemLab") then
+        if chem_lab then
             chem_lab_clr = green
         else
             chem_lab_clr = red
         end
 
-        if self:GetNW2Bool("DNARedactor") then
+        if dna_redactor then
             dna_redactor_clr = green
         else
             dna_redactor_clr = red
@@ -148,10 +157,10 @@ function ENT:DrawTranslucent()
         surface.SetFont("font_tektur")
         surface.SetTextColor(0, 0, 0)
         surface.SetTextPos(58 * res, 17 * res)
-        surface.DrawText("RAT-Terminal")
+        surface.DrawText("SCI-Terminal")
         local page = self:GetNW2Int("Page")
 
-        if page == 0 or page == 405 then
+        if page == 0 or page == 405 or page == 404 then
             surface.SetDrawColor(255, 0, 0)
         else
             surface.SetDrawColor(0, 255, 0)
@@ -206,8 +215,6 @@ function ENT:DrawTranslucent()
 
 
         if page == 0 then
-            circle = 0
-
             local loginpressed = imgui.xButtonImage(paymat, 201 * res, 70 * res, 164 * res, 110 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
             draw.SimpleText("Access Required", "font1", 565 * res / 2, 318 * res / 2 + 400, Color(0,0,0), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
@@ -216,80 +223,16 @@ function ENT:DrawTranslucent()
                 self:SetNW2Int("Page", 405)
                 timer.Create(self:EntIndex() .. "_beepwait", 1, 1, function()
                     local fact = (ix.faction.Get(LocalPlayer():Team()).name)
-                    print(fact)
-                    if fact == "МОГ Эпсилон-11" then
-                        self:SetNW2Int("Page", 1)
-                    elseif fact == "Научный персонал" then
+                    if fact == "Научный персонал" then
                         self:SetNW2Int("Page", 2)
                     else
-                        self:SetNW2Int("Page", 0)
+                        timer.Create("ytpaymat", 3, 1, function()
+                            self:SetNW2Int("Page", 0)
+                        end)
+                        self:SetNW2Int("Page", 404)
                         self:EmitSound("buttons/combine_button1.wav")
                     end
                 end)
-            end
-
-        elseif page == 1 then
-
-            surface.SetFont("font2_sub")
-            surface.SetTextPos(182*res, 25*res)
-            surface.DrawText("/MTF_DUTY")
-
-            local nick = LocalPlayer():Nick()
-
-            surface.SetFont("font_tektur")
-            local w, h = surface.GetTextSize(nick)
-
-
-            surface.SetTextPos(40*res, 79*res)
-            surface.SetTextColor(0, 0, 0)
-            surface.DrawText(nick)
-
-            surface.SetDrawColor(0, 0, 0)
-            surface.DrawOutlinedRect(33*res, 102*res, 500*res, 182*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 78*res, w+15*res, 26*res, 2*res)
-
-            local edpressed = imgui.xButtonImage(edlogo, 72 * res, 117 * res, 113 * res, 120 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
-            local secpressed = imgui.xButtonImage(seclogo, 235 * res, 125 * res, 95 * res, 95 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
-            local expressed = imgui.xButtonImage(exlogo, 393 * res, 130 * res, 90 * res, 90 * res, 1, Color(0,0,0), Color(255,255,255), Color(128,128,128))
-
-            surface.SetFont("font3")
-            surface.SetTextPos(69*res, 229*res)
-            surface.DrawText("Обучение")
-            surface.SetTextPos(239*res, 229*res)
-            surface.DrawText("Охрана")
-            surface.SetTextPos(393*res, 229*res)
-            surface.DrawText("Выход")
-
-            if edpressed then
-                drawedu()
-            end
-
-            if secpressed then
-                local frame = vgui.Create( "DFrame" )
-                frame:SetSize( 100, 60 )
-                frame:Center()
-                frame:MakePopup()
-                frame:SetTitle("")
-
-                local DComboBox = vgui.Create( "DComboBox", frame )
-                DComboBox:SetPos( 5, 30 )
-                DComboBox:SetSize( 100, 20 )
-                DComboBox:SetValue( "Задания" )
-                DComboBox:AddChoice( "Охрана одной зоны", "Охрана" )
-                DComboBox:AddChoice( "Патрулирование", "Патрулирование" )
-                DComboBox.OnSelect = function(index, value, data)
-                    self:SetNW2Int("Page", 3)
-                    yq_active_task = data
-                    frame:Close()
-                    net.Start("yq_request")
-                    net.WriteInt(value, 11)
-                    net.SendToServer()
-                    yas_bclick()
-                end
-            end
-
-            if expressed then
-                self:SetNW2Int("Page", 0)
             end
 
         elseif page == 2 then
@@ -315,7 +258,7 @@ function ENT:DrawTranslucent()
 
             surface.SetFont("font_tektur2")
             surface.SetTextPos(285*res, 173*res)
-            surface.SetTextColor(chem_lab_clr)
+            surface.SetTextColor(sintezator_clr)
             surface.DrawText("⚫")
 
             surface.SetTextColor(0, 0, 0)
@@ -335,7 +278,7 @@ function ENT:DrawTranslucent()
 
             surface.SetFont("font_tektur2")
             surface.SetTextPos(198*res, 213*res)
-            surface.SetTextColor(chem_lab_clr)
+            surface.SetTextColor(res_bot_clr)
             surface.DrawText("⚫")
 
             surface.SetTextColor(0, 0, 0)
@@ -363,41 +306,6 @@ function ENT:DrawTranslucent()
             if chem then self:SetNW2Int("Page", 5) yas_bclick() end
             if proba then self:SetNW2Int("Page", 6) yas_bclick() end
             if raport then self:SetNW2Int("Page", 7) yas_bclick() end
-
-        elseif page == 3 then
-
-            local nick = LocalPlayer():Nick()
-
-            surface.SetFont("font_tektur")
-            local w, h = surface.GetTextSize(nick)
-            surface.SetTextPos(40*res, 79*res)
-            surface.SetTextColor(0, 0, 0)
-            surface.DrawText(nick)
-
-            surface.SetDrawColor(0, 0, 0)
-            surface.DrawOutlinedRect(33*res, 102*res, 500*res, 182*res, 2*res)
-            surface.DrawOutlinedRect(33*res, 78*res, w+15*res, 26*res, 2*res)  
-
-
-            surface.DrawOutlinedRect(63*res, 212*res, 440*res, 25*res, 2*res) 
-
-            surface.SetMaterial(seclogo)
-            surface.DrawTexturedRect(39*res, 110*res, 40*res, 40*res)
-
-            surface.SetFont("font_tektur2")
-            local w, h = surface.GetTextSize(yq_active_task)
-            surface.SetTextPos(565/2*res-w/2, 162*res)
-            surface.DrawText(yq_active_task)
-
-            surface.DrawRect(69*res, 215*res, 5*res, 19*res)
-
-            for i=1,yq_progress do
-                surface.DrawRect((69*res)+i*40, 215*res, 5*res, 19*res)
-            end
-
-            if yq_active_task == "Undefined" then
-                self:SetNW2Int("Page", 0)
-            end
 
         elseif page == 4 then -- dna
 
@@ -652,11 +560,14 @@ function ENT:DrawTranslucent()
 
             fobr = nil
             sobr = nil
-        elseif page == 406 then
+        elseif page == 404 then
 
-            surface.SetMaterial(chemlogo)
-            surface.SetDrawColor(0, 255, 0)
+            surface.SetMaterial(paymat)
+            surface.SetDrawColor(0, 0, 0)
             surface.DrawTexturedRect(201 * res, 70 * res, 164 * res, 110 * res)
+
+            draw.SimpleText("Access restricted", "font1", 565 * res / 2, 318 * res / 2 + 400, Color(255,0,0), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
             first_obr = 'nil'
             second_obr = 'nil2'
 

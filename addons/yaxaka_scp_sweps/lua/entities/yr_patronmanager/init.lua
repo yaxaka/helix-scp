@@ -50,6 +50,7 @@ function ENT:Initialize()
     tube1:SetLocalPos(Vector(0, 0, -25))
     tube1:SetLocalAngles(Angle(0, 0, 0))
     tube1:Spawn()
+    tube1.num = 1
     self.tube1 = tube1
 
     local tube2 = ents.Create("yr_labtube")
@@ -57,6 +58,7 @@ function ENT:Initialize()
     tube2:SetLocalPos(Vector(0, -30, -25))
     tube2:SetLocalAngles(Angle(0, 0, 0))
     tube2:Spawn()
+    tube2.num = 2
     self.tube2 = tube2
 
     local tube3 = ents.Create("yr_labtube")
@@ -64,6 +66,7 @@ function ENT:Initialize()
     tube3:SetLocalPos(Vector(0, 30, -25))
     tube3:SetLocalAngles(Angle(0, 0, 0))
     tube3:Spawn()
+    tube3.num = 3
     self.tube3 = tube3
 
     self.tubes[1] = self.tube1
@@ -72,7 +75,6 @@ function ENT:Initialize()
 end
 
 function ENT:SetupDataTables()
-    self:SetNW2Bool( "InUse", false )
     self:SetNW2String( "Item", "Пусто" )
     self:SetNW2Int( "AnimState", self.animstate )
 end
@@ -94,6 +96,7 @@ function ENT:FillTube(num)
             self:FillTube(num)
         end)
     else
+        ent_sintezator:SetNW2Int( tostring("Fill" .. num), 1 )
         self.tubes[num].filled = true
         self.tubes[num]:Pumping(1)
     end
@@ -101,6 +104,7 @@ end
 
 function ENT:DrainTube(num)
     self.tubes[num]:Pumping(0)
+    ent_sintezator:SetNW2Int( tostring("Fill" .. num), 1 )
     self.tubes[num].filled = false
 end
 
