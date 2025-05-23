@@ -1,21 +1,3 @@
-surface.CreateFont( "NickFont", {
-	font = "Inter", -- Use the font-name which is shown to you by your operating system Font Viewer.
-	extended = true,
-	size = 28,
-	weight = 500,
-	blursize = 0,
-	scanlines = 1,
-	antialias = true,
-	underline = false,
-	italic = false,
-	strikeout = false,
-	symbol = false,
-	rotary = false,
-	shadow = false,
-	additive = false,
-	outline = true,
-} )
-
 local function create_entry(parent, func, bool)
 	local a = vgui.Create("YAdmin_WriteField")
 	a.func = func
@@ -34,7 +16,8 @@ function PANEL:Init()
 	for k,v in pairs(player.GetAll()) do
 		local steamid = v:SteamID()
 		local nick = v:Nick()
-		local team_color = Color(255, 255, 255)
+		local factionclr = ix.faction.Get(v:Team()).color
+		local team_color = factionclr or Color(255, 255, 255)
 		local classid = nil
 
 		if v:GetCharacter() ~= nil then
@@ -50,9 +33,9 @@ function PANEL:Init()
 		
 
 		
-		local steamidw, steamidh = Helix_YUI_GetSize(nick, "DefaultFixed")
-		local nickw, nickh = Helix_YUI_GetSize(nick, "NickFont")
-		local classw, classh = Helix_YUI_GetSize(class, "HudHintTextLarge")
+		local steamidw, steamidh = Helix_YUI_GetSize(nick, "consolas_small")
+		local nickw, nickh = Helix_YUI_GetSize(nick, "consolas")
+		local classw, classh = Helix_YUI_GetSize(class, "consolas_small")
 
 		self.Back = self:Add("DButton")
 		self.Back:SetSize(700, 25)
@@ -66,8 +49,9 @@ function PANEL:Init()
 			ply_target = self.Target
 			local selfpos = LocalPlayer():GetPos()
 
+			local btnWithIcon = Menu:AddOption( ply_target:Nick(), function() SetClipboardText(ply_target:Nick()) yas_bclick() end )
 
-			local btnWithIcon = Menu:AddOption( "Скопировать SteamID", function() SetClipboardText(ply_target:SteamID()) end )
+			local btnWithIcon = Menu:AddOption( "Скопировать SteamID", function() SetClipboardText(ply_target:SteamID()) yas_bclick() end )
 			btnWithIcon:SetIcon( "icon16/page_copy.png" )
 
 			Menu:AddSpacer()
@@ -271,27 +255,28 @@ function PANEL:Init()
 		self.Name:SetText(nick)
 		self.Name:SetColor(team_color)
 		self.Name:SetSize(nickw, nickh)
-		self.Name:SetBright(false)
-		self.Name:SetFont("NickFont")
+		self.Name:SetFont("consolas")
 		self.Name:Dock(TOP)
-		self.Name:DockMargin(10, -27, 0, 5)
+		self.Name:DockMargin(10, -25, 0, 5)
+
+
 
 
 
 		self.Steamid = self:Add("YLabel", self.Back)
-		self.Steamid:SetFont("DefaultFixed")
+		self.Steamid:SetFont("consolas_small")
 		self.Steamid:SetText("(" .. steamid .. ")")
 		self.Steamid:SetSize(steamidw, steamidh)
 		self.Steamid:Dock(TOP)
 		self.Steamid:DockMargin(nickw+20, -26, 0, 0)
 
 		self.class = self:Add("YLabel", self.Back)
-		self.class:SetFont("HudHintTextLarge")
+		self.class:SetFont("consolas_small")
 		self.class:SetText(class)
 		self.class:SetSize(classw, classh)
 		self.class:Dock(TOP)
 		print(classw)
-		self.class:DockMargin(nickw+20+160, -13, 0, 0)
+		self.class:DockMargin(nickw+20+159, -14.9, 0, 0)
 
 		self.Back.Paint = function(self, w, h)
 			if self:IsHovered() then

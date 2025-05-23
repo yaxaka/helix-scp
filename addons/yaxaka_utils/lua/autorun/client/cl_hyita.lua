@@ -15,6 +15,7 @@ local color_back_top_line = Color(1, 105, 180)
 local color_droplist = Color(0, 19, 96)
 local color_textentry = Color(0, 37, 184)
 color_button_pressed = Color(0, 2, 94)
+yui_zonepng = Material("zone_red.png", "alphatest 0 noclamp 0 smooth 1")
 
 scp_update_table = {
     [9] = {
@@ -315,6 +316,24 @@ surface.CreateFont( "font_tektur2", {
     outline = false,
 } )
 
+surface.CreateFont( "font_tektur2_big", {
+    font = "Tektur", -- Use the font-name which is shown to you by your operating system Font Viewer.
+    extended = false,
+    size = 250,
+    weight = 650,
+    blursize = 0,
+    scanlines = 0,
+    antialias = true,
+    underline = false,
+    italic = false,
+    strikeout = false,
+    symbol = false,
+    rotary = false,
+    shadow = false,
+    additive = false,
+    outline = false,
+} )
+
 surface.CreateFont( "font2_sub", {
     font = "Consolas", -- Use the font-name which is shown to you by your operating system Font Viewer.
     extended = false,
@@ -338,6 +357,42 @@ surface.CreateFont( "font_version", {
     extended = false,
     size = 20,
     weight = 400,
+    blursize = 0,
+    scanlines = 0,
+    antialias = true,
+    underline = false,
+    italic = false,
+    strikeout = false,
+    symbol = false,
+    rotary = false,
+    shadow = false,
+    additive = false,
+    outline = false,
+} )
+
+surface.CreateFont( "consolas", {
+    font = "Consolas", -- Use the font-name which is shown to you by your operating system Font Viewer.
+    extended = false,
+    size = 24,
+    weight = 400,
+    blursize = 0,
+    scanlines = 0,
+    antialias = false,
+    underline = false,
+    italic = false,
+    strikeout = false,
+    symbol = false,
+    rotary = false,
+    shadow = false,
+    additive = false,
+    outline = true,
+} )
+
+surface.CreateFont( "consolas_small", {
+    font = "Consolas", -- Use the font-name which is shown to you by your operating system Font Viewer.
+    extended = false,
+    size = 14,
+    weight = 100,
     blursize = 0,
     scanlines = 0,
     antialias = true,
@@ -762,6 +817,28 @@ function yui_calc1(animval_x, new_width, targetx, defx, defw, speed1)
     return animval_x, new_width
 end
 
+function yui_calc2(animval_x, new_width, targetx, defx, defw, speed1)
+    local reached_x = targetx
+    local speed = speed1 or 1
+
+    if reached_x > animval_x && new_width == defw then
+        animval_x = animval_x + speed
+    end
+
+    if animval_x >= reached_x && new_width > 0 then
+        animval_x = animval_x + speed
+        new_width = new_width - speed
+    elseif animval_x == defx && new_width < defw then
+        new_width = new_width + speed
+    end
+
+    if new_width == 0 then
+        animval_x = defx
+    end
+
+    return animval_x, new_width
+end
+
 local function charWrap(text, remainingWidth, maxWidth)
     local totalWidth = 0
 
@@ -819,3 +896,59 @@ function yui_darkrpwarp(text, font, maxWidth)
 
     return text
 end
+
+function yui_surfacetext(text, font, x, y, clr)
+    surface.SetFont(font)
+    local w, h = surface.GetTextSize(text)
+    surface.SetDrawColor(clr)
+    surface.SetTextPos(x-w/2, y-h/2)
+    surface.DrawText(text)
+end
+
+function yui_surfacepng(png, x, y, w, h, clr, clr_hover)
+    surface.SetMaterial(png)
+    surface.SetDrawColor(clr or color_white)
+    surface.DrawTexturedRect(x, y, w, h)
+end
+
+local PANEL_YUIBUTTON = {}
+
+
+
+function PANEL_YUIBUTTON:Init()
+    self:SetText("")
+end
+
+function PANEL_YUIBUTTON:DoClick()
+    yas_bclick()
+    self.func()
+end
+
+function PANEL_YUIBUTTON:Paint( aWide, aTall )
+    if self.Image ~= nil then
+        surface.SetMaterial(self.Image)
+        if self:IsHovered() then
+            surface.SetDrawColor(color_white)
+            surface.DrawTexturedRect(5, aTall/2-self.ISizeH/2, self.ISizeW, self.ISizeH)
+        else
+            surface.SetDrawColor(Color(0, 0, 0))
+            surface.DrawTexturedRect(5, aTall/2-self.ISizeH/2, self.ISizeW, self.ISizeH)
+        end         
+    end
+
+    local tw, th = Helix_YUI_GetSize(self.text, "Baumans")
+
+    if self.text ~= nil then
+        surface.SetFont("Baumans")
+        if self:IsHovered() then
+            surface.SetTextColor(color_white)
+        else
+            surface.SetTextColor(0, 0, 0)
+        end
+        surface.SetTextPos(self.ISizeW+10, aTall/2-th/2)
+        surface.DrawText(self.text)
+    end
+end
+
+
+vgui.Register( "YUIButton", PANEL_YUIBUTTON, "DButton" )

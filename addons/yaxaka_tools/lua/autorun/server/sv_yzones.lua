@@ -33,7 +33,7 @@ net.Receive("REQZCT", function(l, ply)
 end)
 
 net.Receive("ZCT_Save", function(l, ply)
-	if true then
+	if ply:Auth("zones_m") then
 		local tb = net.ReadTable()
 		local name = net.ReadString()
 		local musicurl = net.ReadString()
@@ -49,10 +49,6 @@ net.Receive("ZCT_Delete", function(l, ply)
 		yt_deletezone(name)
 	end
 end)
-
-hook.Add( "PostGamemodeLoaded", "some_unique_name", function()
-	print( "InitializationInitialization hook cal111111111111111111111led" )
-end )
 
 function yt_currmap(map)
 	if game.GetMap() == map then

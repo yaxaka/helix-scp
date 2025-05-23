@@ -34,6 +34,24 @@ surface.CreateFont( "HeaderAdminNick", {
 	outline = false,
 } )
 
+surface.CreateFont( "VietnamPro1", {
+	font = "Be Vietnam Pro", -- Use the font-name which is shown to you by your operating system Font Viewer.
+	extended = false,
+	size = 25,
+	weight = 400,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+
 surface.CreateFont( "Baumans", {
 	font = "Baumans", -- Use the font-name which is shown to you by your operating system Font Viewer.
 	extended = true,
@@ -204,6 +222,10 @@ function PANEL4:DoClick()
 		parent:Hide()
 		local list = vgui.Create("YAdmin_Playerlist", mainparent)
 		mainparent.Activetab = list
+	elseif self.Text == "Zone's" then
+		parent:Hide()
+		local zone = vgui.Create("YAdmin_ZoneMenu", mainparent)
+		mainparent.Activetab = zone	
 	end
 	
 end
