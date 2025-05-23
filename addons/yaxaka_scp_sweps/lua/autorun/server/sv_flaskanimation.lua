@@ -54,7 +54,7 @@ sound.Add( {
 	channel = CHAN_STATIC,
 	volume = 1.0,
 	level = 80,
-	sound = "machinery/compressor.wav"
+	sound = "machinery/compressor_loop.wav"
 } )
 
 local function emitsoundpump(ent)
@@ -87,6 +87,7 @@ local function updatepump2(ent, posy, posz)
 end
 
 hook.Add("YarTubeAnim", "Controller", function(parent, ent, newstate)
+	if parent.pumping then return end
 	if IsValid(parent) && IsValid(ent) && newstate ~= nil then
 		if newstate == 1 then
 			local hookname = "YarTubeUp_" .. parent:EntIndex()
@@ -174,6 +175,7 @@ function yar_pumperanim_downup(parent, ent, num)
 end
 
 function yar_pumperanim_move(parent, ent, num, tube1, tube2, tube3)
+	if ent.inmoving then return end
 	local moveposition = {
 		[0] = -40,
 		[1] = tube1:GetLocalPos().y,

@@ -186,38 +186,56 @@ function yr_compare(lapki1, lapki2)
         [3] = 0,
     }
 
-    local mutation_chance = math.random(1, 100)
+    local mutation_chance = math.random(1, 5)
 
     for a,b in pairs(lapki1) do
         if a == "lapka1" then
             power_lapki[1] = b.power
-            new_lapki['lapka1'] = b
+            new_lapki['lapka1'] = {
+                ['name'] = b.name,
+                ['power'] = b.power,
+            }
         end
 
         if a == "lapka2" then
             power_lapki[2] = b.power
-            new_lapki['lapka2'] = b
+            new_lapki['lapka2'] = {
+                ['name'] = b.name,
+                ['power'] = b.power,
+            }
         end
 
         if a == "lapka3" then
             power_lapki[3] = b.power
-            new_lapki['lapka3'] = b
+            new_lapki['lapka3'] = {
+                ['name'] = b.name,
+                ['power'] = b.power,
+            }
         end  
 
         for k,v in pairs(b) do
             if k == "lapka1" then
                 power_lapki[1] = v.power
-                new_lapki['lapka1'] = v
+                new_lapki['lapka1'] = {
+                ['name'] = b.name,
+                ['power'] = b.power,
+                }
             end
 
             if k == "lapka2" then
                 power_lapki[2] = v.power
-                new_lapki['lapka2'] = v
+                new_lapki['lapka2'] = {
+                    ['name'] = v.name,
+                    ['power'] = v.power,
+                }
             end
 
             if k == "lapka3" then
                 power_lapki[3] = v.power
-                new_lapki['lapka3'] = v
+                new_lapki['lapka3'] = {
+                    ['name'] = v.name,
+                    ['power'] = v.power,
+                }
             end
 
         end
@@ -227,21 +245,30 @@ function yr_compare(lapki1, lapki2)
         if a == "lapka1" then
             if b.power > power_lapki[1] then
                 power_lapki[1] = b.power
-                new_lapki['lapka1'] = b
+                new_lapki['lapka1'] = {
+                ['name'] = b.name,
+                ['power'] = b.power,
+            }
             end
         end
 
         if a == "lapka2" then
             if b.power > power_lapki[2] then
                 power_lapki[2] = b.power
-                new_lapki['lapka2'] = b
+                new_lapki['lapka2'] = {
+                ['name'] = b.name,
+                ['power'] = b.power,
+            }
             end
         end
 
         if a == "lapka3" then
             if b.power > power_lapki[3] then
                 power_lapki[3] = b.power
-                new_lapki['lapka3'] = b
+                new_lapki['lapka3'] = {
+                ['name'] = b.name,
+                ['power'] = b.power,
+            }
             end
         end
 
@@ -249,28 +276,37 @@ function yr_compare(lapki1, lapki2)
             if k == "lapka1" then
                 if v.power > power_lapki[1] then
                     power_lapki[1] = v.power
-                    new_lapki['lapka1'] = v
+                    new_lapki['lapka1'] = {
+                    ['name'] = v.name,
+                    ['power'] = v.power,
+                }
                 end
             end
 
             if k == "lapka2" then
                 if v.power > power_lapki[2] then
                     power_lapki[2] = v.power
-                    new_lapki['lapka2'] = v
+                    new_lapki['lapka2'] = {
+                    ['name'] = v.name,
+                    ['power'] = v.power,
+                }
                 end
             end
 
             if k == "lapka3" then
                 if v.power > power_lapki[3] then
                     power_lapki[3] = v.power
-                    new_lapki['lapka3'] = v
+                    new_lapki['lapka3'] = {
+                    ['name'] = v.name,
+                    ['power'] = v.power,
+                }
                 end
             end
 
         end
     end
 
-    if mutation_chance >= 90 then
+    if mutation_chance >= 3 then
         local which = math.random(1,3)
         new_lapki[tostring('lapka' .. which)] = yr_pickrandomeffect()
     end

@@ -23,11 +23,11 @@ yq_active_task = "Undefined"
 yq_progress = 1 -- 53max
 yr_bank_ent = nil
 
-local first_obr = 'nil'
-local second_obr = 'nil2'
+first_obr = 'nil'
+second_obr = 'nil2'
 
-local fobr = nil
-local sobr = nil
+fobr = nil
+sobr = nil
 
 local l1 = "Неизвестно"
 local l1 = "Неизвестно"
@@ -481,7 +481,7 @@ function ENT:DrawTranslucent()
 
             if first then
                 yas_bclick()
-                if not self:GetNW2Bool("Bank") or not yr_bank_ent:IsValid() or yr_bank_ent:GetItem() == "Не выбрано" then
+                if not self.yr_bank or not yr_bank_ent:IsValid() or yr_bank_ent:GetItem() == "Не выбрано" then
                     LocalPlayer():Notify("Образец не выбран в банке!")
                 else
                     if first_obr == second_obr then
@@ -501,7 +501,7 @@ function ENT:DrawTranslucent()
 
             if second then
                 yas_bclick()
-                if not self:GetNW2Bool("Bank") or not yr_bank_ent:IsValid() or yr_bank_ent:GetItem() == "Не выбрано" then
+                if not self.yr_bank or not yr_bank_ent:IsValid() or yr_bank_ent:GetItem() == "Не выбрано" then
                     LocalPlayer():Notify("Образец не выбран в банке!")
                 else
                     if second_obr == first_obr then
@@ -541,6 +541,7 @@ function ENT:DrawTranslucent()
                 net.WriteInt(2, 5)
                 net.WriteInt(1, 5)
                 net.SendToServer()
+                self:SetNW2Int("Page", 2)
             end
 
             if dna then self:SetNW2Int("Page", 4) yas_bclick() end

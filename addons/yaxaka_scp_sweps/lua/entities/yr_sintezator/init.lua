@@ -56,9 +56,9 @@ end
 function ENT:StartWork(state)
     if (state) then
         self:SetNW2Bool( "InUse", true )
-        self.wsound:Play()
+        self.soundid = self:StartLoopingSound(self.wsound)
     elseif not (state) then
         self:SetNW2Bool( "InUse", false )
-        self.wsound:Stop()
+        self:StopLoopingSound(self.soundid)
     end
 end

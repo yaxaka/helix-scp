@@ -137,6 +137,11 @@ function call_sendnewgui(el1, el2, ent)
 		yas_bclick()
 		DFrame:Close()
 		ent:SetNW2Int("Page", 406)
+		first_obr = 'nil'
+		second_obr = 'nil2'
+
+		fobr = nil
+		sobr = nil
 		timer.Create(ent:EntIndex() .. "_setpagebank", 5, 1, function()
 			ent:SetNW2Int("Page", 2)
 		end)

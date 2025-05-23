@@ -277,7 +277,7 @@ net.Receive("Patronmanager", function(l, ply)
         end)
     end
 end)
-
+--[[
 net.Receive("yr_requestmix", function(l, ply)
 	if not ply:GetCharacter():IsScienceTeam() then return end
 	if yr_bankent == nil then return end
@@ -289,10 +289,18 @@ net.Receive("yr_requestmix", function(l, ply)
 	if yr_LoadElement(fel) == nil or yr_LoadElement(sel) == nil then return end
     if ent_sintezator == nil then return end
 
-    ent_sintezator:StartWork()
+    if self:GetNW2Bool("InUse") == true then return end
 
-	yr_mix1(fel, sel, newname, ply:GetCharacter():GetName())
-end)
+    local timer = fel.Weight + sel.Weight * 30
+
+    print(timer .. "/s")
+
+    timer.Create(ply:SteamID64() .. "_mixer", 1, 1, function()
+        --yr_mix1(fel, sel, newname, ply:GetCharacter():GetName())
+    end)
+    --ent_sintezator:StartWork()
+
+end)--]]
 
 net.Receive("yr_bank", function(l, ply)
     if not ply:GetCharacter():IsScienceTeam() then return end
@@ -315,6 +323,8 @@ end)
 net.Receive("yr_newobr", function(l, ply)
     if not ply:GetCharacter():IsScienceTeam() then return end
     if yr_bankent == nil then return end
+    if ent_sintezator == nil then return end
+    if ent_sintezator:GetNW2Bool("InUse") == true then return end
 
     local name = net.ReadString()
     local checkutf8 = stringname_check(name, ply)
@@ -329,14 +339,28 @@ net.Receive("yr_newobr", function(l, ply)
         local el1 = net.ReadString()
         local el2 = net.ReadString()
 
-        local a = yr_mix1(el1, el2, ply, name)
-        if a == false then
-            ply:Notify("Ошибка смешивания")
-            return
-        end
-
-    end
-   
+        local timer_sintez = yr_LoadElement(el1).Weight + yr_LoadElement(el2).Weight
+        timer_sintez = timer_sintez * 30
+    
+        print(timer_sintez .. "/s")
+        ent_sintezator:SetNW2Int( "Timer", timer_sintez )
+        ent_sintezator:StartWork(true)
+        timer.Create(ply:SteamID64() .. "_sintezatorwork1", 1, timer_sintez, function()
+            local newval = ent_sintezator:GetNW2Int( "Timer" ) - 1
+            ent_sintezator:SetNW2Int( "Timer", newval )
+        end)
+        timer.Create(ply:SteamID64() .. "_sintezatorwork2", timer_sintez, 1, function()
+            ent_sintezator:SetNW2Int( "Timer", 0 )
+            ent_sintezator:StartWork(false)
+            local a = yr_mix1(el1, el2, ply, name)
+            if a == false then    
+                ply:Notify("Ошибка смешивания")      
+                return
+            else
+                ply:Notify("Работа синтезатора завершена")
+            end  
+        end)
+    end 
 end)
 
 net.Receive("yr_research", function(l, ply)

@@ -3,7 +3,6 @@ include("shared.lua")
 ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
 function ENT:DrawUI()
-
     local ang = self:GetAngles()
     -- Change these numbers to rotate the screen correctly for your model
     ang:RotateAroundAxis( self:GetUp(), 90 )
@@ -23,7 +22,8 @@ function ENT:DrawUI()
 
     if imgui.Start3D2D( pos, ang, 0.05 / res, 820, 300 ) then
         local status = self:GetNW2Bool("InUse")
-        
+        local timer = self:GetNW2Int("Timer")
+
         self.at.xn, self.at.wn = yui_calc1(self.at.xn, self.at.wn, self.at.t, self.at.x, self.at.w, 2)
         self.at2.xn, self.at2.wn = yui_calc1(self.at2.xn, self.at2.wn, self.at2.t, self.at2.x, self.at2.w, 2)
         self.at3.xn, self.at3.wn = yui_calc1(self.at3.xn, self.at3.wn, self.at3.t, self.at3.x, self.at3.w, 2)
@@ -47,7 +47,7 @@ function ENT:DrawUI()
             surface.DrawText("ETA:")
             surface.SetFont("font_tektur2_big2")
             surface.SetTextPos(170*res, 130*res)
-            surface.DrawText("250/s")
+            surface.DrawText(timer .. "/s")
         else
             surface.SetTextPos(220*res, 90*res)
             surface.DrawText("Ожидание задачи")
