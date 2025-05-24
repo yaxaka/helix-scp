@@ -1,5 +1,13 @@
 include("shared.lua")
 
+sound.Add( {
+    name = "sintezator_work",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    level = 80,
+    sound = "machinery/compressor_loop.wav"
+} )
+
 ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
 function ENT:DrawUI()

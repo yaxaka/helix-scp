@@ -352,13 +352,13 @@ net.Receive("yr_newobr", function(l, ply)
         timer.Create(ply:SteamID64() .. "_sintezatorwork2", timer_sintez, 1, function()
             ent_sintezator:SetNW2Int( "Timer", 0 )
             ent_sintezator:StartWork(false)
-            local a = yr_mix1(el1, el2, ply, name)
-            if a == false then    
-                ply:Notify("Ошибка смешивания")      
-                return
-            else
+            --local a = yr_mix1(el1, el2, ply, name)
+          --  if a == false then    
+          --      ply:Notify("Ошибка смешивания")      
+           --     return
+           -- else
                 ply:Notify("Работа синтезатора завершена")
-            end  
+            --end  
         end)
     end 
 end)

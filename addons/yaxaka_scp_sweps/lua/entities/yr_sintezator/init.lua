@@ -5,7 +5,6 @@ include("shared.lua")
 ent_sintezator = nil
 
 function ENT:Initialize()
-    self.wsound = CreateSound(self, "sintezator_work")
     self:SetModel( "models/props_c17/substation_transformer01a.mdl" ) 
     self:PhysicsInit( SOLID_VPHYSICS ) 
     self:SetMoveType( MOVETYPE_VPHYSICS ) 
@@ -56,7 +55,7 @@ end
 function ENT:StartWork(state)
     if (state) then
         self:SetNW2Bool( "InUse", true )
-        self.soundid = self:StartLoopingSound(self.wsound)
+        self.soundid = self:StartLoopingSound("machinery/compressor_loop.wav")
     elseif not (state) then
         self:SetNW2Bool( "InUse", false )
         self:StopLoopingSound(self.soundid)

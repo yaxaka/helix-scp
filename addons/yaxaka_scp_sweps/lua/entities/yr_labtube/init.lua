@@ -26,6 +26,7 @@ function ENT:Initialize()
     child:SetLocalPos(Vector(0, 0, 0.85))
     child:SetLocalAngles(Angle(90, 0, 0))
     child:SetModelScale(0.5)
+    child:SetMaterial("models/shadertest/shader3")
     child:Spawn()
     self.child = child
     local scale = child:GetManipulateBoneScale(0)
