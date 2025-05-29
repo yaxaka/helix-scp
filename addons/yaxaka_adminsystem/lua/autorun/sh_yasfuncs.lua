@@ -57,7 +57,7 @@ end
 
 function yas_voicemute(target)
 	target.voice_muted = true
-	yas_netmute(1, target)yas_startnet(action, target)
+	yas_netmute(1, target)
 	LocalPlayer():Notify("Воис игрока замучен.")
 	yas_bsend()
 end

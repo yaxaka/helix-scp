@@ -1,5 +1,5 @@
 AddCSLuaFile()
-print("1")
+ycg_menu_opened = nil
 imgui = {}
 
 imgui.skin = {

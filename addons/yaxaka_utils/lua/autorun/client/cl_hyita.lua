@@ -17,7 +17,14 @@ local color_textentry = Color(0, 37, 184)
 color_button_pressed = Color(0, 2, 94)
 yui_zonepng = Material("zone_red.png", "alphatest 0 noclamp 0 smooth 1")
 
+
+
 scp_update_table = {
+    [10] = {
+        version = '0.0.1.3',
+        header = 'Синтезатор и админка',
+        desc = "Доделан визуал и функционал синтезатора, новые функции админ панели и некоторые улучшения оптимизации",
+    },
     [9] = {
         version = '0.0.1.2',
         header = 'Cleanups',

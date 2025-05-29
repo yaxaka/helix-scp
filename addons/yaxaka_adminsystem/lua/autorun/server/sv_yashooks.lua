@@ -309,7 +309,9 @@ end)
 
 gameevent.Listen( "player_connect" )
 hook.Add("player_connect", "Bancheck", function( data )
+
 	local a = yas_checkban(data.networkid)
+	if data.networkid == "BOT" then return end
 	if a ~= nil then
 		game.KickID(data.userid, "Access Revoked. Contact administration or discord(yaxaka)")
 	end
