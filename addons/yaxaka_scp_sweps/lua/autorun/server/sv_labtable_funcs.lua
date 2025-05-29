@@ -238,17 +238,27 @@ yr_chemtags_funcs = {
     },
 }
 
+function yr_auth(ply, action)
+    if not ply:GetCharacter():IsScienceTeam() then return false, "WrongTeam" end
+    if yr_bankent == nil then return false, "NilBank" end
 
-util.AddNetworkString("yr_requestmix")
+    if action == 1 then
+        if ent_sintezator == nil then return false end
+        if ent_sintezator:GetNW2Bool("InUse") == true then return end
+    end
+
+    return true
+
+end
 
 util.AddNetworkString("yr_bank")
 util.AddNetworkString("yr_newobr")
 util.AddNetworkString("yr_research")
 util.AddNetworkString("Patronmanager")
+util.AddNetworkString("yr_cook")
 
 net.Receive("Patronmanager", function(l, ply)
-    if not ply:GetCharacter():IsScienceTeam() then return end
-    if yr_bankent == nil then return end
+    if not yr_auth(ply, 0) then return end
     if ent_patronmanager == nil then return end
 
     local type = net.ReadInt(5)
@@ -277,35 +287,10 @@ net.Receive("Patronmanager", function(l, ply)
         end)
     end
 end)
---[[
-net.Receive("yr_requestmix", function(l, ply)
-	if not ply:GetCharacter():IsScienceTeam() then return end
-	if yr_bankent == nil then return end
 
-	local fel = net.ReadString()
-	local sel = net.ReadString()
-	local newname = net.ReadString()
-
-	if yr_LoadElement(fel) == nil or yr_LoadElement(sel) == nil then return end
-    if ent_sintezator == nil then return end
-
-    if self:GetNW2Bool("InUse") == true then return end
-
-    local timer = fel.Weight + sel.Weight * 30
-
-    print(timer .. "/s")
-
-    timer.Create(ply:SteamID64() .. "_mixer", 1, 1, function()
-        --yr_mix1(fel, sel, newname, ply:GetCharacter():GetName())
-    end)
-    --ent_sintezator:StartWork()
-
-end)--]]
 
 net.Receive("yr_bank", function(l, ply)
-    if not ply:GetCharacter():IsScienceTeam() then return end
-    if yr_bankent == nil then return end
-
+    if not yr_auth(ply, 0) then return end
 
     local type = net.ReadBool()
 
@@ -321,10 +306,7 @@ net.Receive("yr_bank", function(l, ply)
 end)
 
 net.Receive("yr_newobr", function(l, ply)
-    if not ply:GetCharacter():IsScienceTeam() then return end
-    if yr_bankent == nil then return end
-    if ent_sintezator == nil then return end
-    if ent_sintezator:GetNW2Bool("InUse") == true then return end
+    if not yr_auth(ply, 1) then return end
 
     local name = net.ReadString()
     local checkutf8 = stringname_check(name, ply)
@@ -364,8 +346,7 @@ net.Receive("yr_newobr", function(l, ply)
 end)
 
 net.Receive("yr_research", function(l, ply)
-    if not ply:GetCharacter():IsScienceTeam() then return end
-    if yr_bankent == nil then return end
+    if not yr_auth(ply, 2) then return end
 
     local item = yr_bankent:GetItem()
 
@@ -398,4 +379,11 @@ net.Receive("yr_research", function(l, ply)
     	net.Send(ply)
 
     end
+end)
+
+net.Receive("yr_cook", function(l, ply)
+    if not yr_auth(ply, 3) then return end
+
+    local selected = yr_bankent:GetItem()
+    if selected == "Не выбрано" then return end
 end)

@@ -19,7 +19,6 @@ end
 
 function ENT:SetupDataTables()
     self:SetNW2Bool( "InUse", false )
-    self:SetNW2Int( "Page", 0 )
 end
 
 
