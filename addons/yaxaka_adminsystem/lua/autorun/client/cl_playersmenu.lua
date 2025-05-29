@@ -17,7 +17,11 @@ function PANEL:Init()
 	for k,v in pairs(player.GetAll()) do
 		local steamid = v:SteamID()
 		local nick = v:Nick()
-		local factionclr = ix.faction.Get(v:Team()).color
+
+		local factionclr = nil
+		if ix.faction.Get(v:Team()) ~= nil then
+			factionclr = ix.faction.Get(v:Team()).color
+		end
 		local team_color = factionclr or Color(255, 255, 255)
 		local classid = nil
 
@@ -310,21 +314,10 @@ function PANEL:Init()
 
 		self.Steamid = self:Add("YLabel", self.Back)
 		self.Steamid:SetFont("consolas_small")
-		self.Steamid:SetText("(" .. steamid .. ")")
+		self.Steamid:SetText("(" .. steamid .. ")" .. " " .. class)
 		self.Steamid:SetSize(steamidw, steamidh)
 		self.Steamid:Dock(TOP)
-		self.Steamid:DockMargin(nickw+20, -26, 0, 0)
-
-		self.class = self:Add("YLabel", self.Back)
-		self.class:SetFont("consolas_small")
-		self.class:SetText(class)
-		self.class:SetSize(classw, classh)
-		self.class:Dock(TOP)
-		if steamidw < 50 then
-			self.class:DockMargin(nickw+steamidw+classw/2, -14.9, 0, 0)
-		else
-			self.class:DockMargin(nickw+steamidw+classw+25, -14.9, 0, 0)
-		end
+		self.Steamid:DockMargin(nickw+17, -25, 0, 0)
 
 		self.Back.Paint = function(self, w, h)
 			if self:IsHovered() then
