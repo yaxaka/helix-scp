@@ -239,12 +239,17 @@ yr_chemtags_funcs = {
 }
 
 function yr_auth(ply, action)
-    if not ply:GetCharacter():IsScienceTeam() then return false, "WrongTeam" end
-    if yr_bankent == nil then return false, "NilBank" end
+    if not ply:GetCharacter():IsScienceTeam() then return false, ymsg_exploit("Wrong Team access(science)", ply:SteamID64()) end
+    if yr_bankent == nil then return false, ymsg_w(ply:SteamID64() .. ", nil bankent") end
 
     if action == 1 then
-        if ent_sintezator == nil then return false end
-        if ent_sintezator:GetNW2Bool("InUse") == true then return end
+        if ent_sintezator == nil then return false, ymsg_w(ply:SteamID64() .. ", nil sintezator") end
+        if ent_sintezator:GetNW2Bool("InUse") == true then return false, ymsg_w(ply:SteamID64() .. ", sintezator in use" ) end
+    end
+
+    if action == 3 then
+        local selected = yr_bankent:GetItem()
+        if selected == "Не выбрано" then return false, ymsg_w(ply:SteamID64() .. ", Bank select = nil") end
     end
 
     return true
@@ -386,4 +391,18 @@ net.Receive("yr_cook", function(l, ply)
 
     local selected = yr_bankent:GetItem()
     if selected == "Не выбрано" then return end
+
+    local name = net.ReadString()
+    if #name < 3 then
+        name = "Без названия"
+    end
+    local time = os.date("%d.%m.%y-%H:%M", os.time())
+
+    local inv = ply:GetCharacter():GetInventory()
+    local str = "На корпусе читается маркировка - Название: " .. name .. " | Время приготовления: " .. time .. " | Приготовил: " .. ply:Nick()
+    local data = {
+        description = str,
+        funcs = "ТЕСТТТТТТТ",
+    }
+    inv:Add("injectorbase", 1, data)
 end)
