@@ -977,3 +977,33 @@ end
 
 
 vgui.Register( "YUIButton", PANEL_YUIBUTTON, "DButton" )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+hook.Add("CanDrawAmmoHUD", "DisableIt", function()
+    return false
+end)
