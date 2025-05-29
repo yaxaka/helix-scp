@@ -6,6 +6,7 @@ end
 
 local PANEL = {}
 
+
 function PANEL:Init()
 	local frameparent = self:GetParent()
 	
@@ -45,8 +46,46 @@ function PANEL:Init()
 		self.Back.Target = v
 
 		function self.Back:DoClick()
+			local base_flags = {
+				C = {
+					name = "Спавн транспорта",
+					have = false,
+				},
+				c = {
+					name = "Спавн стульев",
+					have = false,
+				},
+				e = {
+					name = "Спавн пропов",
+					have = false,
+				},
+				n = {
+					name = "Спавн NPC",
+					have = false,
+				},
+				p = {
+					name = "Доступ к физгану",
+					have = false,
+				},
+				r = {
+					name = "Спавн рэгдоллов",
+					have = false,
+				},
+				t = {
+					name = "Доступ к тулгану",
+					have = false,
+				},
+			}
+
 			local Menu = DermaMenu()
 			ply_target = self.Target
+
+			local flagstable = string.ToTable(ply_target:GetCharacter():GetFlags())
+			for k,v in pairs(flagstable) do
+				base_flags[v].have = true
+			end
+
+
 			local selfpos = LocalPlayer():GetPos()
 
 			local btnWithIcon = Menu:AddOption( ply_target:Nick(), function() SetClipboardText(ply_target:Nick()) yas_bclick() end )
@@ -179,8 +218,15 @@ function PANEL:Init()
 
 			local CharFlags, Flags = character_control:AddSubMenu( "Флаги" )
 			Flags:SetIcon( "icon16/flag_blue.png" )
-			CharFlags:AddOption( "Выдать флаги", function() create_entry(ply_target, "flags", true) end ):SetIcon( "icon16/flag_green.png" )
-			CharFlags:AddOption( "Забрать флаги", function() create_entry(ply_target, "flags", false) end ):SetIcon( "icon16/flag_red.png" )
+
+			for k,v in pairs(base_flags) do
+				if v.have then
+					icon = "icon16/accept.png"
+				else
+					icon = "icon16/cancel.png"
+				end
+				CharFlags:AddOption(v.name, function() yas_flags(ply_target, k) end):SetIcon(icon)
+			end
 
 			local CharKick = character_control:AddOption( "Выгнать персонажа", function() yas_charkick(ply_target) end )
 			CharKick:SetIcon( "icon16/link_delete.png" )
@@ -202,7 +248,6 @@ function PANEL:Init()
 				local Itemlist2, CharGiveItem2 = Itemlist:AddSubMenu( k )
 				CharGiveItem2:SetIcon("icon16/folder.png")
 				Itemlist2.category = v
-				print(Itemlist2.category)
 
 				for k,v in pairs(ix.item.list) do
 					if v.category == tbl22[Itemlist2.category] then

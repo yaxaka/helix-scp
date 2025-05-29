@@ -218,13 +218,12 @@ net.Receive("YAS_Main", function(len, ply)
 
 	if action == "char_flags" then
 		local target = net.ReadEntity()
-		local flags = net.ReadString()
-		local bool = net.ReadBool()
-
-		if bool then
-			target:GetCharacter():GiveFlags(flags)
-		elseif not bool then
-			target:GetCharacter():TakeFlags(flags)
+		local flag = net.ReadString()
+		local have = target:GetCharacter():HasFlags(flag)
+		if have then
+			target:GetCharacter():TakeFlags(flag)
+		elseif not have then
+			target:GetCharacter():GiveFlags(flag)
 		end
 	end
 

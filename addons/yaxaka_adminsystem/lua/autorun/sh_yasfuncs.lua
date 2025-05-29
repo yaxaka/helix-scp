@@ -2,6 +2,7 @@ local function yas_startnet(action, target)
 	net.Start("YAS_Main")
 	net.WriteString(action)
 	net.WriteEntity(target)
+	yas_bsend()
 end
 
 function yas_sendwarn(text_type, priority, target, text)
@@ -59,28 +60,24 @@ function yas_voicemute(target)
 	target.voice_muted = true
 	yas_netmute(1, target)
 	LocalPlayer():Notify("Воис игрока замучен.")
-	yas_bsend()
 end
 
 function yas_voiceunmute(target)
 	target.voice_muted = nil
 	yas_netmute(2, target)
 	LocalPlayer():Notify("Воис игрока размучен.")
-	yas_bsend()
 end
 
 function yas_chatmute(target)
 	target.chat_muted = true
 	yas_netmute(3, target)
 	LocalPlayer():Notify("Чат игрока замучен.")
-	yas_bsend()
 end
 
 function yas_chatunmute(target)
 	target.chat_muted = nil
 	yas_netmute(4, target)
 	LocalPlayer():Notify("Чат игрока размучен.")
-	yas_bsend()
 end
 
 
@@ -104,32 +101,27 @@ function yas_freeze(target, type)
 	yas_startnet("freeze", target)
 	net.WriteInt(type, 4)
 	net.SendToServer()
-	yas_bsend()
 end
 
 function yas_god(target, type)
 	yas_startnet("god", target)
 	net.WriteInt(type, 4)
 	net.SendToServer()
-	yas_bsend()
 end
 
 function yas_hp(target)
 	yas_startnet("hp", target)
 	net.SendToServer()
-	yas_bsend()
 end
 
 function yas_kick(target)
 	yas_startnet("kick", target)
 	net.SendToServer()
-	yas_bsend()
 end
 
 function yas_ban(target)
 	yas_startnet("ban", target)
 	net.SendToServer()
-	yas_bsend()
 end
 
 function yas_setclass(target, index, index2, bool)
@@ -154,10 +146,9 @@ function yas_charban(target, bool)
 	yas_bsend()
 end
 
-function yas_flags(target, flags, bool)
+function yas_flags(target, flag)
 	yas_startnet("char_flags", target)
-	net.WriteString(flags)
-	net.WriteBool(bool)
+	net.WriteString(flag)
 	net.SendToServer()
 end
 
