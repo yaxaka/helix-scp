@@ -34,6 +34,10 @@ end
 
 
 function YCG_Button:OnMousePressed()
+	if self.func ~= nil then
+		self.func()
+	end
+	yas_bclick()
 	return true
 end
 
@@ -72,6 +76,7 @@ function YCG_Main:AddButton(icon, func)
 	local x, y = self:GetPos()
 	local a = self:Add("YCG_Button")
 	a.icon = icon
+	a.func = func
 	if self.buttons >= 2 then
 		a:SetPos(0+100*self.buttons, 0)
 	elseif self.buttons == 1 then
@@ -93,9 +98,17 @@ concommand.Add("testpanel1", function()
 		gui.EnableScreenClicker(true)
 		local a = vgui.Create("YCG_Main")
 		if LocalPlayer().YAS_Role == "Superadmin" then
-			local b1 = a:AddButton(adm_icon)
+			local b1 = a:AddButton(adm_icon, function() RunConsoleCommand("yas") RunConsoleCommand("testpanel1") end)
 		end
 		local b2 = a:AddButton(wt_icon)
-		local b3 = a:AddButton(test_icon)
+		local b3 = a:AddButton(test_icon, function() droplisttest() end)
 	end
 end)
+
+function droplisttest()
+	local Menu = DermaMenu()
+	Menu:SetPos(input.GetCursorPos())
+	local btnWithIcon1 = Menu:AddOption( "Адреналин", function() yas_bclick() RunConsoleCommand("testpanel1") end )
+	local btnWithIcon2 = Menu:AddOption( "Адреналин", function() yas_bclick() RunConsoleCommand("testpanel1") end )
+	local btnWithIcon3 = Menu:AddOption( "Норадреналин", function() yas_bclick() RunConsoleCommand("testpanel1") end )
+end

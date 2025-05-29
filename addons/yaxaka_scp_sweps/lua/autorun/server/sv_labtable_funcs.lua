@@ -394,15 +394,16 @@ net.Receive("yr_cook", function(l, ply)
 
     local name = net.ReadString()
     if #name < 3 then
-        name = "Без названия"
+        name = "Гидрохлорат анального проникновения"
     end
     local time = os.date("%d.%m.%y-%H:%M", os.time())
-
+    local maxlen = 74
+    
     local inv = ply:GetCharacter():GetInventory()
-    local str = "На корпусе читается маркировка - Название: " .. name .. " | Время приготовления: " .. time .. " | Приготовил: " .. ply:Nick()
+    local str = "[Название:" .. name .. "]" .."" .. "[Время приготовления: " .. time .. "]" .. "" .. "[Приготовил: " .. ply:Nick() .. "]"
     local data = {
         description = str,
-        funcs = "ТЕСТТТТТТТ",
+        funcs = selected,
     }
     inv:Add("injectorbase", 1, data)
 end)
