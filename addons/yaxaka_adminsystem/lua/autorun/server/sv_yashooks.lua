@@ -112,7 +112,12 @@ net.Receive("YAS_Main", function(len, ply)
 
 		target:Notify("Вы были телепортированы администрацией сервера.")
 		target:SetPos(pos)
-		log_ag2(ply, "tp", target:Nick() .. ", message: " .. text)
+		log_ag2(ply, "tp", target:Nick() .. ", message: " .. "teleported")
+	end
+
+	if action == "tp_goto" then
+		local target = net.ReadEntity()
+		
 	end
 
 	if action == "mute" then
@@ -312,7 +317,9 @@ hook.Add("player_connect", "Bancheck", function( data )
 	local a = yas_checkban(data.networkid)
 	if data.networkid == "BOT" then return end
 	if a ~= nil then
-		game.KickID(data.userid, "Access Revoked. Contact administration or discord(yaxaka)")
+		if a ~= 0 then
+			game.KickID(data.userid, "Access Revoked. Contact administration or discord(yaxaka)")
+		end
 	end
 end)
 

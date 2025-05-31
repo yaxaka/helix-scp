@@ -331,6 +331,7 @@ net.Receive("yr_newobr", function(l, ply)
     
         print(timer_sintez .. "/s")
         ent_sintezator:SetNW2Int( "Timer", timer_sintez )
+        ent_sintezator:SetNW2String("Item", name)
         ent_sintezator:StartWork(true)
         timer.Create(ply:SteamID64() .. "_sintezatorwork1", 1, timer_sintez, function()
             local newval = ent_sintezator:GetNW2Int( "Timer" ) - 1
@@ -339,6 +340,7 @@ net.Receive("yr_newobr", function(l, ply)
         timer.Create(ply:SteamID64() .. "_sintezatorwork2", timer_sintez, 1, function()
             ent_sintezator:SetNW2Int( "Timer", 0 )
             ent_sintezator:StartWork(false)
+            ent_sintezator:SetNW2String("Item", 'nil')
             --local a = yr_mix1(el1, el2, ply, name)
           --  if a == false then    
           --      ply:Notify("Ошибка смешивания")      
@@ -400,10 +402,24 @@ net.Receive("yr_cook", function(l, ply)
     local maxlen = 74
     
     local inv = ply:GetCharacter():GetInventory()
-    local str = "[Название:" .. name .. "]" .."" .. "[Время приготовления: " .. time .. "]" .. "" .. "[Приготовил: " .. ply:Nick() .. "]"
+    local str = "[Название: " .. name .. "]"
+    local newinfo = {
+        [1] = "﹀﹀﹀﹀﹀﹀﹀﹀﹀﹀﹀﹀﹀﹀﹀﹀﹀﹀﹀﹀﹀",
+        [2] = "[Название]: " .. name .. "",
+        [3] = "[Время изготовления]: " .. time .. "",
+        [4] = "[Приготовил]: " .. ply:Nick() .. "",
+        [5] = "︿︿︿︿︿︿︿︿︿︿︿︿︿︿︿︿︿︿︿︿︿",
+    }
+
     local data = {
         description = str,
         funcs = selected,
+        infotable = newinfo,
     }
     inv:Add("injectorbase", 1, data)
 end)
+
+local Timestamp = os.time()
+local TimeString = os.date( "%H:%M:%S - %d/%m/%Y" , Timestamp )
+print( "Timestamp:", Timestamp )
+print( "TimeString:", TimeString )

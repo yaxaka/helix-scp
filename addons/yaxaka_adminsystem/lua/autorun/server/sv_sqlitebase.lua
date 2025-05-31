@@ -64,3 +64,7 @@ function yas_ban(id)
 	yas_banlist[id] = 666
 end
 
+function yas_unban(id)
+	sql.Query("INSERT OR REPLACE INTO yas_ban ( SteamID, Time ) VALUES ( " ..  sql.SQLStr(id) .. ", " .. 0 .. " )")
+	yas_banlist[id] = 0
+end

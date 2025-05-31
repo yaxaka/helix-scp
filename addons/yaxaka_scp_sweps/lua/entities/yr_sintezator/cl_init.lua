@@ -50,7 +50,7 @@ function ENT:DrawUI()
         if status then
             surface.DrawOutlinedRect(60*res, 50*res, 700*res, 145*res, 5*res)
             surface.SetTextPos(280*res, 70*res)
-            surface.DrawText("ANUY_9844")
+            surface.DrawText(self:GetNW2String("Item"))
             surface.SetTextPos(80*res, 130*res)
             surface.DrawText("ETA:")
             surface.SetFont("font_tektur2_big2")

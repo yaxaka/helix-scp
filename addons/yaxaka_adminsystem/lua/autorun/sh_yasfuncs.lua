@@ -44,18 +44,6 @@ function yas_tp_send(target)
 	yas_bsend()
 end
 
-function yas_tp_send(target)
-	net.Start("YAS_Main")
-	net.WriteString("tp")
-	net.WriteEntity(target)
-	net.WriteVector(target.returnpos)
-	net.SendToServer()
-	target.yas_tp_pos = nil
-	target.teleported = nil
-	LocalPlayer():Notify("Игрок вернут обратно. Его точка телепорта сброшена.")
-	yas_bsend()
-end
-
 function yas_voicemute(target)
 	target.voice_muted = true
 	yas_netmute(1, target)
@@ -200,6 +188,11 @@ end
 
 function yas_changebodygr(target, info)
 
+end
+
+function yas_goto(target)
+	yas_startnet("tp_goto", target)
+	net.SendToServer()
 end
 
 function yas_bclick()

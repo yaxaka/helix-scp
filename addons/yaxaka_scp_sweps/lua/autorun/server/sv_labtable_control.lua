@@ -171,6 +171,14 @@ function yr_lapki(id)
     return util.JSONToTable(file.Read("yr_lapki_data/".. el.Lapki, "DATA"))
 end
 
+function yr_getfunc(name)
+    for k,v in pairs(yr_chemtags_funcs) do
+        if v.name == name then
+            return v.func
+        end
+    end
+end
+
 
 function yr_compare(lapki1, lapki2)
     if lapki1 == nil or lapki2 == nil then return end

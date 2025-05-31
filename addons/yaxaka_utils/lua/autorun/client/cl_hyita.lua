@@ -7,6 +7,7 @@ color_text = Color(255, 255, 255, 255)
 color_btext = Color(255, 255, 255, 100)
 color_btext_hover = Color(255, 255, 255, 200)
 color_header = Color(255, 255, 255, 255)
+color_headerfade = Color(255, 255, 255, 95)
 local color_back_left = Color(112, 61, 87)
 local color_back_right = Color(255, 255, 255, 255)
 local color_back_top = Color(0, 26, 83)
@@ -93,18 +94,6 @@ test_labatable2 = {
     }
 }
 
-
-
-local font_sizew, font_sizeh = ScrW(), ScrH()
-font_scale = 1
-yu_scale = 1
-if font_sizew >= 2000 && font_sizew <= 2999 then
-    font_scale = 1.5
-    yu_scale = 1.3333
-elseif font_sizew >= 3000 then
-    font_scale = 1.7
-    yu_scale = 1.5
-end
 
 
 surface.CreateFont( "Header", {
@@ -501,7 +490,7 @@ function Helix_YUI_Button(nname, x, y, dparent, text, font, func, w, h, parent, 
     name:SetSize(w, h)
     name.Pressed = false                  
     name.DoClick = function(self)
-        chat.PlaySound()
+        yas_bclick()
         if func == "Create" then
             local maximum = hook.Run("GetMaxPlayerCharacter", LocalPlayer()) or ix.config.Get("maxCharacters", 5)
             -- don't allow creation if we've hit the character limit
@@ -563,6 +552,7 @@ function Helix_YUI_Button(nname, x, y, dparent, text, font, func, w, h, parent, 
         	surface.DrawRect(0, 0, w, h)
         end
     end
+    return name
 end
 
 function Helix_YUI_ButtonE(nname, x, y, dparent, text, font, func, w, h, parent, bHasCharacter)
@@ -676,6 +666,8 @@ function Helix_YUI_ButtonCommunity(nname, x, y, parent, img, font, func, w, h)
         	surface.DrawTexturedRect(10, h/2-32/2, 32, 32)
         end
     end
+
+    return name
 end
 
 
@@ -1007,3 +999,14 @@ vgui.Register( "YUIButton", PANEL_YUIBUTTON, "DButton" )
 hook.Add("CanDrawAmmoHUD", "DisableIt", function()
     return false
 end)
+
+hook.Add( "PlayerSwitchWeapon", "Raise", function( ply, old, wep )
+    local arccw = string.find(wep:GetClass(), "arccw")
+    local scp = string.find(wep:GetClass(), "scp")
+    print(wep)
+    if arccw or scp then
+        timer.Create("wepeq1", 0.1, 1, function()
+            RunConsoleCommand("say", "/ToggleRaise")
+        end)
+    end
+end )
