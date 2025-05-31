@@ -542,6 +542,9 @@ function PANEL_WriteField:Init()
 			yas_changename(ply_target, val)
 		end
 
+		if func == "radio" then
+			yradio_switch(1, val)
+		end
 		self:Close()
 	end
 

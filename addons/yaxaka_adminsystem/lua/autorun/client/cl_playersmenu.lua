@@ -1,4 +1,4 @@
-local function create_entry(parent, func, bool)
+function create_entry(parent, func, bool)
 	local a = vgui.Create("YAdmin_WriteField")
 	a.func = func
 	a.dbool = bool

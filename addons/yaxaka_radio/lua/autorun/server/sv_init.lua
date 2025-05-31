@@ -1,19 +1,42 @@
 local pl = FindMetaTable("Player")
 
-local all_ply = {}
+local functionsman = {
+	[1] = function(ply, freq)
+		ply:SetRadioFrequency(freq)
+		ymsg_d(ply:Nick() .. " changed freq to " .. freq)
+	end,
+	[2] = function(ply, state)
+		if state == 1 then
+			ply:RadioTalk(true)
+		elseif state == 2 then
+			ply:RadioTalk(false)
+		end
+		ymsg_d(ply:Nick() .. " changed radiotalk to " .. state)
+	end,
+	[3] = function(ply, state)
+		if state == 1 then
+			ply:RadioHear(true)
+		elseif state == 2 then
+			ply:RadioHear(false)
+		end
+		ymsg_d(ply:Nick() .. " changed radiohear to " .. state)
+	end,
+}
 
 util.AddNetworkString("yradio_switch")
 
 net.Receive("yradio_switch", function(len, ply)
-	local freq = net.ReadInt(9)
-	ply:SetRadioFrequency(freq)
+	local type = net.ReadInt(3)
+	local state = net.ReadInt(9)
+	if type == nil or state == nil then return end
+
+	functionsman[type](ply, state)
 end)
 
 
 function pl:SetupYRADIO()
 	self:SetNW2Bool("yradio_talk", false)
 	self:SetNW2Bool("yradio_hear", false)
-	evoice_reset(self)
 end
 
 function pl:SetRadioFrequency(num)
@@ -37,7 +60,6 @@ function pl:RadioTalk(bool)
 		self:SetNW2Bool("yradio_talk", true)
 	elseif not bool then
 		self:SetNW2Bool("yradio_talk", false)
-		evoice_reset(self)
 	end
 end
 
@@ -62,8 +84,6 @@ hook.Add("PlayerCanHearPlayersVoice", "YRadio1", function(listener, talker)
 	if (listener ~= talker) && (transmit) && (talk_freq == list_freq) && (dist > voice_dist) then
 		if listener:IsRadioHear() then
 			return true
-		end
-	elseif (listener ~= talker) && (transmit) && (talk_freq == list_freq) && (dist < voice_dist) then
-		
+		end		
 	end
 end)

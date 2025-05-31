@@ -18,7 +18,8 @@ local color_textentry = Color(0, 37, 184)
 color_button_pressed = Color(0, 2, 94)
 yui_zonepng = Material("zone_red.png", "alphatest 0 noclamp 0 smooth 1")
 
-
+LocalPlayer().RadioHear = false
+LocalPlayer().RadioTalk = false
 
 scp_update_table = {
     [10] = {

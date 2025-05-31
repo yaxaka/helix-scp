@@ -51,7 +51,7 @@ local YCG_Main = {}
 
 function YCG_Main:Init()
 	self.buttons = 0
-	self:SetPos(ScrW()/2, ScrH()-100)
+	self:SetPos(ScrW()/2, ScrH()-110)
 	self:SetSize(0, 0)
 	self:NoClipping(true)
 	ycg_menu_opened = self
@@ -61,7 +61,7 @@ end
 function YCG_Main:Think()
 	self:SetSize(100*self.buttons, 80)
 	local sw, sh = self:GetSize()
-	self:SetPos(ScrW()/2-sw/2,ScrH()-100)
+	self:SetPos(ScrW()/2-sw/2,ScrH()-110)
 end
 
 function YCG_Main:Paint(w, h)
@@ -100,7 +100,7 @@ concommand.Add("testpanel1", function()
 		if LocalPlayer().YAS_Role == "Superadmin" then
 			local b1 = a:AddButton(adm_icon, function() RunConsoleCommand("yas") RunConsoleCommand("testpanel1") end)
 		end
-		local b2 = a:AddButton(wt_icon)
+		local b2 = a:AddButton(wt_icon, function() radio_settings() end)
 		local b3 = a:AddButton(test_icon, function() droplisttest() end)
 	end
 end)
@@ -111,4 +111,26 @@ function droplisttest()
 	local btnWithIcon1 = Menu:AddOption( "Адреналин", function() yas_bclick() RunConsoleCommand("testpanel1") end )
 	local btnWithIcon2 = Menu:AddOption( "Адреналин", function() yas_bclick() RunConsoleCommand("testpanel1") end )
 	local btnWithIcon3 = Menu:AddOption( "Норадреналин", function() yas_bclick() RunConsoleCommand("testpanel1") end )
+end
+
+function radio_settings()
+	local Menu = DermaMenu()
+	Menu:SetPos(input.GetCursorPos())
+	local lply = LocalPlayer()
+
+	local ico1 = "icon16/cancel.png"
+	local ico2 = "icon16/cancel.png"
+
+	if lply.RadioHear == true then
+		ico1 = "icon16/accept.png"
+	end
+
+	if lply.RadioTalk == true then
+		ico2 = "icon16/accept.png"
+	end
+
+	local btnWithIcon1 = Menu:AddOption( "Прослушивать рацию", function() if lply.RadioHear then lply.RadioHear = false yradio_switch(3, 2) else lply.RadioHear = true yradio_switch(3, 1) end RunConsoleCommand("testpanel1") end ):SetIcon(ico1)
+	local btnWithIcon2 = Menu:AddOption( "Говорить в рацию", function() if lply.RadioTalk then lply.RadioTalk = false yradio_switch(2, 2) else lply.RadioTalk = true yradio_switch(2, 1) end RunConsoleCommand("testpanel1") end ):SetIcon(ico2)
+	local btnWithIcon3 = Menu:AddOption( "Установить частоту", function() create_entry(Menu, "radio") RunConsoleCommand("testpanel1") end ):SetIcon("icon16/transmit.png")
+
 end

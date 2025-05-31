@@ -25,6 +25,7 @@ hook.Add( "StartCommand", "myAddonName/Load", function( ply, cmd )
 
 		yas_refreshply(ply)
 		yr_refreshply(ply)
+		ply:SetupYRADIO()
 	end
 end )
 
