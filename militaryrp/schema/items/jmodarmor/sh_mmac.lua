@@ -4,7 +4,7 @@ ITEM.description = "Это традиционный профильная раз�
 ITEM.category = "Бронежилет"
 ITEM.width = 2 
 ITEM.height = 3
-ITEM.Jname = "Eagle Industires MMAC"
+ITEM.Jname = "Eagle Industries MMAC"
 
 
 ITEM.noBusiness = true

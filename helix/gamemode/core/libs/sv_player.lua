@@ -48,6 +48,7 @@ do
 	end
 
 	function playerMeta:SaveData()
+		if self.ixData == nil then ymsg_e("Trying to save nil ixData") return end
 		if (self:IsBot()) then return end
 
 		local name = self:SteamName()

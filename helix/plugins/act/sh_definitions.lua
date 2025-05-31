@@ -121,7 +121,7 @@ function PLUGIN:SetupActs()
 		untimed = true
 	})
 
-	ix.act.Register("Arrest", "citizen_male", {
+	ix.act.Register("Arrest", {"citizen_male"}, {
 		sequence = "arrestidle",
 		untimed = true
 	})
@@ -162,5 +162,23 @@ function PLUGIN:SetupActs()
 	ix.act.Register("Window", "citizen_female", {
 		sequence = "d1_t03_lookoutwindow",
 		untimed = true
+	})
+
+	ix.act.Register("Cower", {"player"}, {
+		sequence = "seq_cower",
+	})
+
+	ix.act.Register("WaveWeapon", {"player"}, {
+		sequence = "seq_wave_smg1",
+	})
+
+	ix.act.Register("Rofl", {"player"}, {
+		sequence = "zombie_slump_idle_01",
+		untimed = true,
+		idle = true
+	})
+
+	ix.act.Register("Rofl2", {"player"}, {
+		sequence = "zombie_slump_rise_01",
 	})
 end

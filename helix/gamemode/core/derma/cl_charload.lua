@@ -1,7 +1,7 @@
 
 local errorModel = "models/error.mdl"
 local PANEL = {}
-
+local backmat = Material("back1_b.png", "noclamp smooth")
 AccessorFunc(PANEL, "animationTime", "AnimationTime", FORCE_NUMBER)
 
 local function SetCharacter(self, character)
@@ -232,6 +232,7 @@ function PANEL:Paint(width, height)
 		render.SuppressEngineLighting(false)
 	cam.End3D()
 
+
 	self.lastPaint = RealTime()
 end
 
@@ -263,8 +264,6 @@ function PANEL:Init()
 	self.panel = self:AddSubpanel("main")
 	self.panel:SetTitle("loadTitle")
 	self.panel.OnSetActive = function(self)
-		Helix_YUI_CreateText("Text22", self, "Header", "ЗАГРУЗКА ПЕРСОНАЖА", 0, 60)
-		Helix_YUI_CreateTextFade("Text22", self, "Header2", "MILITARY SCP RP", 0, 147)
 	end
 
 	-- character button list
@@ -465,11 +464,20 @@ function PANEL:OnCharacterButtonSelected(panel)
 	self.carousel:SetActiveCharacter(panel.character)
 	self.character = panel.character
 end
-local backmat = Material("back2.png", "noclamp smooth")
+
 function PANEL:Paint(width, height)
 	surface.SetMaterial( backmat )
 	surface.SetDrawColor( color_white )
 	surface.DrawTexturedRect( 0, 0, width, height )
+
+	surface.SetTextColor(color_header)
+	surface.SetFont("Header")
+	surface.SetTextPos(99, 172)
+	surface.DrawText("[Y&I] Выбор персонажа")
+	surface.SetTextColor(color_headerfade)
+	surface.SetFont("Header2")
+	surface.SetTextPos(103, 269)
+	surface.DrawText("MILITARY SCP RP")
 end
 
 vgui.Register("ixCharMenuLoad", PANEL, "ixCharMenuPanel")

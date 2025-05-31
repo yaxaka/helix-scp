@@ -151,6 +151,20 @@ function PANEL:Init()
 	backimg:SetPos(-1, 0)
 	backimg:SetSize(ScrW()+1, ScrH())
 
+	local editpanel1 = backimg:Add("editablepanel")
+	editpanel1:SetSize(backimg:GetSize())
+
+	editpanel1.Paint = function(self, w, h)
+		surface.SetTextColor(color_header)
+		surface.SetFont("Header")
+		surface.SetTextPos(99, 172)
+		surface.DrawText("[Y&I] Главное меню")
+		surface.SetTextColor(color_headerfade)
+		surface.SetFont("Header2")
+		surface.SetTextPos(103, 269)
+		surface.DrawText("MILITARY SCP RP")
+	end
+
 
 
 	-- button list
@@ -158,16 +172,33 @@ function PANEL:Init()
 	self.mainButtonList:Dock(LEFT)
 
 
-	Helix_YUI_CreateText("Text1", self, "Header", "ГЛАВНОЕ МЕНЮ", 103, 172)
-	Helix_YUI_CreateTextFade("Text1", self, "Header2", "MILITARY SCP RP", 103, 259)
 	Helix_YUI_Button("T1", 103, 392, self, "Создать персонажа", "DermaLarge", "Create", 384, 55, parent, bHasCharacter)
 	Helix_YUI_Button("T2", 103, 461, self, "Выбрать персонажа", "DermaLarge", "Load", 384, 55, parent, bHasCharacter)
-	Helix_YUI_Button("T3", 103, 530, self, "Наше комьюнити", "DermaLarge", "Community", 384, 55, parent)
+	local community = Helix_YUI_Button("T3", 103, 530, self, "Наше комьюнити", "DermaLarge", "Community", 384, 55, parent)
 	Helix_YUI_Button("T4", 103, 1000, self, "Выйти", "DermaLarge", "Exit", 384, 55, parent)
-	Helix_YUI_ButtonCommunity("T5", 103, 782, self, "Discord", "Community", "1", 180, 45, parent)
-	Helix_YUI_ButtonCommunity("T6", 103, 841, self, "Steam", "Community", "1", 180, 45, parent)
-	Helix_YUI_ButtonCommunity("T7", 103, 900, self, "Rules", "Community", "1", 180, 45, parent)
+	local ds = Helix_YUI_ButtonCommunity("T5", 103, 782, self, "Discord", "Community", "1", 180, 45, parent)
+	local steam = Helix_YUI_ButtonCommunity("T6", 103, 841, self, "Steam", "Community", "1", 180, 45, parent)
+	local rules = Helix_YUI_ButtonCommunity("T7", 103, 900, self, "Rules", "Community", "1", 180, 45, parent)
 
+	community.DoClick = function()
+		yas_bclick()
+		gui.OpenURL("https://discord.gg/wwvycqzTjM")
+	end
+
+	ds.DoClick = function()
+		yas_bclick()
+		gui.OpenURL("https://discord.gg/wwvycqzTjM")
+	end
+
+	steam.DoClick = function()
+		yas_bclick()
+		gui.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=3416350427")
+	end
+
+	rules.DoClick = function()
+		yas_bclick()
+		gui.OpenURL("https://docs.google.com/document/d/17oCawPtsYLBCBbDqt29_ZX1YRWmqu6vu39pzfjw0HhI/edit?usp=sharing")
+	end
 
 	-- create character button
 	--[[local createButton = self.mainButtonList:Add("ixMenuButton")
@@ -307,6 +338,7 @@ function PANEL:UpdateReturnButton(bValue)
 		self.bUsingCharacter = bValue
 	end
 end
+
 
 function PANEL:OnDim()
 	-- disable input on this panel since it will still be in the background while invisible - prone to stray clicks if the

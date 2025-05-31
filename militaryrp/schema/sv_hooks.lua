@@ -34,3 +34,18 @@ hook.Add("YaxakaPillCase", "DefaultController", function(ply, bool, pill)
 		--remove pill
 	end
 end)
+
+hook.Add("YInjector_Use1", "Default", function(ply, element)
+	if ply == nil or element == nil then return false end
+
+	local element_tbl = yr_lapki(element)
+	if element_tbl == nil then return false end
+
+	ply.lapka1 = nil
+	ply.lapka2 = nil
+	ply.lapka3 = nil
+
+	for k,v in pairs(element_tbl) do
+		print(yr_getfunc(v.name))
+	end
+end)

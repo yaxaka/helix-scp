@@ -15,3 +15,5 @@ ix.anim.SetModelClass("models/player/kerry/Class_scientist_2.mdl", "player")
 ix.anim.SetModelClass("models/player/kerry/Class_scientist_1.mdl", "player")
 ix.anim.SetModelClass("models/player/kerry/Class_scientist_4.mdl", "player")
 ix.anim.SetModelClass("models/player/kerry/Class_scientist_6.mdl", "player")
+
+ix.anim.SetModelClass("models/bloocobalt/splinter cell/chemsuit_cod.mdl", "player")
