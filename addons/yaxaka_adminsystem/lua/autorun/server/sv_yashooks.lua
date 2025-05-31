@@ -308,6 +308,11 @@ net.Receive("YAS_Main", function(len, ply)
 		ix.command.Run(ply, "CharSetName", {target:GetCharacter():GetName(), name})
 	end
 
+	if action == "unban" then
+		local id = net.ReadString()
+		yas_unban(id)
+	end
+
 end)
 
 
@@ -318,7 +323,7 @@ hook.Add("player_connect", "Bancheck", function( data )
 	local a = yas_checkban(data.networkid)
 	if data.networkid == "BOT" then return end
 	if a ~= nil then
-		if a ~= 0 then
+		if a ~= "0" then
 			game.KickID(data.userid, "Access Revoked. Contact administration or discord(yaxaka)")
 		end
 	end

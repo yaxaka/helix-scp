@@ -179,6 +179,6 @@ function PLUGIN:SetupActs()
 	})
 
 	ix.act.Register("Rofl2", {"player"}, {
-		sequence = "zombie_slump_rise_01",
+		sequence = {{"zombie_slump_rise_01", duration = 2.75}},
 	})
 end

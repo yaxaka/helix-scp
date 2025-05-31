@@ -21,7 +21,14 @@ yui_zonepng = Material("zone_red.png", "alphatest 0 noclamp 0 smooth 1")
 LocalPlayer().RadioHear = false
 LocalPlayer().RadioTalk = false
 
+
+
 scp_update_table = {
+    [11] = {
+        version = '0.0.1.4',
+        header = 'Коммуникация',
+        desc = "Добавлены рации, обновлено главное меню и прототип работы шприцов и их приготовление",
+    },
     [10] = {
         version = '0.0.1.3',
         header = 'Синтезатор и админка',

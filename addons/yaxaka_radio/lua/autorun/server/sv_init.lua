@@ -25,12 +25,19 @@ local functionsman = {
 
 util.AddNetworkString("yradio_switch")
 
+local delay = {}
+
 net.Receive("yradio_switch", function(len, ply)
+	if delay[ply] == nil then delay[ply] = CurTime() end
+	if CurTime() < delay[ply] then return end
+
 	local type = net.ReadInt(3)
 	local state = net.ReadInt(9)
 	if type == nil or state == nil then return end
 
 	functionsman[type](ply, state)
+	ply:EmitSound("wt/click.wav")
+	delay[ply] = CurTime() + 0.5
 end)
 
 

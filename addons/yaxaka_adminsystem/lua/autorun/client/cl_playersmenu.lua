@@ -242,7 +242,7 @@ function PANEL:Init()
 			for k,v in pairs(ix.item.list) do
 				local cat = v.category
 				if tbl22[v.category] == nil then
-					if cat ~= "JArmor" && cat ~= "misc" then
+					if cat ~= "JArmor" then
 						tbl22[v.category] = v.category
 					end
 				end

@@ -61,7 +61,7 @@ end
 function YCG_Main:Think()
 	self:SetSize(100*self.buttons, 80)
 	local sw, sh = self:GetSize()
-	self:SetPos(ScrW()/2-sw/2,ScrH()-110)
+	self:SetPos(ScrW()/2-sw/2,ScrH()-110	)
 end
 
 function YCG_Main:Paint(w, h)
